@@ -1,114 +1,114 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account] (# 公 号) will be available immediately.
 
-# mall整合Redis实现缓存功能
+# Mall integrates Redis to achieve cache function
 
-> 本文主要讲解mall整合Redis的过程，以短信验证码的存储验证为例。
+> This article mainly explains the process of Mall integration with Redis, taking the storage verification of SMS verification code as an example.
 
-## Redis的安装和启动
+## Redis installation and startup
 
-> Redis是用C语言开发的一个高性能键值对数据库，可用于数据缓存，主要用于处理大量数据的高访问负载。
+> Redis is a high-performance key-value database developed in C language, which can be used for data caching and is mainly used to handle high-access loads of large amounts of data.
 
 
-- 下载Redis,下载地址：https://github.com/MicrosoftArchive/redis/releases
+- Download Redis, download address: https://github.com/MicrosoftArchive/redis/releases
 
-![](../images/arch_screen_09.png)
+! [] (../ images / arch_screen_09.png)
 
-- 下载完后解压到指定目录
+- After downloading, unzip to the specified directory
 
-![](../images/arch_screen_10.png)
+! [] (../ images / arch_screen_10.png)
 
-- 在当前地址栏输入cmd后，执行redis的启动命令：redis-server.exe redis.windows.conf
+-After entering cmd in the current address bar, execute the redis start command: redis-server.exe redis.windows.conf
 
-![](../images/arch_screen_11.png)
+! [] (../ images / arch_screen_11.png)
 
-## 整合Redis
+## Integrate Redis
 
-### 添加项目依赖
-> 在pom.xml中新增Redis相关依赖
+### Add project dependencies
+> Added Redis related dependencies in pom.xml
 
-```xml
-<!--redis依赖配置-->
+`` `xml
+<!-redis dependency configuration->
 <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-data-redis</artifactId>
-</dependency>
-```
-### 修改SpringBoot配置文件
+  <groupId> org.springframework.boot </ groupId>
+  <artifactId> spring-boot-starter-data-redis </ artifactId>
+</ dependency>
+`` `
+### Modify the Spring Boot configuration file
 
-> 在application.yml中添加Redis的配置及Redis中自定义key的配置。
-#### 在spring节点下添加Redis的配置
+> Add Redis configuration and Redis custom key configuration in application.yml.
+#### Add Redis configuration under spring node
 
-```yml
+`` `yml
   redis:
-    host: localhost # Redis服务器地址
-    database: 0 # Redis数据库索引（默认为0）
-    port: 6379 # Redis服务器连接端口
-    password: # Redis服务器连接密码（默认为空）
+    host: localhost # Redis server address
+    database: 0 # Redis database index (default is 0)
+    port: 6379 # Redis server connection port
+    password: # Redis server connection password (default is blank)
     jedis:
       pool:
-        max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
-        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-idle: 8 # 连接池中的最大空闲连接
-        min-idle: 0 # 连接池中的最小空闲连接
-    timeout: 3000ms # 连接超时时间（毫秒）
-```
+        max-active: 8 # The maximum number of connections in the connection pool (use a negative value to indicate no limit)
+        max-wait: -1ms # connection pool maximum blocking wait time (use a negative value to indicate no limit)
+        max-idle: 8 # The largest idle connection in the connection pool
+        min-idle: 0 # The smallest idle connection in the connection pool
+    timeout: 3000ms # connection timeout time (ms)
+`` `
 
-#### 在根节点下添加Redis自定义key的配置
+#### Add Redis custom key configuration under the root node
 
-```yml
-# 自定义redis key
+`` `yml
+# Custom redis key
 redis:
   key:
     prefix:
-      authCode: "portal:authCode:"
+      authCode: "portal: authCode:"
     expire:
-      authCode: 120 # 验证码超期时间
-```
+      authCode: 120 # Verification code expiration time
+`` `
 
-### 添加RedisService接口用于定义一些常用Redis操作
+### Add RedisService interface to define some common Redis operations
 
-```java
+`` `java
 package com.macro.mall.tiny.service;
 
-/**
- * redis操作Service,
- * 对象和数组都以json形式进行存储
+/ **
+ * Redis operation Service,
+ * Objects and arrays are stored in json format
  * Created by macro on 2018/8/7.
- */
+ * /
 public interface RedisService {
-    /**
-     * 存储数据
-     */
-    void set(String key, String value);
+    / **
+     * Storing data
+     * /
+    void set (String key, String value);
 
-    /**
-     * 获取数据
-     */
-    String get(String key);
+    / **
+     * retrieve data
+     * /
+    String get (String key);
 
-    /**
-     * 设置超期时间
-     */
-    boolean expire(String key, long expire);
+    / **
+     * Set overdue time
+     * /
+    boolean expire (String key, long expire);
 
-    /**
-     * 删除数据
-     */
-    void remove(String key);
+    / **
+     * delete data
+     * /
+    void remove (String key);
 
-    /**
-     * 自增操作
-     * @param delta 自增步长
-     */
-    Long increment(String key, long delta);
+    / **
+     * Self-increasing operation
+     * @param delta increment step
+     * /
+    Long increment (String key, long delta);
 
 }
 
-```
+`` `
 
-### 注入StringRedisTemplate，实现RedisService接口
+### Inject StringRedisTemplate to implement RedisService interface
 
-```java
+`` `java
 package com.macro.mall.tiny.service.impl;
 
 import com.macro.mall.tiny.service.RedisService;
@@ -118,47 +118,47 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * redis操作Service的实现类
+/ **
+ * Redis operation Service implementation class
  * Created by macro on 2018/8/7.
- */
+ * /
 @Service
 public class RedisServiceImpl implements RedisService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
-    public void set(String key, String value) {
-        stringRedisTemplate.opsForValue().set(key, value);
+    public void set (String key, String value) {
+        stringRedisTemplate.opsForValue (). set (key, value);
     }
 
     @Override
-    public String get(String key) {
-        return stringRedisTemplate.opsForValue().get(key);
+    public String get (String key) {
+        return stringRedisTemplate.opsForValue (). get (key);
     }
 
     @Override
-    public boolean expire(String key, long expire) {
-        return stringRedisTemplate.expire(key, expire, TimeUnit.SECONDS);
+    public boolean expire (String key, long expire) {
+        return stringRedisTemplate.expire (key, expire, TimeUnit.SECONDS);
     }
 
     @Override
-    public void remove(String key) {
-        stringRedisTemplate.delete(key);
+    public void remove (String key) {
+        stringRedisTemplate.delete (key);
     }
 
     @Override
-    public Long increment(String key, long delta) {
-        return stringRedisTemplate.opsForValue().increment(key,delta);
+    public Long increment (String key, long delta) {
+        return stringRedisTemplate.opsForValue (). increment (key, delta);
     }
 }
 
-```
+`` `
 
-### 添加UmsMemberController
-> 添加根据电话号码获取验证码的接口和校验验证码的接口
+### Add UmsMemberController
+> Add an interface to obtain the verification code based on the phone number and an interface to verify the verification code
 
-```java
+`` `java
 package com.macro.mall.tiny.controller;
 
 import com.macro.mall.tiny.common.api.CommonResult;
@@ -172,67 +172,67 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * 会员登录注册管理Controller
+/ **
+ * Member login registration management Controller
  * Created by macro on 2018/8/3.
- */
+ * /
 @Controller
-@Api(tags = "UmsMemberController", description = "会员登录注册管理")
-@RequestMapping("/sso")
+@Api (tags = "UmsMemberController", description = "Member login registration management")
+@RequestMapping ("/ sso")
 public class UmsMemberController {
     @Autowired
     private UmsMemberService memberService;
 
-    @ApiOperation("获取验证码")
-    @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
+    @ApiOperation ("Get Verification Code")
+    @RequestMapping (value = "/ getAuthCode", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult getAuthCode(@RequestParam String telephone) {
-        return memberService.generateAuthCode(telephone);
+    public CommonResult getAuthCode (@RequestParam String telephone) {
+        return memberService.generateAuthCode (telephone);
     }
 
-    @ApiOperation("判断验证码是否正确")
-    @RequestMapping(value = "/verifyAuthCode", method = RequestMethod.POST)
+    @ApiOperation ("Determine whether the verification code is correct")
+    @RequestMapping (value = "/ verifyAuthCode", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updatePassword(@RequestParam String telephone,
+    public CommonResult updatePassword (@RequestParam String telephone,
                                  @RequestParam String authCode) {
-        return memberService.verifyAuthCode(telephone,authCode);
+        return memberService.verifyAuthCode (telephone, authCode);
     }
 }
 
-```
+`` `
 
-### 添加UmsMemberService接口
+### Add UmsMemberService interface
 
-```java
+`` `java
 package com.macro.mall.tiny.service;
 
 import com.macro.mall.tiny.common.api.CommonResult;
 
-/**
- * 会员管理Service
+/ **
+ * Member Management Service
  * Created by macro on 2018/8/3.
- */
+ * /
 public interface UmsMemberService {
 
-    /**
-     * 生成验证码
-     */
-    CommonResult generateAuthCode(String telephone);
+    / **
+     * Generate verification code
+     * /
+    CommonResult generateAuthCode (String telephone);
 
-    /**
-     * 判断验证码和手机号码是否匹配
-     */
-    CommonResult verifyAuthCode(String telephone, String authCode);
+    / **
+     * Determine whether the verification code and mobile phone number match
+     * /
+    CommonResult verifyAuthCode (String telephone, String authCode);
 
 }
 
-```
+`` `
 
-### 添加UmsMemberService接口的实现类UmsMemberServiceImpl
+### Add UmsMemberService interface implementation class UmsMemberServiceImpl
 
-> 生成验证码时，将自定义的Redis键值加上手机号生成一个Redis的key,以验证码为value存入到Redis中，并设置过期时间为自己配置的时间（这里为120s）。校验验证码时根据手机号码来获取Redis里面存储的验证码，并与传入的验证码进行比对。
+> When generating a verification code, add a custom Redis key value to the mobile phone number to generate a Redis key, store the verification code as the value in Redis, and set the expiration time to the time you configured (120s here) When verifying the verification code, the verification code stored in Redis is obtained according to the mobile phone number and compared with the incoming verification code.
 
-```java
+`` `java
 package com.macro.mall.tiny.service.impl;
 
 import com.macro.mall.tiny.common.api.CommonResult;
@@ -245,59 +245,59 @@ import org.springframework.util.StringUtils;
 
 import java.util.Random;
 
-/**
- * 会员管理Service实现类
+/ **
+ * Member Management Service implementation class
  * Created by macro on 2018/8/3.
- */
+ * /
 @Service
 public class UmsMemberServiceImpl implements UmsMemberService {
     @Autowired
     private RedisService redisService;
-    @Value("${redis.key.prefix.authCode}")
+    @Value ("$ {redis.key.prefix.authCode}")
     private String REDIS_KEY_PREFIX_AUTH_CODE;
-    @Value("${redis.key.expire.authCode}")
+    @Value ("$ {redis.key.expire.authCode}")
     private Long AUTH_CODE_EXPIRE_SECONDS;
 
     @Override
-    public CommonResult generateAuthCode(String telephone) {
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 6; i++) {
-            sb.append(random.nextInt(10));
+    public CommonResult generateAuthCode (String telephone) {
+        StringBuilder sb = new StringBuilder ();
+        Random random = new Random ();
+        for (int i = 0; i <6; i ++) {
+            sb.append (random.nextInt (10));
         }
-        //验证码绑定手机号并存储到redis
-        redisService.set(REDIS_KEY_PREFIX_AUTH_CODE + telephone, sb.toString());
-        redisService.expire(REDIS_KEY_PREFIX_AUTH_CODE + telephone, AUTH_CODE_EXPIRE_SECONDS);
-        return CommonResult.success(sb.toString(), "获取验证码成功");
+        // The verification code is bound to the mobile phone number and stored in redis
+        redisService.set (REDIS_KEY_PREFIX_AUTH_CODE + telephone, sb.toString ());
+        redisService.expire (REDIS_KEY_PREFIX_AUTH_CODE + telephone, AUTH_CODE_EXPIRE_SECONDS);
+        return CommonResult.success (sb.toString (), "Successfully obtained verification code");
     }
 
 
-    //对输入的验证码进行校验
+    // Verify the entered verification code
     @Override
-    public CommonResult verifyAuthCode(String telephone, String authCode) {
-        if (StringUtils.isEmpty(authCode)) {
-            return CommonResult.failed("请输入验证码");
+    public CommonResult verifyAuthCode (String telephone, String authCode) {
+        if (StringUtils.isEmpty (authCode)) {
+            return CommonResult.failed ("Please enter the verification code");
         }
-        String realAuthCode = redisService.get(REDIS_KEY_PREFIX_AUTH_CODE + telephone);
-        boolean result = authCode.equals(realAuthCode);
+        String realAuthCode = redisService.get (REDIS_KEY_PREFIX_AUTH_CODE + telephone);
+        boolean result = authCode.equals (realAuthCode);
         if (result) {
-            return CommonResult.success(null, "验证码校验成功");
+            return CommonResult.success (null, "Verification code verification succeeded");
         } else {
-            return CommonResult.failed("验证码不正确");
+            return CommonResult.failed ("Verification code is incorrect");
         }
     }
 
 }
 
-```
-### 运行项目
-> 访问Swagger的API文档地址http://localhost:8080/swagger-ui.html ,对接口进行测试。
+`` `
+### Run the project
+> Visit Swagger's API document address http: // localhost: 8080 / swagger-ui.html to test the interface.
 
-![](../images/arch_screen_12.png)
+! [] (../ images / arch_screen_12.png)
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-03](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-03)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+! [Public Account Picture] (http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)

@@ -1,24 +1,24 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
-# mall整合SpringTask实现定时任务
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
+# Mall integrates Spring Task to implement timed tasks
 
-> 本文主要讲解mall整合SpringTask的过程，以批量修改超时订单为例。
+> This article mainly explains the process of Mall integrating Spring Task, taking batch modification of overtime orders as an example.
 
-## 项目使用框架介绍
+## Introduction to the project framework
 
 ### SpringTask
 
-> SpringTask是Spring自主研发的轻量级定时任务工具，相比于Quartz更加简单方便，且不需要引入其他依赖即可使用。
+> Spring Task is a lightweight timing task tool independently developed by Spring. It is simpler and more convenient than Quartz, and can be used without introducing other dependencies.
 
-### Cron表达式
+### Cron expression
 
-> Cron表达式是一个字符串，包括6~7个时间元素，在SpringTask中可以用于指定任务的执行时间。
+> Cron expression is a string, including 6 ~ 7 time elements, which can be used to specify the execution time of the task in Spring Task.
 
-#### Cron的语法格式
+#### Cron syntax
 Seconds Minutes Hours DayofMonth Month DayofWeek
 
-#### Cron格式中每个时间元素的说明
+#### Description of each time element in Cron format
 
-时间元素 | 可出现的字符 | 有效数值范围
+Time element | Appearable characters | Effective value range
 ----|----|----
 Seconds | , - * / | 0-59
 Minutes | , - * / | 0-59
@@ -27,32 +27,32 @@ DayofMonth | , - * / ? L W | 0-31
 Month | , - * / | 1-12
 DayofWeek | , - * / ? L # | 1-7或SUN-SAT
 
-#### Cron格式中特殊字符说明
+#### Description of special characters in Cron format
 
-字符 | 作用 | 举例
+Character | Intention | Examples
 ----|----|----
-, | 列出枚举值 | 在Minutes域使用5,10，表示在5分和10分各触发一次
-\- | 表示触发范围 | 在Minutes域使用5-10，表示从5分到10分钟每分钟触发一次
-\* | 匹配任意值 | 在Minutes域使用*, 表示每分钟都会触发一次
-/ | 起始时间开始触发，每隔固定时间触发一次 | 在Minutes域使用5/10,表示5分时触发一次，每10分钟再触发一次
-? | 在DayofMonth和DayofWeek中，用于匹配任意值 | 在DayofMonth域使用?,表示每天都触发一次
-\# | 在DayofMonth中，确定第几个星期几 | 1#3表示第三个星期日
-L | 表示最后 | 在DayofWeek中使用5L,表示在最后一个星期四触发
-W | 表示有效工作日(周一到周五) | 在DayofMonth使用5W，如果5日是星期六，则将在最近的工作日4日触发一次
+, | List enumeration values | Use 5,10 in the Minutes field, which means that it will trigger once every 5 minutes and 10 minutes
+\- | Indicates the trigger range | Use 5-10 in the Minutes field, which means that it will be triggered every 5 minutes to 10 minutes
+\* | Match any value | Use * in the Minutes field, which means it will be triggered every minute
+/ | Start at the start time, trigger once every fixed time | Use 5/10 in the Minutes field, which means that it will be triggered once at 5 minutes, and it will be triggered again every 10 minutes.
+? | In Dayof Month and Dayof Week, used to match any value | Use in the Dayof Month field ?, which means that it is triggered once a day
+\# | In Dayof Month, determine the day of the week | 1 # 3 means the third Sunday
+L | Means last | Use 5 L in Dayof Week, which means it is triggered on the last Thursday
+W | Indicates a valid working day (Monday to Friday) | Use 5 W on Dayof Month, if the 5th is Saturday, it will be triggered once on the 4th of the most recent working day
 
-## 业务场景说明
+## Business scenario description
 
-- 用户对某商品进行下单操作；
-- 系统需要根据用户购买的商品信息生成订单并锁定商品的库存；
-- 系统设置了60分钟用户不付款就会取消订单；
-- 开启一个定时任务，每隔10分钟检查下，如果有超时还未付款的订单，就取消订单并取消锁定的商品库存。
+- The user places an order for a product；
+- The system needs to generate an order based on the information of the product purchased by the user and lock the inventory of the product；
+- The system sets the user to cancel the order without paying for 60 minutes；
+- Start a scheduled task, check every 10 minutes, if there is an order that has not been paid for overtime, cancel the order and cancel the locked merchandise inventory.
 
-## 整合SpringTask
-> 由于SpringTask已经存在于Spring框架中，所以无需添加依赖。
+## Integrate Spring Task
+> Since the Spring Task already exists in the Spring framework, there is no need to add dependencies.
 
-### 添加SpringTask的配置
+### Add Spring Task configuration
 
-> 只需要在配置类中添加一个@EnableScheduling注解即可开启SpringTask的定时任务能力。
+> Just add an @Enable Scheduling annotation to the configuration class to enable the Spring Task's scheduled task capability.
 
 ```java
 package com.macro.mall.tiny.config;
@@ -61,7 +61,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * 定时任务配置
+ * Scheduled task configuration
  * Created by macro on 2019/4/8.
  */
 @Configuration
@@ -70,7 +70,7 @@ public class SpringTaskConfig {
 }
 ```
 
-### 添加OrderTimeOutCancelTask来执行定时任务
+### Add Order Time Out Cancel Task to perform scheduled tasks
 ```java
 package com.macro.mall.tiny.component;
 
@@ -81,28 +81,28 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by macro on 2018/8/24.
- * 订单超时取消并解锁库存的定时器
+ * Order timeout canceled and unlocked inventory timer
  */
 @Component
 public class OrderTimeOutCancelTask {
     private Logger LOGGER = LoggerFactory.getLogger(OrderTimeOutCancelTask.class);
 
     /**
-     * cron表达式：Seconds Minutes Hours DayofMonth Month DayofWeek [Year]
-     * 每10分钟扫描一次，扫描设定超时时间之前下的订单，如果没支付则取消该订单
+     * cron expression：Seconds Minutes Hours DayofMonth Month DayofWeek [Year]
+     * Scan every 10 minutes, scan the order placed before the set timeout, and cancel the order if no payment
      */
     @Scheduled(cron = "0 0/10 * ? * ?")
     private void cancelTimeOutOrder() {
-        // TODO: 2019/5/3 此处应调用取消订单的方法，具体查看mall项目源码
-        LOGGER.info("取消订单，并根据sku编号释放锁定库存");
+        // TODO: 2019/5/3 Here you should call the method of canceling the order, specifically check the source code of the mall project
+        LOGGER.info("Cancel order and release locked inventory based on sku number");
     }
 }
 
 ```
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-05](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-05)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)

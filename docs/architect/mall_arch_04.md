@@ -1,78 +1,76 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
-# mall整合SpringSecurity和JWT实现认证和授权（一）
+# Mall integrates Spring Security and JWT to achieve authentication and authorization (1)
 
-> 本文主要讲解mall通过整合SpringSecurity和JWT实现后台用户的登录和授权功能，同时改造Swagger-UI的配置使其可以自动记住登录令牌进行发送。
-
-## 项目使用框架介绍
+> This article mainly explains that Mall realizes the login and authorization functions of background users by integrating SpringSecurity and JWT, and transforms the configuration of Swagger-UI so that it can automatically remember the login token to send.
+## Introduction to the project framework
 
 ### SpringSecurity
 
-> SpringSecurity是一个强大的可高度定制的认证和授权框架，对于Spring应用来说它是一套Web安全标准。SpringSecurity注重于为Java应用提供认证和授权功能，像所有的Spring项目一样，它对自定义需求具有强大的扩展性。
-
+> SpringSecurity is a powerful highly customizable authentication and authorization framework. It is a set of Web security standards for Spring applications. SpringSecurity focuses on providing authentication and authorization functions for Java applications. Like all Spring projects, it has strong extensibility for custom requirements.
 ### JWT
-> JWT是JSON WEB TOKEN的缩写，它是基于 RFC 7519 标准定义的一种可以安全传输的的JSON对象，由于使用了数字签名，所以是可信任和安全的。
+> JWT is an abbreviation of JSON WEB TOKEN. It is a JSON object that can be safely transmitted based on the RFC 7519 standard. Because it uses digital signatures, it is trustworthy and secure.
 
-#### JWT的组成
+#### The composition of JWT
 
-- JWT token的格式：header.payload.signature
-- header中用于存放签名的生成算法
+- JWT token format：header.payload.signature
+- The algorithm used to store the signature in the header
 ```json
 {"alg": "HS512"}
 ```
-- payload中用于存放用户名、token的生成时间和过期时间
+- The payload is used to store the user name, token generation time and expiration time
 ```json
 {"sub":"admin","created":1489079981393,"exp":1489684781}
 ```
-- signature为以header和payload生成的签名，一旦header和payload被篡改，验证将失败
+- signature is the signature generated with the header and payload. Once the header and payload are tampered with, the verification will fail
 ```java
-//secret为加密算法的密钥
+//secret is the encryption algorithm key
 String signature = HMACSHA512(base64UrlEncode(header) + "." +base64UrlEncode(payload),secret)
 ```
 
-#### JWT实例
-这是一个JWT的字符串
+#### JWT example
+This is a JWT string
 ```
 eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImNyZWF0ZWQiOjE1NTY3NzkxMjUzMDksImV4cCI6MTU1NzM4MzkyNX0.d-iki0193X0bBOETf2UN3r3PotNIEAV7mzIxxeI5IxFyzzkOZxS0PGfF_SK6wxCv2K8S0cZjMkv6b5bCqc0VBw
 ```
-可以在该网站上获得解析结果：https://jwt.io/
+The analysis results can be obtained on the website：https://jwt.io/
 ![](../images/arch_screen_13.png)
 
-#### JWT实现认证和授权的原理
+#### The principle of JWT implementing authentication and authorization
 
-- 用户调用登录接口，登录成功后获取到JWT的token；
-- 之后用户每次调用接口都在http的header中添加一个叫Authorization的头，值为JWT的token；
-- 后台程序通过对Authorization头中信息的解码及数字签名校验来获取其中的用户信息，从而实现认证和授权。
+- The user calls the login interface, and the JWT token is obtained after successful login；
+- After that, each time the user calls the interface, a header called Authorization is added to the http header, and the value is the JWT token.；
+- The background program obtains the user information through decoding and digital signature verification of the information in the Authorization header, thereby achieving authentication and authorization.
 
 ### Hutool
 
-> Hutool是一个丰富的Java开源工具包,它帮助我们简化每一行代码，减少每一个方法，mall项目采用了此工具包。
+> Hutool is a rich Java open source toolkit. It helps us simplify every line of code and reduce every method. The mall project uses this toolkit.
 
-## 项目使用表说明
+## Item usage table description
 
-- `ums_admin`：后台用户表
-- `ums_role`：后台用户角色表
-- `ums_permission`：后台用户权限表
-- `ums_admin_role_relation`：后台用户和角色关系表，用户与角色是多对多关系
-- `ums_role_permission_relation`：后台用户角色和权限关系表，角色与权限是多对多关系
-- `ums_admin_permission_relation`：后台用户和权限关系表(除角色中定义的权限以外的加减权限)，加权限是指用户比角色多出的权限，减权限是指用户比角色少的权限
+- `ums_admin`：Back-end user table
+- `ums_role`：Back-end user role table
+- `ums_permission`：Back-end user permission table
+- `ums_admin_role_relation`：Back-end user and role relationship table, user and role are many-to-many relationship
+- `ums_role_permission_relation`：Back-end user role and permission relationship table, role and permission are many-to-many relationship
+- `ums_admin_permission_relation`：Back-end user and permission relationship table (addition and subtraction permissions in addition to the permissions defined in the role), additional permissions refer to the user's more permissions than the role, reduced permissions refer to the user's fewer permissions than the role
 
-## 整合SpringSecurity及JWT
+## Integrate Spring Security and JWT
 
-### 在pom.xml中添加项目依赖
+### Add project dependencies in pom.xml
 ```xml
-<!--SpringSecurity依赖配置-->
+<!--Spring Security dependent configuration-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
-<!--Hutool Java工具包-->
+<!--Hutool Java Toolkit-->
 <dependency>
     <groupId>cn.hutool</groupId>
     <artifactId>hutool-all</artifactId>
     <version>4.5.7</version>
 </dependency>
-<!--JWT(Json Web Token)登录支持-->
+<!--JWT (Json Web Token) login support-->
 <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt</artifactId>
@@ -80,14 +78,14 @@ eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImNyZWF0ZWQiOjE1NTY3NzkxMjUzMDksImV4cCI
 </dependency>
 ```
 
-### 添加JWT token的工具类
+### Tool class for adding JWT token
 
-> 用于生成和解析JWT token的工具类
+> Tool class for generating and parsing JWT token
 
-相关方法说明：
-- generateToken(UserDetails userDetails) :用于根据登录用户信息生成token
-- getUserNameFromToken(String token)：从token中获取登录用户的信息
-- validateToken(String token, UserDetails userDetails)：判断token是否还有效
+Related method description：
+- generateToken(UserDetails userDetails) :Used to generate tokens based on login user information
+- getUserNameFromToken(String token)：Get the information of the logged-in user from the token
+- validateToken(String token, UserDetails userDetails)：Determine whether the token is still valid
 
 
 ```java
@@ -107,7 +105,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JwtToken生成的工具类
+ * Tool class generated by Jwt Token
  * Created by macro on 2018/4/26.
  */
 @Component
@@ -121,7 +119,7 @@ public class JwtTokenUtil {
     private Long expiration;
 
     /**
-     * 根据负责生成JWT的token
+     * According to the token responsible for generating JWT
      */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
@@ -132,7 +130,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 从token中获取JWT中的负载
+     * Get the load in JWT from the token
      */
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
@@ -142,20 +140,20 @@ public class JwtTokenUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            LOGGER.info("JWT格式验证失败:{}",token);
+            LOGGER.info("JWT format verification failed:{}",token);
         }
         return claims;
     }
 
     /**
-     * 生成token的过期时间
+     * Generate token expiration time
      */
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
     /**
-     * 从token中获取登录用户名
+     * Get login user name from token
      */
     public String getUserNameFromToken(String token) {
         String username;
@@ -169,10 +167,10 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 验证token是否还有效
+     * Verify that the token is still valid
      *
-     * @param token       客户端传入的token
-     * @param userDetails 从数据库中查询出来的用户信息
+     * @param token       Client incoming token
+     * @param userDetails User information queried from the database
      */
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = getUserNameFromToken(token);
@@ -180,7 +178,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 判断token是否已经失效
+     * Determine if the token has expired
      */
     private boolean isTokenExpired(String token) {
         Date expiredDate = getExpiredDateFromToken(token);
@@ -188,7 +186,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 从token中获取过期时间
+     * Get expiration time from token
      */
     private Date getExpiredDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
@@ -196,7 +194,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 根据用户信息生成token
+     * Generate token based on user information
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -206,14 +204,14 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 判断token是否可以被刷新
+     * Determine whether the token can be refreshed
      */
     public boolean canRefresh(String token) {
         return !isTokenExpired(token);
     }
 
     /**
-     * 刷新token
+     * Refresh token
      */
     public String refreshToken(String token) {
         Claims claims = getClaimsFromToken(token);
@@ -224,7 +222,7 @@ public class JwtTokenUtil {
 
 ```
 
-### 添加SpringSecurity的配置类
+### Add Spring Security configuration class
 
 ```java
 package com.macro.mall.tiny.config;
@@ -257,7 +255,7 @@ import java.util.List;
 
 
 /**
- * SpringSecurity的配置
+ * Spring Security configuration
  * Created by macro on 2018/4/26.
  */
 @Configuration
@@ -273,13 +271,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf()// 由于使用的是JWT，我们这里不需要csrf
+        httpSecurity.csrf()// Since we are using JWT, we do not need csrf here
                 .disable()
-                .sessionManagement()// 基于token，所以不需要session
+                .sessionManagement()// Based on token, so no session is required
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
+                .antMatchers(HttpMethod.GET, // Allow unauthorized access to website static resources
                         "/",
                         "/*.html",
                         "/favicon.ico",
@@ -290,19 +288,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**"
                 )
                 .permitAll()
-                .antMatchers("/admin/login", "/admin/register")// 对登录注册要允许匿名访问
+                .antMatchers("/admin/login", "/admin/register")// To allow anonymous access to login registration
                 .permitAll()
-                .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
+                .antMatchers(HttpMethod.OPTIONS)//Cross-domain requests will first make an options request
                 .permitAll()
-//                .antMatchers("/**")//测试时全部运行访问
+//                .antMatchers("/**")//All access during test
 //                .permitAll()
-                .anyRequest()// 除上面外的所有请求全部需要鉴权认证
+                .anyRequest()// All requests except the above require authentication
                 .authenticated();
-        // 禁用缓存
+        // Disable cache
         httpSecurity.headers().cacheControl();
-        // 添加JWT filter
+        // Add JWT filter
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        //添加自定义未授权和未登录结果返回
+        //Add custom unauthorized and unlogged results back
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint);
@@ -321,14 +319,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        //获取登录用户信息
+        //Get login user information
         return username -> {
             UmsAdmin admin = adminService.getAdminByUsername(username);
             if (admin != null) {
                 List<UmsPermission> permissionList = adminService.getPermissionList(admin.getId());
                 return new AdminUserDetails(admin,permissionList);
             }
-            throw new UsernameNotFoundException("用户名或密码错误");
+            throw new UsernameNotFoundException("wrong user name or password");
         };
     }
 
@@ -347,16 +345,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 
-#### 相关依赖及方法说明
+#### Related dependencies and method description
 
-- configure(HttpSecurity httpSecurity)：用于配置需要拦截的url路径、jwt过滤器及出异常后的处理器；
-- configure(AuthenticationManagerBuilder auth)：用于配置UserDetailsService及PasswordEncoder；
-- RestfulAccessDeniedHandler：当用户没有访问权限时的处理器，用于返回JSON格式的处理结果；
-- RestAuthenticationEntryPoint：当未登录或token失效时，返回JSON格式的结果；
-- UserDetailsService:SpringSecurity定义的核心接口，用于根据用户名获取用户信息，需要自行实现；
-- UserDetails：SpringSecurity定义用于封装用户信息的类（主要是用户信息和权限），需要自行实现；
-- PasswordEncoder：SpringSecurity定义的用于对密码进行编码及比对的接口，目前使用的是BCryptPasswordEncoder；
-- JwtAuthenticationTokenFilter：在用户名和密码校验前添加的过滤器，如果有jwt的token，会自行根据token信息进行登录。
+- configure(HttpSecurity httpSecurity)：Used to configure the URL path to be intercepted, jwt filter and the processor after an exception；
+- configure(AuthenticationManagerBuilder auth)：Used to configure User Details Service and Password Encoder；
+- RestfulAccessDeniedHandler：The processor when the user does not have access rights, used to return the processing result in JSON format；
+- RestAuthenticationEntryPoint：When not logged in or the token is invalid, return the result in JSON format；
+- UserDetailsService:The core interface defined by Spring Security is used to obtain user information based on the user name.；
+- UserDetails：Spring Security defines classes for encapsulating user information (mainly user information and permissions), which need to be implemented；
+- PasswordEncoder：The interface defined by Spring Security for encoding and comparing passwords, currently using B Crypt Password Encoder；
+- JwtAuthenticationTokenFilter：The filter added before the user name and password verification, if there is jwt token, will log in based on the token information.
 
 ### 添加RestfulAccessDeniedHandler
 ```java
@@ -374,7 +372,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 当访问接口没有权限时，自定义的返回结果
+ * When the access interface does not have permission, the custom return result
  * Created by macro on 2018/4/26.
  */
 @Component
@@ -391,7 +389,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler{
 }
 
 ```
-### 添加RestAuthenticationEntryPoint
+### Add RestAuthenticationEntryPoint
 ```java
 package com.macro.mall.tiny.component;
 
@@ -407,7 +405,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 当未登录或者token失效访问接口时，自定义的返回结果
+ * When not logged in or the token fails to access the interface, the custom return result
  * Created by macro on 2018/5/14.
  */
 @Component
@@ -422,7 +420,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 }
 
 ```
-### 添加AdminUserDetails
+### Add AdminUserDetails
 ```java
 package com.macro.mall.tiny.dto;
 
@@ -437,7 +435,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * SpringSecurity需要的用户详情
+ * User details required by Spring Security
  * Created by macro on 2018/4/26.
  */
 public class AdminUserDetails implements UserDetails {
@@ -450,7 +448,7 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //返回当前用户的权限
+        //Returns the current user's permissions
         return permissionList.stream()
                 .filter(permission -> permission.getValue()!=null)
                 .map(permission ->new SimpleGrantedAuthority(permission.getValue()))
@@ -489,8 +487,8 @@ public class AdminUserDetails implements UserDetails {
 }
 
 ```
-### 添加JwtAuthenticationTokenFilter
-> 在用户名和密码校验前添加的过滤器，如果请求中有jwt的token且有效，会取出token中的用户名，然后调用SpringSecurity的API进行登录操作。
+### Add JwtAuthenticationTokenFilter
+> The filter added before the user name and password verification, if the jwt token is valid in the request, the user name in the token will be taken out, and then the Spring Security API will be called to log in.
 
 ```java
 package com.macro.mall.tiny.component;
@@ -514,7 +512,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * JWT登录授权过滤器
+ * JWT login authorization filter
  * Created by macro on 2018/4/26.
  */
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -553,9 +551,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
 ```
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)

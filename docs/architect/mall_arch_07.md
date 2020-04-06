@@ -1,63 +1,62 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
-# mall整合Elasticsearch实现商品搜索
+# Mall integrates Elasticsearch to realize product search
 
-> 本文主要讲解mall整合Elasticsearch的过程，以实现商品信息在Elasticsearch中的导入、查询、修改、删除为例。
+> This article mainly explains the process of mall integration with Elasticsearch, taking the import, query, modification, and deletion of commodity information in Elasticsearch as examples.
 
-## 项目使用框架介绍
+## Introduction to the project framework
 
 ### Elasticsearch
-> Elasticsearch 是一个分布式、可扩展、实时的搜索与数据分析引擎。 它能从项目一开始就赋予你的数据以搜索、分析和探索的能力，可用于实现全文搜索和实时数据统计。
-
+> Elasticsearch is a distributed, scalable, real-time search and data analysis engine. It can give your data the ability to search, analyze and explore from the beginning of the project, and can be used to achieve full-text search and real-time data statistics.
 #### Elasticsearch的安装和使用
 
-1. 下载Elasticsearch6.2.2的zip包，并解压到指定目录，下载地址：[https://www.elastic.co/cn/downloads/past-releases/elasticsearch-6-2-2](https://www.elastic.co/cn/downloads/past-releases/elasticsearch-6-2-2)
+1. Download the zip package of Elasticsearch 6.2.2 and unzip it to the specified directory, download address：[https://www.elastic.co/cn/downloads/past-releases/elasticsearch-6-2-2](https://www.elastic.co/cn/downloads/past-releases/elasticsearch-6-2-2)
 
 ![](../images/arch_screen_25.png)
 
-2. 安装中文分词插件，在elasticsearch-6.2.2\bin目录下执行以下命令：elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.2.2/elasticsearch-analysis-ik-6.2.2.zip
+2. Install the Chinese word segmentation plugin, execute the following command in the elasticsearch-6.2.2\bin directory：elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.2.2/elasticsearch-analysis-ik-6.2.2.zip
 
 ![](../images/arch_screen_26.png)
 
-3. 运行bin目录下的elasticsearch.bat启动Elasticsearch
+3. Run elasticsearch.bat in the bin directory to start Elasticsearch
 
 ![](../images/arch_screen_27.png)
 
-4. 下载Kibana,作为访问Elasticsearch的客户端，请下载6.2.2版本的zip包，并解压到指定目录，下载地址：[https://artifacts.elastic.co/downloads/kibana/kibana-6.2.2-windows-x86_64.zip](https://artifacts.elastic.co/downloads/kibana/kibana-6.2.2-windows-x86_64.zip)
+4. Download Kibana, as a client to access Elasticsearch, please download the 6.2.2 version of the zip package, and unzip it to the specified directory, download address：[https://artifacts.elastic.co/downloads/kibana/kibana-6.2.2-windows-x86_64.zip](https://artifacts.elastic.co/downloads/kibana/kibana-6.2.2-windows-x86_64.zip)
 
 ![](../images/arch_screen_28.png)
 
-5. 运行bin目录下的kibana.bat，启动Kibana的用户界面
+5. Run kibana.bat in the bin directory to start the Kibana user interface
 
 ![](../images/arch_screen_29.png)
 
-6. 访问[http://localhost:5601](http://localhost:5601) 即可打开Kibana的用户界面
+6. Visit [http://localhost:5601](http://localhost:5601) To open the Kibana user interface
 
 ![](../images/arch_screen_30.png)
 
 ### Spring Data Elasticsearch
-> Spring Data Elasticsearch是Spring提供的一种以Spring Data风格来操作数据存储的方式，它可以避免编写大量的样板代码。
+> Spring Data Elasticsearch is a way of operating data storage provided by Spring in the style of Spring Data. It can avoid writing a lot of boilerplate code.
 
-#### 常用注解
+#### Common notes
 
 ##### @Document
 ```java
-//标示映射到Elasticsearch文档上的领域对象
+//Mark the domain object mapped to the Elasticsearch document
 public @interface Document {
-  //索引库名次，mysql中数据库的概念
+  //Index library ranking, the concept of database in mysql
 	String indexName();
-  //文档类型，mysql中表的概念
+  //Document type, concept of table in mysql
 	String type() default "";
-  //默认分片数
+  //The default number of shards
 	short shards() default 5;
-  //默认副本数量
+  //Number of default copies
 	short replicas() default 1;
 
 }
 ```
 ##### @Id
 ```java
-//表示是文档的id，文档可以认为是mysql中表行的概念
+//Represents the id of the document, the document can be regarded as the concept of table rows in mysql
 public @interface Id {
 }
 ```
@@ -65,21 +64,21 @@ public @interface Id {
 ##### @Field
 ```java
 public @interface Field {
-  //文档中字段的类型
+  //Types of fields in the document
 	FieldType type() default FieldType.Auto;
-  //是否建立倒排索引
+  //Whether to create an inverted index
 	boolean index() default true;
-  //是否进行存储
+  //Whether to store
 	boolean store() default false;
-  //分词器名次
+  //Word breaker rank
 	String analyzer() default "";
 }
 ```
 
 ```java
-//为文档自动指定元数据类型
+//Automatically assign metadata types to documents
 public enum FieldType {
-	Text,//会进行分词并建了索引的字符类型
+	Text,//Character types that will be segmented and indexed
 	Integer,
 	Long,
 	Date,
@@ -87,75 +86,75 @@ public enum FieldType {
 	Double,
 	Boolean,
 	Object,
-	Auto,//自动判断字段类型
-	Nested,//嵌套对象类型
+	Auto,//Automatically determine the field type
+	Nested,//Nested object type
 	Ip,
 	Attachment,
-	Keyword//不会进行分词建立索引的类型
+	Keyword//Types that will not be indexed
 }
 ```
 
-#### Sping Data方式的数据操作
+#### Sping Data data operation
 
-##### 继承ElasticsearchRepository接口可以获得常用的数据操作方法
+##### Inherit the Elasticsearch Repository interface to get commonly used data manipulation methods
 ![](../images/arch_screen_31.png)
 
-##### 可以使用衍生查询
->在接口中直接指定查询方法名称便可查询，无需进行实现，如商品表中有商品名称、标题和关键字，直接定义以下查询，就可以对这三个字段进行全文搜索。
+##### Can use derived queries
+>You can query directly by specifying the name of the query method in the interface without implementing it. For example, if there is a product name, title and keywords in the product table, you can directly define the following query to perform a full-text search on these three fields.
 
 ```java
     /**
-     * 搜索查询
+     * Search query
      *
-     * @param name              商品名称
-     * @param subTitle          商品标题
-     * @param keywords          商品关键字
-     * @param page              分页信息
+     * @param name              Product Name
+     * @param subTitle          Product Title
+     * @param keywords          Product Keywords
+     * @param page              Paging Information
      * @return
      */
     Page<EsProduct> findByNameOrSubTitleOrKeywords(String name, String subTitle, String keywords, Pageable page);
 ```
-> 在idea中直接会提示对应字段
+> The corresponding field will be prompted directly in idea
 
 ![](../images/arch_screen_32.png)
 
-##### 使用@Query注解可以用Elasticsearch的DSL语句进行查询
+##### Use @Query annotation to query with Elasticsearch's DSL statement
 ```java
 @Query("{"bool" : {"must" : {"field" : {"name" : "?0"}}}}")
 Page<EsProduct> findByName(String name,Pageable pageable);
 ```
 
-## 项目使用表说明
+## Item usage table description
 
-- `pms_product`：商品信息表
-- `pms_product_attribute`：商品属性参数表
-- `pms_product_attribute_value`：存储产品参数值的表
+- `pms_product`：Product Information Table
+- `pms_product_attribute`：Product attribute parameter table
+- `pms_product_attribute_value`：Table for storing product parameter values
 
-## 整合Elasticsearch实现商品搜索
+## Integrate Elasticsearch to realize product search
 
-### 在pom.xml中添加相关依赖
+### Add related dependencies in pom.xml
 ```xml
-<!--Elasticsearch相关依赖-->
+<!--Elasticsearch related dependencies-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-elasticsearch<artifactId>
 </dependency>
 ```
 
-### 修改SpringBoot配置文件
-> 修改application.yml文件，在spring节点下添加Elasticsearch相关配置。
+### Modify the Spring Boot configuration file
+> Modify the application.yml file and add Elasticsearch related configuration under the spring node.
 
 ```yml
 data:
   elasticsearch:
     repositories:
       enabled: true
-    cluster-nodes: 127.0.0.1:9300 # es的连接地址及端口号
-    cluster-name: elasticsearch # es集群的名称
+    cluster-nodes: 127.0.0.1:9300 # es connection address and port number
+    cluster-name: elasticsearch # es cluster name 
 ```
 
-### 添加商品文档对象EsProduct
-> 不需要中文分词的字段设置成@Field(type = FieldType.Keyword)类型，需要中文分词的设置成@Field(analyzer = "ik_max_word",type = FieldType.Text)类型。
+### Add product document object Es Product
+> Fields that do not require Chinese word segmentation are set to the @Field (type = FieldType.Keyword) type, and those that require Chinese word segmentation are set to the @Field (analyzer = "ik_max_word", type = FieldType.Text) type.
 
 ```java
 package com.macro.mall.tiny.nosql.elasticsearch.document;
@@ -170,7 +169,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 搜索中的商品信息
+ * Product information in search
  * Created by macro on 2018/6/19.
  */
 @Document(indexName = "pms", type = "product",shards = 1,replicas = 0)
@@ -203,13 +202,13 @@ public class EsProduct implements Serializable {
     @Field(type =FieldType.Nested)
     private List<EsProductAttributeValue> attrValueList;
 
-    //省略了所有getter和setter方法
+    //All getter and setter methods are omitted
 }
 
 ```
 
-### 添加EsProductRepository接口用于操作Elasticsearch
-> 继承ElasticsearchRepository接口，这样就拥有了一些基本的Elasticsearch数据操作方法，同时定义了一个衍生查询方法。
+### Add Es Product Repository interface to operate Elasticsearch
+> Inherit the Elasticsearch Repository interface, so that you have some basic Elasticsearch data manipulation methods and define a derivative query method.
 
 ```java
 package com.macro.mall.tiny.nosql.elasticsearch.repository;
@@ -220,17 +219,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * 商品ES操作类
+ * Product ES operation
  * Created by macro on 2018/6/19.
  */
 public interface EsProductRepository extends ElasticsearchRepository<EsProduct, Long> {
     /**
-     * 搜索查询
+     * Search query
      *
-     * @param name              商品名称
-     * @param subTitle          商品标题
-     * @param keywords          商品关键字
-     * @param page              分页信息
+     * @param name              Product Name
+     * @param subTitle          Product Title
+     * @param keywords          Product Keywords
+     * @param page              Paging Information
      * @return
      */
     Page<EsProduct> findByNameOrSubTitleOrKeywords(String name, String subTitle, String keywords, Pageable page);
@@ -239,7 +238,7 @@ public interface EsProductRepository extends ElasticsearchRepository<EsProduct, 
 
 ```
 
-### 添加EsProductService接口
+### Add EsProductService interface
 
 ```java
 package com.macro.mall.tiny.service;
@@ -250,32 +249,32 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 /**
- * 商品搜索管理Service
+ * Product Search Management Service
  * Created by macro on 2018/6/19.
  */
 public interface EsProductService {
     /**
-     * 从数据库中导入所有商品到ES
+     * Import all products from the database to ES
      */
     int importAll();
 
     /**
-     * 根据id删除商品
+     * Delete product based on id
      */
     void delete(Long id);
 
     /**
-     * 根据id创建商品
+     * Create product based on id
      */
     EsProduct create(Long id);
 
     /**
-     * 批量删除商品
+     * Delete products in bulk
      */
     void delete(List<Long> ids);
 
     /**
-     * 根据关键字搜索名称或者副标题
+     * Search for names or subtitles based on keywords
      */
     Page<EsProduct> search(String keyword, Integer pageNum, Integer pageSize);
 
@@ -283,7 +282,7 @@ public interface EsProductService {
 
 ```
 
-### 添加EsProductService接口的实现类EsProductServiceImpl
+### Add EsProductService interface implementation class EsProductServiceImpl
 
 ```java
 package com.macro.mall.tiny.service.impl;
@@ -307,7 +306,7 @@ import java.util.List;
 
 
 /**
- * 商品搜索管理Service实现类
+ * Product search management service implementation class
  * Created by macro on 2018/6/19.
  */
 @Service
@@ -370,7 +369,7 @@ public class EsProductServiceImpl implements EsProductService {
 
 ```
 
-### 添加EsProductController定义接口
+### Add EsProductController to define the interface
 ```java
 package com.macro.mall.tiny.controller;
 
@@ -388,17 +387,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 搜索商品管理Controller
+ * Search Product Management Controller
  * Created by macro on 2018/6/19.
  */
 @Controller
-@Api(tags = "EsProductController", description = "搜索商品管理")
+@Api(tags = "EsProductController", description = "Search Product Management")
 @RequestMapping("/esProduct")
 public class EsProductController {
     @Autowired
     private EsProductService esProductService;
 
-    @ApiOperation(value = "导入所有数据库中商品到ES")
+    @ApiOperation(value = "Import all the products in the database to ES")
     @RequestMapping(value = "/importAll", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<Integer> importAllList() {
@@ -406,7 +405,7 @@ public class EsProductController {
         return CommonResult.success(count);
     }
 
-    @ApiOperation(value = "根据id删除商品")
+    @ApiOperation(value = "Delete product based on id")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<Object> delete(@PathVariable Long id) {
@@ -414,7 +413,7 @@ public class EsProductController {
         return CommonResult.success(null);
     }
 
-    @ApiOperation(value = "根据id批量删除商品")
+    @ApiOperation(value = "Delete products in bulk based on id")
     @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<Object> delete(@RequestParam("ids") List<Long> ids) {
@@ -422,7 +421,7 @@ public class EsProductController {
         return CommonResult.success(null);
     }
 
-    @ApiOperation(value = "根据id创建商品")
+    @ApiOperation(value = "Create product based on id")
     @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<EsProduct> create(@PathVariable Long id) {
@@ -434,7 +433,7 @@ public class EsProductController {
         }
     }
 
-    @ApiOperation(value = "简单搜索")
+    @ApiOperation(value = "Simple search")
     @RequestMapping(value = "/search/simple", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<EsProduct>> search(@RequestParam(required = false) String keyword,
@@ -448,21 +447,21 @@ public class EsProductController {
 
 ```
 
-## 进行接口测试
+## Conduct an interface test
 
-### 将数据库中数据导入到Elasticsearch
+### Import data from the database to Elasticsearch
 
 ![](../images/arch_screen_33.png)
 ![](../images/arch_screen_34.png)
 
-### 进行商品搜索
+### Perform product search
 
 ![](../images/arch_screen_35.png)
 ![](../images/arch_screen_36.png)
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-06](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-06)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)

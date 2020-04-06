@@ -1,30 +1,30 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
-# mall整合Mongodb实现文档操作
+# Mall integrates Mongodb to achieve document operation
 
-> 本文主要讲解mall整合Mongodb的过程，以实现商品浏览记录在Mongodb中的添加、删除、查询为例。
+> This article mainly explains the process of Mall integration with Mongodb, taking the example of adding, deleting, and querying commodity browsing records in Mongodb.
 
-## 项目使用框架介绍
+## Introduction to the project framework
 
 ### Mongodb
 
-> Mongodb是为快速开发互联网Web应用而构建的数据库系统，其数据模型和持久化策略就是为了构建高读/写吞吐量和高自动灾备伸缩性的系统。
+> Mongodb is a database system built for the rapid development of Internet Web applications. Its data model and persistence strategy is to build a system with high read / write throughput and high automatic disaster recovery scalability.
 
-#### Mongodb的安装和使用
+#### Installation and use of Mongodb
 
-1. 下载Mongodb安装包，下载地址：[https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.2.21-signed.msi](https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.2.21-signed.msi)
+1. Download Mongodb installation package, download address：[https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.2.21-signed.msi](https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.2.21-signed.msi)
 
-2. 选择安装路径进行安装
+2. Choose the installation path to install
 
 ![](../images/arch_screen_37.png)
 
 ![](../images/arch_screen_38.png)
 
-3. 在安装路径下创建data\\db和data\\log两个文件夹
+3. Create two folders data\\db and data\\log under the installation path
 
 ![](../images/arch_screen_39.png)
 
-4. 在安装路径下创建mongod.cfg配置文件
+4. Create the mongod.cfg configuration file under the installation path
 ```
 systemLog:
     destination: file
@@ -33,91 +33,91 @@ storage:
     dbPath: D:\developer\env\MongoDB\data\db
 ```
 
-5. 安装为服务（运行命令需要用管理员权限）
+5. Install as a service (administrator privileges are required to run commands)
 ```
 D:\developer\env\MongoDB\bin\mongod.exe --config "D:\developer\env\MongoDB\mongod.cfg" --install
 ```
 ![](../images/arch_screen_40.png)
 
-6. 服务相关命令
+6. Service related commands
 ```
-启动服务：net start MongoDB
-关闭服务：net stop MongoDB
-移除服务：D:\developer\env\MongoDB\bin\mongod.exe --remove
+Start service：net start MongoDB
+Close service：net stop MongoDB
+Remove service：D:\developer\env\MongoDB\bin\mongod.exe --remove
 ```
 
-7. 下载客户端程序：[https://download.robomongo.org/1.2.1/windows/robo3t-1.2.1-windows-x86_64-3e50a65.zip](https://download.robomongo.org/1.2.1/windows/robo3t-1.2.1-windows-x86_64-3e50a65.zip)
+7. Download the client program：[https://download.robomongo.org/1.2.1/windows/robo3t-1.2.1-windows-x86_64-3e50a65.zip](https://download.robomongo.org/1.2.1/windows/robo3t-1.2.1-windows-x86_64-3e50a65.zip)
 
-7. 解压到指定目录，打开robo3t.exe并连接到localhost:27017
+7. Unzip to the specified directory，Open robo3t.exe and connect to localhost:27017
 
 ![](../images/arch_screen_41.png)
 
 ### Spring Data Mongodb
 
-> 和Spring Data Elasticsearch类似，Spring Data Mongodb是Spring提供的一种以Spring Data风格来操作数据存储的方式，它可以避免编写大量的样板代码。
+> Similar to Spring Data Elasticsearch, Spring Data Mongodb is a way of operating data storage provided by Spring in the style of Spring Data. It can avoid writing a lot of boilerplate code.
 
-#### 常用注解
+#### Common notes
 
-- @Document:标示映射到Mongodb文档上的领域对象
-- @Id:标示某个域为ID域
-- @Indexed:标示某个字段为Mongodb的索引字段
+- @Document:Mark the domain object mapped to the Mongodb document
+- @Id:Mark a domain as an ID domain
+- @Indexed:Mark a field as the index field of Mongodb
 
-#### Sping Data方式的数据操作
+#### Sping Data data operation
 
-##### 继承MongoRepository接口可以获得常用的数据操作方法
+##### Inherit the Mongo Repository interface to get commonly used data manipulation methods
 
 ![](../images/arch_screen_42.png)
 
-##### 可以使用衍生查询
-> 在接口中直接指定查询方法名称便可查询，无需进行实现，以下为根据会员id按时间倒序获取浏览记录的例子。
+##### Can use derived queries
+> You can query directly by specifying the name of the query method in the interface without implementing it. The following is an example of obtaining browsing records in reverse order according to member id.
 
 ```java
 /**
- * 会员商品浏览历史Repository
+ * Member Product Browsing History Repository
  * Created by macro on 2018/8/3.
  */
 public interface MemberReadHistoryRepository extends MongoRepository<MemberReadHistory,String> {
     /**
-     * 根据会员id按时间倒序获取浏览记录
-     * @param memberId 会员id
+     * Get browsing history in reverse order according to member id
+     * @param memberId Member id
      */
     List<MemberReadHistory> findByMemberIdOrderByCreateTimeDesc(Long memberId);
 }
 ```
 
-> 在idea中直接会提示对应字段
+> The corresponding field will be prompted directly in idea
 
 ![](../images/arch_screen_43.png)
 
-##### 使用@Query注解可以用Mongodb的JSON查询语句进行查询
+##### Use @Query annotation to query with Mongodb's JSON query
 ```java
 @Query("{ 'memberId' : ?0 }")
 List<MemberReadHistory> findByMemberId(Long memberId);
 ```
 
-## 整合Mongodb实现文档操作
+## Integrate Mongodb to realize document operation
 
-### 在pom.xml中添加相关依赖
+### Add related dependencies in pom.xml
 ```xml
-<!---mongodb相关依赖-->
+<!---mongodb related dependencies-->
 <dependency>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-starter-data-mongodb</artifactId>
 </dependency>
 ```
 
-### 修改SpringBoot配置文件
-> 修改application.yml文件，在spring:data节点下添加Mongodb相关配置。
+### Modify the Spring Boot configuration file
+> Modify the application.yml file and add Mongodb related configuration under the spring: data node.
 
 ```yml
 mongodb:
-  host: localhost # mongodb的连接地址
-  port: 27017 # mongodb的连接端口号
-  database: mall-port # mongodb的连接的数据库
+  host: localhost # mongodb connection address
+  port: 27017 # mongodb connection port number
+  database: mall-port # mongodb connected database
 ```
 
-### 添加会员浏览记录文档对象MemberReadHistory
-> 文档对象的ID域添加@Id注解，需要检索的字段添加@Indexed注解。
+### Add Member Browsing Record Document Object Member Read History
+> Add @Id annotation to the ID field of the document object, and add @Indexed annotation to the field to be retrieved.
 
 ```java
 package com.macro.mall.tiny.nosql.mongodb.document;
@@ -129,7 +129,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 /**
- * 用户商品浏览历史记录
+ * User product browsing history
  * Created by macro on 2018/8/3.
  */
 @Document
@@ -148,14 +148,14 @@ public class MemberReadHistory {
     private String productPrice;
     private Date createTime;
 
-    //省略了所有getter和setter方法
+    //All getter and setter methods are omitted
 
 }
 
 ```
 
-### 添加MemberReadHistoryRepository接口用于操作Mongodb
-> 继承MongoRepository接口，这样就拥有了一些基本的Mongodb数据操作方法，同时定义了一个衍生查询方法。
+### Add Member Read History Repository interface for operating Mongodb
+> Inherit the Mongo Repository interface, so that you have some basic Mongodb data manipulation methods, and define a derivative query method.
 
 ```java
 package com.macro.mall.tiny.nosql.mongodb.repository;
@@ -167,19 +167,19 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 /**
- * 会员商品浏览历史Repository
+ * Member Product Browsing History Repository
  * Created by macro on 2018/8/3.
  */
 public interface MemberReadHistoryRepository extends MongoRepository<MemberReadHistory,String> {
     /**
-     * 根据会员id按时间倒序获取浏览记录
-     * @param memberId 会员id
+     * Get browsing history in reverse order according to member id
+     * @param memberId memberId
      */
     List<MemberReadHistory> findByMemberIdOrderByCreateTimeDesc(Long memberId);
 }
 ```
 
-### 添加MemberReadHistoryService接口
+### Add Member Read History Service interface
 
 ```java
 package com.macro.mall.tiny.service;
@@ -190,29 +190,29 @@ import com.macro.mall.tiny.nosql.mongodb.document.MemberReadHistory;
 import java.util.List;
 
 /**
- * 会员浏览记录管理Service
+ * Member Browsing Record Management Service
  * Created by macro on 2018/8/3.
  */
 public interface MemberReadHistoryService {
     /**
-     * 生成浏览记录
+     * Generate browsing history
      */
     int create(MemberReadHistory memberReadHistory);
 
     /**
-     * 批量删除浏览记录
+     * Delete browsing history in bulk
      */
     int delete(List<String> ids);
 
     /**
-     * 获取用户浏览历史记录
+     * Get user browsing history
      */
     List<MemberReadHistory> list(Long memberId);
 }
 
 ```
 
-### 添加MemberReadHistoryService接口实现类MemberReadHistoryServiceImpl
+### Add MemberReadHistoryService interface implementation class MemberReadHistoryServiceImpl
 
 ```java
 package com.macro.mall.tiny.service.impl;
@@ -228,7 +228,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 会员浏览记录管理Service实现类
+ * Member browsing record management service implementation class
  * Created by macro on 2018/8/3.
  */
 @Service
@@ -262,7 +262,7 @@ public class MemberReadHistoryServiceImpl implements MemberReadHistoryService {
 }
 ```
 
-### 添加MemberReadHistoryController定义接口
+### Add Member Read History Controller to define the interface
 
 ```java
 package com.macro.mall.tiny.controller;
@@ -279,17 +279,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 会员商品浏览记录管理Controller
+ * Member Product Browsing Record Management Controller
  * Created by macro on 2018/8/3.
  */
 @Controller
-@Api(tags = "MemberReadHistoryController", description = "会员商品浏览记录管理")
+@Api(tags = "MemberReadHistoryController", description = "Member Product browsing record management")
 @RequestMapping("/member/readHistory")
 public class MemberReadHistoryController {
     @Autowired
     private MemberReadHistoryService memberReadHistoryService;
 
-    @ApiOperation("创建浏览记录")
+    @ApiOperation("Create browsing history")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult create(@RequestBody MemberReadHistory memberReadHistory) {
@@ -301,7 +301,7 @@ public class MemberReadHistoryController {
         }
     }
 
-    @ApiOperation("删除浏览记录")
+    @ApiOperation("Delete browsing history")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult delete(@RequestParam("ids") List<String> ids) {
@@ -313,7 +313,7 @@ public class MemberReadHistoryController {
         }
     }
 
-    @ApiOperation("展示浏览记录")
+    @ApiOperation("Show browsing history")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<List<MemberReadHistory>> list(Long memberId) {
@@ -324,21 +324,21 @@ public class MemberReadHistoryController {
 
 ```
 
-## 进行接口测试
+## Conduct an interface test
 
-### 添加商品浏览记录到Mongodb
+### Add product browsing records to Mongodb
 
 ![](../images/arch_screen_44.png)
 ![](../images/arch_screen_45.png)
 
-### 查询Mongodb中的商品浏览记录
+### Query product browsing records in Mongodb
 
 ![](../images/arch_screen_46.png)
 ![](../images/arch_screen_47.png)
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-07](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-07)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)

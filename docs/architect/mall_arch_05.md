@@ -1,13 +1,13 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
-# mall整合SpringSecurity和JWT实现认证和授权（二）
+# Mall integrates Spring Security and JWT to achieve authentication and authorization (2)
 
-> 接上一篇，controller和service层的代码实现及登录授权流程演示。
+> Continued from the previous article, the code implementation of controller and service layer and the demonstration of login authorization process.
 
-## 登录注册功能实现
+## Login registration function
 
-### 添加UmsAdminController类
-> 实现了后台用户登录、注册及获取权限的接口
+### Add Ums Admin Controller class
+> Implemented the interface for background users to log in, register and obtain permissions
 
 ```java
 package com.macro.mall.tiny.controller;
@@ -30,11 +30,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 后台用户管理
+ * Background user management
  * Created by macro on 2018/4/26.
  */
 @Controller
-@Api(tags = "UmsAdminController", description = "后台用户管理")
+@Api(tags = "UmsAdminController", description = "Background user management")
 @RequestMapping("/admin")
 public class UmsAdminController {
     @Autowired
@@ -44,7 +44,7 @@ public class UmsAdminController {
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
-    @ApiOperation(value = "用户注册")
+    @ApiOperation(value = "User registration")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<UmsAdmin> register(@RequestBody UmsAdmin umsAdminParam, BindingResult result) {
@@ -55,13 +55,13 @@ public class UmsAdminController {
         return CommonResult.success(umsAdmin);
     }
 
-    @ApiOperation(value = "登录以后返回token")
+    @ApiOperation(value = "Return to token after login")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult login(@RequestBody UmsAdminLoginParam umsAdminLoginParam, BindingResult result) {
         String token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
         if (token == null) {
-            return CommonResult.validateFailed("用户名或密码错误");
+            return CommonResult.validateFailed("wrong user name or password");
         }
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
@@ -69,7 +69,7 @@ public class UmsAdminController {
         return CommonResult.success(tokenMap);
     }
 
-    @ApiOperation("获取用户所有权限（包括+-权限）")
+    @ApiOperation("Get all user permissions (including + -permissions)")
     @RequestMapping(value = "/permission/{adminId}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<List<UmsPermission>> getPermissionList(@PathVariable Long adminId) {
@@ -80,7 +80,7 @@ public class UmsAdminController {
 
 ```
 
-### 添加UmsAdminService接口
+### 添加UmsAdminService接口Add Ums Admin Service interface
 
 ```java
 package com.macro.mall.tiny.service;
@@ -91,37 +91,37 @@ import com.macro.mall.tiny.mbg.model.UmsPermission;
 import java.util.List;
 
 /**
- * 后台管理员Service
+ * Back-end Administrator Service
  * Created by macro on 2018/4/26.
  */
 public interface UmsAdminService {
     /**
-     * 根据用户名获取后台管理员
+     * Get Back-end administrator based on user name
      */
     UmsAdmin getAdminByUsername(String username);
 
     /**
-     * 注册功能
+     * Registration function
      */
     UmsAdmin register(UmsAdmin umsAdminParam);
 
     /**
-     * 登录功能
-     * @param username 用户名
-     * @param password 密码
-     * @return 生成的JWT的token
+     * Login function
+     * @param username user name
+     * @param password Password
+     * @return The generated token of JWT
      */
     String login(String username, String password);
 
     /**
-     * 获取用户所有权限（包括角色权限和+-权限）
+     * Get all user permissions (including role permissions and +-permissions)
      */
     List<UmsPermission> getPermissionList(Long adminId);
 }
 
 ```
 
-### 添加UmsAdminServiceImpl类
+### Add UmsAdminServiceImpl class
 
 ```java
 package com.macro.mall.tiny.service.impl;
@@ -153,7 +153,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * UmsAdminService实现类
+ * Ums AdminServiceimplementation class
  * Created by macro on 2018/4/26.
  */
 @Service
@@ -189,14 +189,14 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         BeanUtils.copyProperties(umsAdminParam, umsAdmin);
         umsAdmin.setCreateTime(new Date());
         umsAdmin.setStatus(1);
-        //查询是否有相同用户名的用户
+        //Check if there are users with the same username
         UmsAdminExample example = new UmsAdminExample();
         example.createCriteria().andUsernameEqualTo(umsAdmin.getUsername());
         List<UmsAdmin> umsAdminList = adminMapper.selectByExample(example);
         if (umsAdminList.size() > 0) {
             return null;
         }
-        //将密码进行加密操作
+        //Encrypt the password
         String encodePassword = passwordEncoder.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(encodePassword);
         adminMapper.insert(umsAdmin);
@@ -209,13 +209,13 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("密码不正确");
+                throw new BadCredentialsException("The password is incorrect");
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
         } catch (AuthenticationException e) {
-            LOGGER.warn("登录异常:{}", e.getMessage());
+            LOGGER.warn("Login abnormal:{}", e.getMessage());
         }
         return token;
     }
@@ -229,8 +229,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
 ```
 
-### 修改Swagger的配置
-> 通过修改配置实现调用接口自带Authorization头，这样就可以访问需要登录的接口了。
+### Modify Swagger's configuration
+> By modifying the configuration, the calling interface comes with the Authorization header, so that you can access the interface that needs to log in.
 
 ```java
 package com.macro.mall.tiny.config;
@@ -253,7 +253,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Swagger2API文档的配置
+ * Swagger 2 API documentation configuration
  */
 @Configuration
 @EnableSwagger2
@@ -263,18 +263,18 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                //为当前包下controller生成API文档
+                //Generate API documentation for the controller under the current package
                 .apis(RequestHandlerSelectors.basePackage("com.macro.mall.tiny.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                //添加登录认证
+                //Add login authentication
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SwaggerUI演示")
+                .title("Swagger UI demo")
                 .description("mall-tiny")
                 .contact("macro")
                 .version("1.0")
@@ -282,7 +282,7 @@ public class Swagger2Config {
     }
 
     private List<ApiKey> securitySchemes() {
-        //设置请求头信息
+        //Set request header information
         List<ApiKey> result = new ArrayList<>();
         ApiKey apiKey = new ApiKey("Authorization", "Authorization", "header");
         result.add(apiKey);
@@ -290,7 +290,7 @@ public class Swagger2Config {
     }
 
     private List<SecurityContext> securityContexts() {
-        //设置需要登录认证的路径
+        //Set the path that requires login authentication
         List<SecurityContext> result = new ArrayList<>();
         result.add(getContextByPath("/brand/.*"));
         return result;
@@ -315,13 +315,13 @@ public class Swagger2Config {
 
 ```
 
-### 给PmsBrandController接口中的方法添加访问权限
-- 给查询接口添加`pms:brand:read`权限
-- 给修改接口添加`pms:brand:update`权限
-- 给删除接口添加`pms:brand:delete`权限
-- 给添加接口添加`pms:brand:create`权限
+### Add access to the methods in the PmsBrandController interface
+- Add to query interface`pms:brand:read`Authority
+- Add to modify interface`pms:brand:update`Authority
+- Add to delete interface`pms:brand:delete`Authority
+- Add to add interface`pms:brand:create`Authority
 
-例子：
+Example：
 ```java
 @PreAuthorize("hasAuthority('pms:brand:read')")
 public CommonResult<List<PmsBrand>> getBrandList() {
@@ -329,60 +329,60 @@ public CommonResult<List<PmsBrand>> getBrandList() {
 }
 ```
 
-## 认证与授权流程演示
+## Authentication and authorization process demo
 
-### 运行项目，访问API
-Swagger api地址：http://localhost:8080/swagger-ui.html
+### Run the project and access the API
+Swagger api address：http://localhost:8080/swagger-ui.html
 
 ![](../images/arch_screen_14.png)
 
-### 未登录前访问接口
+### Access the interface before logging in
 
 ![](../images/arch_screen_15.png)
 
 ![](../images/arch_screen_16.png)
 
-### 登录后访问接口
+### Access the interface after login
 
-- 进行登录操作：登录帐号test 123456
+- Perform login operation: login account test 123456
 
 ![](../images/arch_screen_17.png)
 
 ![](../images/arch_screen_18.png)
 
-- 点击Authorize按钮，在弹框中输入登录接口中获取到的token信息
+- Click the Authorize button and enter the token information obtained from the login interface in the pop-up box
 
 ![](../images/arch_screen_19.png)
 
 ![](../images/arch_screen_20.png)
 
-- 登录后访问获取权限列表接口，发现已经可以正常访问
+- After logging in, access the interface for obtaining the permission list and find that it can be accessed normally
 
 ![](../images/arch_screen_15.png)
 
 ![](../images/arch_screen_21.png)
 
-### 访问需要权限的接口
+### Access an interface that requires permission
 
-> 由于test帐号并没有设置任何权限，所以他无法访问具有`pms:brand:read`权限的获取品牌列表接口。
+> Since the test account does not have any permissions set, he cannot access the`pms:brand:read`Permission to obtain brand list interface.
 
 ![](../images/arch_screen_22.png)
 
 ![](../images/arch_screen_23.png)
 
-### 改用其他有权限的帐号登录
+### Use another account with permission to log in
 
-> 改用admin 123456登录后访问，点击Authorize按钮打开弹框,点击logout登出后再重新输入新token。
+> Use admin 123456 to log in and visit, click the Authorize button to open the pop-up box, click logout to log out and re-enter the new token.
 
-`注意`：如果admin帐号密码不对的话，公众号后台回复`体验`来获取。
+`Note`：If the password of the admin account is incorrect，Public account background reply`learn through practice`To get.
 
 ![](../images/arch_screen_22.png)
 
 ![](../images/arch_screen_24.png)
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)

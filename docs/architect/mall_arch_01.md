@@ -1,50 +1,50 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account] (# Public number) will be available immediately.
 
-# mall整合SpringBoot+MyBatis搭建基本骨架
+# Mall integrates Spring Boot + My Batis to build a basic skeleton
 
-> 本文主要讲解mall整合SpringBoot+MyBatis搭建基本骨架，以商品品牌为例实现基本的CRUD操作及通过PageHelper实现分页查询。
+> This article mainly explains that Mall integrates Spring Boot + My Batis to build a basic skeleton, taking commodity brands as an example to implement basic CRUD operations and page query through Page Helper.
 
-## mysql数据库环境搭建
+## mysql database environment
 
-- 下载并安装mysql5.7版本，下载地址：https://dev.mysql.com/downloads/installer/
-- 设置数据库帐号密码：root root
-- 下载并安装客户端连接工具Navicat,下载地址：http://www.formysql.com/xiazai.html
-- 创建数据库mall
-- 导入mall的数据库脚本，脚本地址：https://github.com/macrozheng/mall-learning/blob/master/document/sql/mall.sql
+- Download and install mysql version 5.7, download address：https://dev.mysql.com/downloads/installer/
+- Set database account password：root root
+- Download and install the client connection tool Navicat, download address：http://www.formysql.com/xiazai.html
+- Create database mall
+- Import mall database script, script address：https://github.com/macrozheng/mall-learning/blob/master/document/sql/mall.sql
 
-## 项目使用框架介绍
+## Introduction to the project framework
 
-### SpringBoot
+### Spring Boot
 
-> SpringBoot可以让你快速构建基于Spring的Web应用程序，内置多种Web容器(如Tomcat)，通过启动入口程序的main函数即可运行。
+> Spring Boot allows you to quickly build Spring-based Web applications, built-in a variety of Web containers (such as Tomcat), you can run by starting the main function of the entry program.
 
 ### PagerHelper
 
-> MyBatis分页插件，简单的几行代码就能实现分页，在与SpringBoot整合时，只要整合了PagerHelper就自动整合了MyBatis。
+> My Batis paging plug-in, a few lines of code can achieve paging. When integrating with Spring Boot, as long as Pager Helper is integrated, My Batis is automatically integrated.
 
 ```java
 PageHelper.startPage(pageNum, pageSize);
-//之后进行查询操作将自动进行分页
+//After the query operation will automatically paging
 List<PmsBrand> brandList = brandMapper.selectByExample(new PmsBrandExample());
-//通过构造PageInfo对象获取分页信息，如当前页码，总页数，总条数
+//Get paging information by constructing Page Info object, such as current page number, total number of pages, total number of entries
 PageInfo<PmsBrand> pageInfo = new PageInfo<PmsBrand>(list);
 ```
 
 ### Druid
-> alibaba开源的数据库连接池，号称Java语言中最好的数据库连接池。
+> alibaba open source database connection pool, known as the best database connection pool in the Java language.
 
 ### Mybatis generator
 
-> MyBatis的代码生成器，可以根据数据库生成model、mapper.xml、mapper接口和Example，通常情况下的单表查询不用再手写mapper。
+> The code generator of My Batis can generate model, mapper.xml, mapper interface and Example according to the database. Normally, single-table queries do not need to write mapper.
 
-## 项目搭建
+## Project construction
 
-### 使用IDEA初始化一个SpringBoot项目
+### Use IDEA to initialize a Spring Boot project
 
 ![](../images/arch_screen_01.png)
 
-### 添加项目依赖
-> 在pom.xml中添加相关依赖。
+### Add project dependencies
+> Add related dependencies in pom.xml.  
 
 ```xml
 <parent>
@@ -54,7 +54,7 @@ PageInfo<PmsBrand> pageInfo = new PageInfo<PmsBrand>(list);
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <dependencies>
-        <!--SpringBoot通用依赖模块-->
+        <!--Spring Boot Universal Dependency Module-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -72,25 +72,25 @@ PageInfo<PmsBrand> pageInfo = new PageInfo<PmsBrand>(list);
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--MyBatis分页插件-->
+        <!--My Batis paging plugin-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.10</version>
         </dependency>
-        <!--集成druid连接池-->
+        <!--Integrated druid connection pool-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.10</version>
         </dependency>
-        <!-- MyBatis 生成器 -->
+        <!-- MyBatis generator -->
         <dependency>
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>
             <version>1.3.3</version>
         </dependency>
-        <!--Mysql数据库驱动-->
+        <!--Mysql database driver-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -98,8 +98,8 @@ PageInfo<PmsBrand> pageInfo = new PageInfo<PmsBrand>(list);
         </dependency>
     </dependencies>
 ```
-### 修改SpringBoot配置文件
-> 在application.yml中添加数据源配置和MyBatis的mapper.xml的路径配置。
+### Modify the Spring Boot configuration file
+> Add the data source configuration and the path configuration of My Batis mapper.xml in application.yml.
 
 ```yml
 server:
@@ -117,13 +117,13 @@ mybatis:
     - classpath*:com/**/mapper/*.xml
 ```
 
-### 项目结构说明
+### Project structure description
 
 ![](../images/arch_screen_02.png)
 
-### Mybatis generator 配置文件
+### Mybatis generator configuration file
 
-> 配置数据库连接，Mybatis generator生成model、mapper接口及mapper.xml的路径。
+> Configure database connection, Mybatis generator generates model, mapper interface and mapper.xml path.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -137,33 +137,33 @@ mybatis:
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
         <property name="javaFileEncoding" value="UTF-8"/>
-        <!-- 为模型生成序列化方法-->
+        <!-- Generate serialization methods for the model-->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <!-- 为生成的Java模型创建一个toString方法 -->
+        <!-- Create a to String method for the generated Java model -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
-        <!--可以自定义生成model的代码注释-->
+        <!--You can customize the code comments of the generated model-->
         <commentGenerator type="com.macro.mall.tiny.mbg.CommentGenerator">
-            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <!-- Whether to remove the automatically generated comment true: yes: false: no -->
             <property name="suppressAllComments" value="true"/>
             <property name="suppressDate" value="true"/>
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
-        <!--配置数据库连接-->
+        <!--Configure database connection-->
         <jdbcConnection driverClass="${jdbc.driverClass}"
                         connectionURL="${jdbc.connectionURL}"
                         userId="${jdbc.userId}"
                         password="${jdbc.password}">
-            <!--解决mysql驱动升级到8.0后不生成指定数据库代码的问题-->
+            <!--Solve the problem that the specified database code is not generated after the mysql driver is upgraded to 8.0-->
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
-        <!--指定生成model的路径-->
+        <!--Specify the path to generate the model-->
         <javaModelGenerator targetPackage="com.macro.mall.tiny.mbg.model" targetProject="mall-tiny-01\src\main\java"/>
-        <!--指定生成mapper.xml的路径-->
+        <!--Specify the path to generate mapper.xml-->
         <sqlMapGenerator targetPackage="com.macro.mall.tiny.mbg.mapper" targetProject="mall-tiny-01\src\main\resources"/>
-        <!--指定生成mapper接口的的路径-->
+        <!--Specify the path to generate the mapper interface-->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.macro.mall.tiny.mbg.mapper"
                              targetProject="mall-tiny-01\src\main\java"/>
-        <!--生成全部表tableName设为%-->
+        <!--Generate all tables with table Name set to%-->
         <table tableName="pms_brand">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
@@ -171,7 +171,7 @@ mybatis:
 </generatorConfiguration>
 ```
 
-### 运行Generator的main函数生成代码
+### Run the generator's main function to generate code
 
 ```java
 package com.macro.mall.tiny.mbg;
@@ -186,27 +186,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用于生产MBG的代码
+ * Code used to produce MBG
  * Created by macro on 2018/4/26.
  */
 public class Generator {
     public static void main(String[] args) throws Exception {
-        //MBG 执行过程中的警告信息
+        //Warning message during MBG execution
         List<String> warnings = new ArrayList<String>();
-        //当生成的代码重复时，覆盖原代码
+        //When the generated code is repeated, the original code is overwritten
         boolean overwrite = true;
-        //读取我们的 MBG 配置文件
+        //Read our MBG configuration file
         InputStream is = Generator.class.getResourceAsStream("/generatorConfig.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(is);
         is.close();
 
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);
-        //创建 MBG
+        //Create MBG
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
-        //执行生成代码
+        //Execute generated code
         myBatisGenerator.generate(null);
-        //输出警告信息
+        //Output warning message
         for (String warning : warnings) {
             System.out.println(warning);
         }
@@ -214,9 +214,9 @@ public class Generator {
 }
 ```
 
-### 添加MyBatis的Java配置
+### Add Java configuration for My Batis
 
-> 用于配置需要动态生成的mapper接口的路径
+> Used to configure the path of the mapper interface that needs to be dynamically generated
 
 ```java
 package com.macro.mall.tiny.config;
@@ -225,7 +225,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * MyBatis配置类
+ * My Batis configuration class
  * Created by macro on 2019/4/8.
  */
 @Configuration
@@ -236,9 +236,9 @@ public class MyBatisConfig {
 ```
 
 
-### 实现Controller中的接口
+### Implement the interface in the Controller
 
-> 实现PmsBrand表中的添加、修改、删除及分页查询接口。
+> Implement the add, modify, delete and paging query interfaces in the Pms Brand table.
 
 ```java
 package com.macro.mall.tiny.controller;
@@ -258,7 +258,7 @@ import java.util.List;
 
 
 /**
- * 品牌管理Controller
+ * Brand Management Controller
  * Created by macro on 2019/4/19.
  */
 @Controller
@@ -284,7 +284,7 @@ public class PmsBrandController {
             commonResult = CommonResult.success(pmsBrand);
             LOGGER.debug("createBrand success:{}", pmsBrand);
         } else {
-            commonResult = CommonResult.failed("操作失败");
+            commonResult = CommonResult.failed("Operation Failed");
             LOGGER.debug("createBrand failed:{}", pmsBrand);
         }
         return commonResult;
@@ -299,7 +299,7 @@ public class PmsBrandController {
             commonResult = CommonResult.success(pmsBrandDto);
             LOGGER.debug("updateBrand success:{}", pmsBrandDto);
         } else {
-            commonResult = CommonResult.failed("操作失败");
+            commonResult = CommonResult.failed("Operation Failed");
             LOGGER.debug("updateBrand failed:{}", pmsBrandDto);
         }
         return commonResult;
@@ -314,7 +314,7 @@ public class PmsBrandController {
             return CommonResult.success(null);
         } else {
             LOGGER.debug("deleteBrand failed :id={}", id);
-            return CommonResult.failed("操作失败");
+            return CommonResult.failed("Operation Failed");
         }
     }
 
@@ -334,7 +334,7 @@ public class PmsBrandController {
 }
 
 ```
-### 添加Service接口
+### Add Service interface
 ```java
 package com.macro.mall.tiny.service;
 
@@ -362,7 +362,7 @@ public interface PmsBrandService {
 }
 
 ```
-### 实现Service接口
+### Implement Service interface
 ```java
 package com.macro.mall.tiny.service.impl;
 
@@ -377,7 +377,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * PmsBrandService实现类
+ * Pms Brand Service implementation class
  * Created by macro on 2019/4/19.
  */
 @Service
@@ -420,9 +420,9 @@ public class PmsBrandServiceImpl implements PmsBrandService {
 
 ```
 
-## 项目源码地址
+## Project source address
 [https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-01](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-01)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
