@@ -57,13 +57,13 @@ docker run -p 80:80 --name nginx \
 
 ### 静态代理
 
-> 静态代理就是将请求代理到不同的静态资源路径上去，这里我们将对`docs.macrozheng.com`的请求代理到我的文档项目中，对`mall.macrozheng.com`的请求代理到mall的前端项目中。
+> 静态代理就是将请求代理到不同的静态资源路径上去，这里我们将对`docs.kratos47mhs.com`的请求代理到我的文档项目中，对`mall.kratos47mhs.com`的请求代理到mall的前端项目中。
 
 - 首先我们修改下本机的host文件：
 
 ```
-192.168.6.132 docs.macrozheng.com
-192.168.6.132 mall.macrozheng.com
+192.168.6.132 docs.kratos47mhs.com
+192.168.6.132 mall.kratos47mhs.com
 ```
 
 - 然后将我们的文档项目和mall前端项目上传到nginx的html目录中去，并进行解压操作：
@@ -75,7 +75,7 @@ docker run -p 80:80 --name nginx \
 ```
 server {
     listen       80;
-    server_name  docs.macrozheng.com; #修改域名
+    server_name  docs.kratos47mhs.com; #修改域名
 
     location / {
         root   /usr/share/nginx/html/docs; #代理到docs文件夹中
@@ -95,7 +95,7 @@ server {
 ```
 server {
     listen       80;
-    server_name  mall.macrozheng.com; #修改域名
+    server_name  mall.kratos47mhs.com; #修改域名
 
     location / {
         root   /usr/share/nginx/html/mall; #代理到mall文件夹中
@@ -116,22 +116,22 @@ server {
 docker restart nginx
 ```
 
-- 通过`docs.macrozheng.com`即可访问到我们的文档项目了：
+- 通过`docs.kratos47mhs.com`即可访问到我们的文档项目了：
 
 ![](../images/nginx_use_02.png)
 
-- 通过`mall.macrozheng.com`即可访问到mall的前端项目了：
+- 通过`mall.kratos47mhs.com`即可访问到mall的前端项目了：
 
 ![](../images/nginx_use_03.png)
 
 ### 动态代理
 
-> 动态代理就是把代理服务器的请求转发到另一个服务上去，这里我们将对`api.macrozheng.com`的请求代理到mall-admin的后台服务上去。
+> 动态代理就是把代理服务器的请求转发到另一个服务上去，这里我们将对`api.kratos47mhs.com`的请求代理到mall-admin的后台服务上去。
 
 - 首先我们修改下本机的host文件，添加如下规则：
 
 ```
-192.168.6.132 api.macrozheng.com
+192.168.6.132 api.kratos47mhs.com
 ```
 
 - 在`/mydata/nginx/conf/conf.d`文件夹中添加配置文件api.conf对将请求代理到远程的mall-admin服务上去：
@@ -139,7 +139,7 @@ docker restart nginx
 ```
 server {
     listen       80;
-    server_name  api.macrozheng.com; #修改域名
+    server_name  api.kratos47mhs.com; #修改域名
 
     location / {
     	proxy_pass   http://120.27.63.9:8080; #修改为代理服务地址
@@ -154,7 +154,7 @@ server {
 }
 ```
 
-- 重启动nginx服务后，通过`api.macrozheng.com/swagger-ui.html`即可访问到mall-admin的API文档页面了：
+- 重启动nginx服务后，通过`api.kratos47mhs.com/swagger-ui.html`即可访问到mall-admin的API文档页面了：
 
 ![](../images/nginx_use_04.png)
 
@@ -169,7 +169,7 @@ server {
 ```
 server {
     listen       80;
-    server_name  mall.macrozheng.com;
+    server_name  mall.kratos47mhs.com;
     
     limit_rate 128k; #限制网速为128K
 
@@ -186,7 +186,7 @@ server {
 }
 ```
 
-- 对mall的前端项目`mall.macrozheng.com`进行访问，我们可以发现网站中有个js文件比较大，需要加载12s：
+- 对mall的前端项目`mall.kratos47mhs.com`进行访问，我们可以发现网站中有个js文件比较大，需要加载12s：
 
 ![](../images/nginx_use_05.png)
 
@@ -214,7 +214,7 @@ http {
 
 ```
 
-- 再次对mall的前端项目`mall.macrozheng.com`进行访问，我们可以发现js文件已经被压缩，加载时间缩短到3.88s，提速3倍左右：
+- 再次对mall的前端项目`mall.kratos47mhs.com`进行访问，我们可以发现js文件已经被压缩，加载时间缩短到3.88s，提速3倍左右：
 
 ![](../images/nginx_use_07.png)
 
@@ -226,16 +226,16 @@ http {
 
 > 有的时候我们的网站更换了域名，但还有用户在使用老的域名访问，这时可以通过nginx的地址重写来让用户跳转到新的域名进行访问。
 
-- 比如说原来我们用的`docs.macrozheng.com`这个域名不用了，现在改成`www.macrozheng.com`了来访问文档项目了；
+- 比如说原来我们用的`docs.kratos47mhs.com`这个域名不用了，现在改成`www.kratos47mhs.com`了来访问文档项目了；
 
 - 修改docs.conf配置文件，将地址带参数重写到新地址：
 
 ```
 server {
     listen       80;
-    server_name  docs.macrozheng.com; 
+    server_name  docs.kratos47mhs.com; 
     
-    rewrite "^/(.*)$" http://www.macrozheng.com/$1; #地址重写到新地址
+    rewrite "^/(.*)$" http://www.kratos47mhs.com/$1; #地址重写到新地址
 
     location / {
         root   /usr/share/nginx/html/docs; 
@@ -251,8 +251,8 @@ server {
 
 ```
 
-- 此时访问旧域名`docs.macrozheng.com`会直接跳转到`www.macrozheng.com`去。
+- 此时访问旧域名`docs.kratos47mhs.com`会直接跳转到`www.kratos47mhs.com`去。
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

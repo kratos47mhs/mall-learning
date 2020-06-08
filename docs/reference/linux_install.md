@@ -171,4 +171,4 @@ reboot
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

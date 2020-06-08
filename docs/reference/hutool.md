@@ -237,9 +237,9 @@ Hutool中的工具类很多，可以参考：[https://www.hutool.cn/](https://ww
 
 ## 项目源码地址
 
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-hutool](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-hutool)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-hutool](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-hutool)
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)
 

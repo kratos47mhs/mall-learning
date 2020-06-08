@@ -9,4 +9,4 @@ EXPOSE 8080
 # 指定docker容器启动时运行jar包
 ENTRYPOINT ["java", "-jar","/mall-tiny-docker-file.jar"]
 # 指定维护者的名字
-MAINTAINER macrozheng
+MAINTAINER kratos47mhs

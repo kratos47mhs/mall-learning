@@ -1,85 +1,85 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# mall数据库表结构概览
+# Mall database table structure overview
 
-> mall是一套电商系统，后台系统主要包括商品管理、订单管理、营销管理（运营管理+促销管理）、内容管理、用户管理等模块，本文主要对这些模块的数据库表结构及功能做大概的介绍。
+>mall is a set of e-commerce system. The back-end system mainly includes modules such as product management, order management, marketing management (operation management + promotion management), content management, user management, etc. This article mainly summarizes the database table structure and functions of these modules Introduction.
 
-## 商品管理
+## Product management
 
-### 数据库表结构
+### Database table structure
 
 ![](../images/mall_pms.jpg)
 
-### 功能结构
+### Functional structure
 
 ![](../images/mall_func_pms.jpeg)
 
-## 订单管理
+## Order management
 
-### 数据库表结构
+### Database table structure
 
 ![](../images/mall_oms.jpg)
 
-### 功能结构
+### Functional structure
 
 ![](../images/mall_func_oms.jpeg)
 
-## 营销管理
+## Sale management
 
-### 数据库表结构
+### Database table structure
 
 ![](../images/mall_sms.jpg)
 
-### 功能结构
+### Functional structure
 
 ![](../images/mall_func_sms.jpeg)
 
-## 内容管理
+## Content management
 
-### 数据库表结构
+### Database table structure
 
 ![](../images/mall_cms.jpg)
 
-### 功能结构
+### Functional structure
 
 ![](../images/mall_func_cms.jpeg)
 
-## 用户管理
+## User Management
 
-### 数据库表结构
+### Database table structure
 
 ![](../images/mall_ums.jpg)
 
-### 功能结构
+### Functional structure
 
 ![](../images/mall_func_ums.jpeg)
 
-`注意`：部分功能暂未实现，只是对表结构进行了设计，商品管理、订单管理、营销管理大部分功能均已实现。
+`Attention`：Some functions have not yet been realized, but the table structure has been designed. Most functions of commodity management, order management, and marketing management have been realized.
 
-## 相关资料
+## Relevant information
 
-### PowerDesigner数据库设计文件
+### Power Designer database design files
 
-- 商品管理：https://github.com/macrozheng/mall-learning/blob/master/document/pdm/mall_pms.pdm
-- 订单管理：https://github.com/macrozheng/mall-learning/blob/master/document/pdm/mall_oms.pdm
-- 营销管理：https://github.com/macrozheng/mall-learning/blob/master/document/pdm/mall_sms.pdm
-- 内容管理：https://github.com/macrozheng/mall-learning/blob/master/document/pdm/mall_cms.pdm
-- 用户管理：https://github.com/macrozheng/mall-learning/blob/master/document/pdm/mall_ums.pdm
+- Product management：https://github.com/kratos47mhs/mall-learning/blob/master/document/pdm/mall_pms.pdm
+- Order management：https://github.com/kratos47mhs/mall-learning/blob/master/document/pdm/mall_oms.pdm
+- Sale management：https://github.com/kratos47mhs/mall-learning/blob/master/document/pdm/mall_sms.pdm
+- Content management：https://github.com/kratos47mhs/mall-learning/blob/master/document/pdm/mall_cms.pdm
+- User Management：https://github.com/kratos47mhs/mall-learning/blob/master/document/pdm/mall_ums.pdm
 
-### MindMaster功能思维导图
+### Mind Master functional mind map
 
-- 商品管理：https://github.com/macrozheng/mall-learning/blob/master/document/mind/pms.emmx
-- 订单管理：https://github.com/macrozheng/mall-learning/blob/master/document/mind/oms.emmx
-- 营销管理：https://github.com/macrozheng/mall-learning/blob/master/document/mind/sms.emmx
-- 内容管理：https://github.com/macrozheng/mall-learning/blob/master/document/mind/cms.emmx
-- 用户管理：https://github.com/macrozheng/mall-learning/blob/master/document/mind/ums.emmx
+- Product management：https://github.com/kratos47mhs/mall-learning/blob/master/document/mind/pms.emmx
+- Order management：https://github.com/kratos47mhs/mall-learning/blob/master/document/mind/oms.emmx
+- Sale management：https://github.com/kratos47mhs/mall-learning/blob/master/document/mind/sms.emmx
+- Content management：https://github.com/kratos47mhs/mall-learning/blob/master/document/mind/cms.emmx
+- User Management：https://github.com/kratos47mhs/mall-learning/blob/master/document/mind/ums.emmx
 
 
-## 使用到的工具
+## Tools used
 
 - PowerDesigner:[http://powerdesigner.de/](http://powerdesigner.de/)
 - MindMaster:[http://www.edrawsoft.cn/mindmaster](http://www.edrawsoft.cn/mindmaster)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

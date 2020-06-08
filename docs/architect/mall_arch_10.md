@@ -428,7 +428,7 @@ public class OssController {
 
 ### Start the mall-admin-web front-end project to test the upload interface
 
-- How to start the front-end project, please refer to the readme document of the project：[https://github.com/macrozheng/mall-admin-web](https://github.com/macrozheng/mall-admin-web)
+- How to start the front-end project, please refer to the readme document of the project：[https://github.com/kratos47mhs/mall-admin-web](https://github.com/kratos47mhs/mall-admin-web)
 
 - Click the upload button to add the product brand to test
 
@@ -456,7 +456,7 @@ public class OssController {
 
 ## Project source address
 
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-09](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-09)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-09](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-09)
 
 ## Reference material
 
@@ -470,4 +470,4 @@ public class OssController {
 
 ## No public
 
-![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

@@ -1,14 +1,14 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 营销模块数据库表解析（三）
+# Marketing module database table analysis (3)
 
-> 本文主要对首页内容推荐功能相关表进行解析，采用数据库表与功能对照的形式。
+> This article mainly analyzes the related table of content recommendation functions on the homepage, using the form of database table and function comparison.
 
-## 相关表结构
+## Related table structure
 
-### 首页品牌推荐表
+### Home Brand Recommendation Form
 
-> 用于管理首页显示的品牌制造商直供信息。
+> Used to manage the direct supply information of brand manufacturers displayed on the home page.
 
 ```sql
 create table sms_home_brand
@@ -22,9 +22,9 @@ create table sms_home_brand
 );
 ```
 
-### 新品推荐商品表
+### New product list
 
-> 用于管理首页显示的新鲜好物信息。
+> Used to manage the fresh and good things information displayed on the home page.
 
 ```sql
 create table sms_home_new_product
@@ -38,9 +38,9 @@ create table sms_home_new_product
 );
 ```
 
-### 人气推荐商品表
+### Popular recommended product list
 
-> 用于管理首页显示的人气推荐信息。
+> Used to manage the popular recommendation information displayed on the homepage.
 
 ```sql
 create table sms_home_recommend_product
@@ -54,9 +54,9 @@ create table sms_home_recommend_product
 );
 ```
 
-### 首页专题推荐表
+### Home Feature Recommendation Form
 
-> 用于管理首页显示的专题精选信息。
+> Used to manage the featured selection information displayed on the home page.
 
 ```sql
 create table sms_home_recommend_subject
@@ -70,9 +70,9 @@ create table sms_home_recommend_subject
 );
 ```
 
-### 首页轮播广告表
+### Home Carousel Advertisement Table
 
-> 用于管理首页显示的轮播广告信息。
+> Used to manage the carousel information displayed on the homepage.
 
 ```sql
 create table sms_home_advertise
@@ -94,51 +94,51 @@ create table sms_home_advertise
 ```
 
 
-## 管理端展现
+## Management display
 
-### 品牌推荐列表
+### Brand recommendation list
 ![](../images/database_screen_93.png)
 
-### 选择品牌
+### Choose Brand
 ![](../images/database_screen_94.png)
 
-### 新品推荐列表
+### New product recommendation list
 ![](../images/database_screen_95.png)
 
-### 选择商品
+### Choose product
 ![](../images/database_screen_96.png)
 
-### 人气推荐列表
+### Popular recommendation list
 ![](../images/database_screen_97.png)
 
-### 选择商品
+### Choose product
 ![](../images/database_screen_98.png)
 
-### 专题推荐列表
+### Subject recommendation list
 ![](../images/database_screen_99.png)
 
-### 选择专题
+### Select topic
 ![](../images/database_screen_100.png)
 
-### 广告列表
+### Ad list
 ![](../images/database_screen_101.png)
 
-### 编辑广告
+### Edit ad
 ![](../images/database_screen_102.png)
 
-## 移动端展现
+## Mobile display
 
-### 首页轮播广告
+### Homepage carousel
 ![](../images/database_screen_103.png)
-### 品牌制造商直供
+### Direct supply from brand manufacturers
 ![](../images/database_screen_104.png)
-### 新鲜好物
+### New product
 ![](../images/database_screen_105.png)
-### 人气推荐
+### Popular recommendation
 ![](../images/database_screen_106.png)
-### 专题精选
+### Featured Feature
 ![](../images/database_screen_107.png)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

@@ -2,7 +2,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 
 # Mall integrates Spring Security and JWT to achieve authentication and authorization (1)
 
-> This article mainly explains that Mall realizes the login and authorization functions of background users by integrating SpringSecurity and JWT, and transforms the configuration of Swagger-UI so that it can automatically remember the login token to send.
+> This article mainly explains that Mall realizes the login and authorization functions of admin users by integrating SpringSecurity and JWT, and transforms the configuration of Swagger-UI so that it can automatically remember the login token to send.
 ## Introduction to the project framework
 
 ### SpringSecurity
@@ -552,8 +552,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 ```
 
 ## Project source address
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-04](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-04)
 
 ## No public
 
-![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

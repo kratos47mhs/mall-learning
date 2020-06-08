@@ -77,7 +77,7 @@ spring:
     config:
       server:
         git: #Git仓库存储
-          uri: https://gitee.com/macrozheng/mall-config.git #改为你自己的配置
+          uri: https://gitee.com/kratos47mhs/mall-config.git #改为你自己的配置
           username: macro
           password: 123456
           clone-on-start: true
@@ -236,7 +236,7 @@ docker run -p 9000:9000 -p 8000:8000 --name portainer \
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)
 
 
 

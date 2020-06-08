@@ -1,13 +1,13 @@
 * Demo
-  * [Admin management](http://www.macrozheng.com/admin/index.html)
-  * [Mobile](http://www.macrozheng.com/app/index.html)
+  * [Admin management](http://www.kratos47mhs.com/admin/index.html)
+  * [Mobile](http://www.kratos47mhs.com/app/index.html)
 
 * project address
-  * [Back-end project](https://github.com/macrozheng/mall)
-  * [Front-end project](https://github.com/macrozheng/mall-admin-web)
-  * [Study course](https://github.com/macrozheng/mall-learning)
-  * [Project skeleton](https://github.com/macrozheng/mall-tiny)
+  * [Back-end project](https://github.com/kratos47mhs/mall)
+  * [Front-end project](https://github.com/kratos47mhs/mall-admin-web)
+  * [Study course](https://github.com/kratos47mhs/mall-learning)
+  * [Project skeleton](https://github.com/kratos47mhs/mall-tiny)
 
 * SpringCloud
-  * [Spring Cloud version](https://github.com/macrozheng/mall-swarm)
-  * [Spring Cloud tutorial](https://github.com/macrozheng/springcloud-learning)
+  * [Spring Cloud version](https://github.com/kratos47mhs/mall-swarm)
+  * [Spring Cloud tutorial](https://github.com/kratos47mhs/springcloud-learning)

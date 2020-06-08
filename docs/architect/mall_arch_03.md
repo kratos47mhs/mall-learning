@@ -296,8 +296,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 ! [] (../ images / arch_screen_12.png)
 
 ## Project source address
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-03](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-03)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-03](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-03)
 
 ## No public
 
-! [Public Account Picture] (http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+! [Public Account Picture] (https://kratos47mhs.github.io/images/logo.png)

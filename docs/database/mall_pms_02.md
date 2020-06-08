@@ -1,16 +1,16 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 商品模块数据库表解析（二）
+# Product module database table analysis (2)
 
-> 接上一篇文章，本文主要对编辑商品、商品评价及回复、商品操作记录这三块功能的表进行解析，采用数据库表与功能对照的形式。
+> Continued from the previous article, this article mainly analyzes the three function tables of editing products, product evaluation and reply, and product operation records, using the form of database table and function comparison.
 
-## 编辑商品
+## Edit product
 
-### 相关表结构
+### Related table structure
 
-#### 商品表
+#### Product table
 
-> 商品信息主要包括四部分：商品的基本信息、商品的促销信息、商品的属性信息、商品的关联，商品表是整个商品的基本信息部分。
+> Product information mainly includes four parts: basic information of products, promotional information of products, attribute information of products, and association of products. The table of products is the basic information part of the entire product.
 
 ```sql
 create table pms_product
@@ -61,9 +61,9 @@ create table pms_product
 );
 ```
 
-#### 商品SKU表
+#### Product SKU table
 
-> SKU(Stock Keeping Unit)是指库存量单位，SPU(Standard Product Unit)是指标准产品单位。举个例子：iphone xs是一个SPU，而iphone xs 公开版 64G 银色是一个SKU。
+> SKU (Stock Keeping Unit) refers to the stock quantity unit, and SPU (Standard Product Unit) refers to the standard product unit. For example: iphone xs is an SPU, and iphone xs public version 64G silver is an SKU.
 
 ```sql
 create table pms_sku_stock
@@ -85,9 +85,9 @@ create table pms_sku_stock
 );
 ```
 
-#### 商品阶梯价格表
+#### Product ladder price list
 
-> 商品优惠相关表，购买同商品满足一定数量后，可以使用打折价格进行购买。如：买两件商品可以打八折。
+> The relevant table of merchandise offers, after purchasing the same merchandise to meet a certain amount, you can use discounted prices to purchase. For example: 20% off when buying two products.
 
 ```sql
 create table pms_product_ladder
@@ -101,9 +101,9 @@ create table pms_product_ladder
 );
 ```
 
-#### 商品满减表
+#### Product full reduction table
 
-> 商品优惠相关表，购买同商品满足一定金额后，可以减免一定金额。如：买满1000减100元。
+> The relevant table of merchandise discounts, a certain amount can be deducted after the purchase of the same product meets a certain amount. Such as: buy 100 to reduce 100 yuan.
 
 ```sql
 create table pms_product_full_reduction
@@ -116,9 +116,9 @@ create table pms_product_full_reduction
 );
 ```
 
-#### 商品会员价格表
+#### Product member price list
 
-> 根据不同会员等级，可以以不同的会员价格购买。此处设计有缺陷，可以做成不同会员等级可以减免多少元或者按多少折扣进行购买。
+> According to different membership levels, it can be purchased at different membership prices. There is a flaw in the design here, and it can be made into different membership levels to reduce the amount of yuan or purchase at a discount.
 
 ```sql
 create table pms_member_price
@@ -132,45 +132,45 @@ create table pms_member_price
 );
 ```
 
-### 管理端展现
+### Management display
 
-#### 填写商品信息
+#### Fill in product information
 ![](../images/database_screen_22.png)
 
-#### 填写商品促销
+#### Fill in product promotion
 ![](../images/database_screen_17.png)
-##### 特惠促销
+##### Special promotions
 ![](../images/database_screen_18.png)
-##### 会员价格
+##### member price
 ![](../images/database_screen_19.png)
-##### 阶梯价格
+##### Step price
 ![](../images/database_screen_20.png)
-##### 满减价格
+##### Full price reduction
 ![](../images/database_screen_21.png)
 
-#### 填写商品属性
+#### Fill in product attributes
 ![](../images/database_screen_23.png)
 ![](../images/database_screen_24.png)
 ![](../images/database_screen_25.png)
 
-#### 选择商品关联
+#### Select product association
 
 ![](../images/database_screen_26.png)
 
-### 移动端展现
+### Mobile display
 
-#### 商品介绍
+#### Product desciption
 ![](../images/database_screen_27.png)
-#### 图文详情
+#### Graphic details
 ![](../images/database_screen_28.png)
-#### 相关专题
+#### Related topics
 ![](../images/database_screen_29.png)
 
-## 商品评价及回复
+## Product reviews and comments
 
-### 相关表结构
+### Related table structure
 
-#### 商品评价表
+#### Product Comment Table
 ```sql
 create table pms_comment
 (
@@ -193,7 +193,7 @@ create table pms_comment
 );
 ```
 
-#### 产品评价回复表
+#### Product Comment Replay Form
 
 ```sql
 create table pms_comment_replay
@@ -209,24 +209,24 @@ create table pms_comment_replay
 );
 ```
 
-### 移动端展现
+### Mobile display
 
-#### 商品评价列表
+#### Product comment list
 ![](../images/database_screen_30.png)
 
-#### 商品评价详情
+#### Product review details
 ![](../images/database_screen_31.png)
 
-#### 商品回复列表
+#### Product reply list
 ![](../images/database_screen_32.png)
 
 
-## 商品审核及操作记录
+## Product review and operation records
 
-### 相关表结构
+### Related table structure
 
-#### 商品审核记录表
-> 用于记录商品审核记录
+#### Product vertify record Table
+> Used to record product vertify records
 
 ```sql
 create table pms_product_vertify_record
@@ -240,8 +240,8 @@ create table pms_product_vertify_record
    primary key (id)
 );
 ```
-#### 商品操作记录表
-> 用于记录商品操作记录
+#### Product operation record form
+> Used to record product operation records
 
 ```sql
 create table pms_product_operate_log
@@ -264,4 +264,4 @@ create table pms_product_operate_log
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

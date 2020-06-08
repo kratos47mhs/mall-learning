@@ -10,7 +10,7 @@ In the serialization of the full set of learning tutorials for the mall project,
 - Set database account password：root root
 - Download and install the client connection tool Navicat, download address：http://www.formysql.com/xiazai.html
 - Create database mall
-- Import mall database script, script address：https://github.com/macrozheng/mall-learning/blob/master/document/sql/mall.sql
+- Import mall database script, script address：https://github.com/kratos47mhs/mall-learning/blob/master/document/sql/mall.sql
 
 ## Introduction to the project framework
 
@@ -421,8 +421,8 @@ public class PmsBrandServiceImpl implements PmsBrandService {
 ```
 
 ## Project source address
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-01](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-01)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-01](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-01)
 
 ## No public
 
-![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

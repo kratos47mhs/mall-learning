@@ -1,14 +1,14 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#公众号)Get it the first time.
 
-# 营销模块数据库表解析（二）
+# Marketing module database table analysis (2)
 
-> 本文主要对优惠券功能相关表进行解析，采用数据库表与功能对照的形式。
+> This article mainly analyzes the coupon function related table, using the form of database table and function comparison.
 
-## 相关表结构
+## Related table structure
 
-### 优惠券表
+### Coupon form
 
-> 用于存储优惠券信息，需要注意的是优惠券的使用类型：0->全场通用；1->指定分类；2->指定商品，不同使用类型的优惠券使用范围不一样。
+> For storing coupon information, it should be noted that the type of coupon used: 0->general audience; 1->specified category; 2->specified products, different types of coupons use different ranges.
 
 ```sql
 create table sms_coupon
@@ -35,9 +35,9 @@ create table sms_coupon
 );
 ```
 
-### 优惠券历史记录表
+### Coupon history table
 
-> 用于存储会员领取及使用优惠券的记录，当会员领取到优惠券时，会产生一条优惠券的记录，需要注意的是它的使用状态：0->未使用；1->已使用；2->已过期。
+> It is used to store the records of members' receipt and use of coupons. When a member receives a coupon, a record of coupons will be generated. It should be noted that its use status: 0->unused; 1->used; 2 -> has expired.
 
 ```sql
 create table sms_coupon_history
@@ -57,9 +57,9 @@ create table sms_coupon_history
 );
 ```
 
-### 优惠券和商品的关系表
+### Coupon and merchandise relationship table
 
-> 用于存储优惠券与商品的关系，当优惠券的使用类型为指定商品时，优惠券与商品需要建立关系。
+> It is used to store the relationship between coupons and products. When the use type of the coupon is a specified product, the coupon and the product need to establish a relationship.
 
 ```sql
 create table sms_coupon_product_relation
@@ -73,9 +73,9 @@ create table sms_coupon_product_relation
 );
 ```
 
-### 优惠券和商品分类关系表
+### Coupon and product category relationship table
 
-> 用于存储优惠券与商品分类的关系，当优惠券的使用类型为指定分类时，优惠券与商品分类需要建立关系。
+> It is used to store the relationship between coupons and product categories. When the use type of coupons is a specified category, the coupons and commodity categories need to be established.
 
 ```sql
 create table sms_coupon_product_category_relation
@@ -89,43 +89,43 @@ create table sms_coupon_product_category_relation
 );
 ```
 
-## 管理端展现
+## Management display
 
-### 优惠券列表
+### Coupon list
 ![](../images/database_screen_84.png)
 
-### 编辑优惠券
+### Edit coupon
 
-#### 全场通用
+#### Universal
 ![](../images/database_screen_85.png)
 
-#### 指定商品
+#### Designated product
 ![](../images/database_screen_86.png)
 
-#### 指定分类
+#### Designated category
 ![](../images/database_screen_87.png)
 
-### 查看优惠券
+### View coupons
 ![](../images/database_screen_88.png)
 
-## 移动端展现
+## Mobile display
 
-### 我的优惠券
+### my discount coupon
 
-#### 未使用
+#### Unused
 ![](../images/database_screen_89.png)
 
-#### 已使用
+#### Used
 ![](../images/database_screen_90.png)
 
-#### 已过期
+#### Expired
 ![](../images/database_screen_91.png)
 
-### 优惠券详情
+### Coupon details
 ![](../images/database_screen_92.png)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
 
 

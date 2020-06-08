@@ -7,7 +7,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 ## Login registration function
 
 ### Add Ums Admin Controller class
-> Implemented the interface for background users to log in, register and obtain permissions
+> Implemented the interface for admin users to log in, register and obtain permissions
 
 ```java
 package com.macro.mall.tiny.controller;
@@ -381,8 +381,8 @@ Swagger api address：http://localhost:8080/swagger-ui.html
 ![](../images/arch_screen_24.png)
 
 ## Project source address
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-04)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-04](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-04)
 
 ## No public
 
-![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

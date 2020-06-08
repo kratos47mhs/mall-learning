@@ -16,10 +16,10 @@ CenterOS7.6版本，推荐4G以上内存
 
 ### 部署相关文件
 
-- 数据库脚本mall.sql：https://github.com/macrozheng/mall/blob/master/document/sql/mall.sql
-- nginx配置文件nginx.conf：https://github.com/macrozheng/mall/blob/master/document/docker/nginx.conf
-- docker-compose-env.yml：https://github.com/macrozheng/mall/tree/master/document/docker/docker-compose-env.yml
-- docker-compose-app.yml：https://github.com/macrozheng/mall/tree/master/document/docker/docker-compose-app.yml
+- 数据库脚本mall.sql：https://github.com/kratos47mhs/mall/blob/master/document/sql/mall.sql
+- nginx配置文件nginx.conf：https://github.com/kratos47mhs/mall/blob/master/document/docker/nginx.conf
+- docker-compose-env.yml：https://github.com/kratos47mhs/mall/tree/master/document/docker/docker-compose-env.yml
+- docker-compose-app.yml：https://github.com/kratos47mhs/mall/tree/master/document/docker/docker-compose-app.yml
 
 ### 部署前准备
 
@@ -254,4 +254,4 @@ systemctl stop firewalld
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

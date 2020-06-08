@@ -1,16 +1,16 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 订单模块数据库表解析（三）
+# Order module database table analysis (3)
 
-> 本文主要对订单退货及订单退货原因设置功能相关表进行解析，采用数据库表与功能对照的形式。
+> This article mainly analyzes the order-returning and order-returning reason setting function related tables, using the form of database table and function comparison.
 
-## 订单退货
+## Order return
 
-### 相关表结构
+### Related table structure
 
-#### 订单退货申请表
+#### Order return application form
 
-> 主要用于存储会员退货申请信息，需要注意的是订单退货申请表的四种状态：0->待处理；1->退货中；2->已完成；3->已拒绝。
+> Mainly used to store member return application information, it should be noted that the order return application form has four states: 0-> pending; 1-> return in progress; 2-> completed; 3-> rejected.
 
 ```sql
 create table oms_order_return_apply
@@ -46,9 +46,9 @@ create table oms_order_return_apply
 );
 ```
 
-#### 公司收货地址表
+#### Company delivery address table
 
-> 用于处理退货申请时选择收货地址。
+> Used to select the delivery address when processing return applications.
 
 ```sql
 create table oms_company_address
@@ -67,40 +67,40 @@ create table oms_company_address
 );
 ```
 
-### 管理端展现
+### Management display
 
-- 退货申请列表
+- Return application list
 ![](../images/database_screen_55.png)
-- 待处理状态的详情
+- Pending status details
 ![](../images/database_screen_56.png)
 ![](../images/database_screen_57.png)
-- 退货中状态的详情
+- Details of status in return
 ![](../images/database_screen_58.png)
 ![](../images/database_screen_59.png)
-- 已完成状态的详情
+- Details of completed status
 ![](../images/database_screen_60.png)
 ![](../images/database_screen_61.png)
-- 已拒绝状态的详情
+- Details of rejected status
 ![](../images/database_screen_62.png)
 ![](../images/database_screen_63.png)
 
-### 移动端展现
-- 在我的中打开售后服务  
+### Mobile display
+- Open after-sales service in mine  
 ![](../images/database_screen_64.png)
-- 点击申请退货进行退货申请  
+- Click Apply for return to apply for return  
 ![](../images/database_screen_65.png)
-- 提交退货申请  
+- Submit a return request  
 ![](../images/database_screen_66.png)
-- 在申请记录中查看退货申请记录  
+- View the return application record in the application record  
 ![](../images/database_screen_67.png)
-- 查看退货申请进度详情  
+- View the details of the return application progress  
 ![](../images/database_screen_68.png)
 
-## 订单退货原因设置
+## Order return reason setting
 
-### 订单退货原因表
+### Order return reason table
 
-> 用于会员退货时选择退货原因。
+> Used to select the reason for the return when the member returns.
 
 ```sql
 create table oms_order_return_reason
@@ -114,18 +114,18 @@ create table oms_order_return_reason
 );
 ```
 
-### 管理端展现
+### Management display
 
-- 退货原因列表  
+- Return reason list  
 ![](../images/database_screen_69.png)
-- 添加退货原因  
+- Add return reason  
 ![](../images/database_screen_70.png)
 
-### 移动端展现
+### Mobile display
 
-- 退货申请时选择退货原因  
+- Choose the reason for return when applying for return  
 ![](../images/database_screen_71.png)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

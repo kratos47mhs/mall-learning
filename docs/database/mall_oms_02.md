@@ -1,12 +1,12 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 订单模块数据库表解析（二）
+# Order module database table analysis (2)
 
-> 本文主要对购物车功能相关表进行解析，介绍从商品加入购物车到下单的整个流程，涉及购物车优惠计算流程、确认单生成流程、下单流程及取消订单流程。
+> This article mainly analyzes the related tables of shopping cart functions and introduces the entire process from the addition of commodities to the shopping cart to the order placement, involving the shopping cart discount calculation process, confirmation order generation process, order placement process and order cancellation process.
 
-## 购物车表
+## Shopping cart Table
 
-> 用于存储购物车中每个商品信息，可用于计算商品优惠金额。
+> It is used to store the information of each product in the shopping cart, and can be used to calculate the discount amount of the product.
 
 ```sql
 create table oms_cart_item
@@ -36,90 +36,90 @@ create table oms_cart_item
 );
 ```
 
-## 购物下单流程
+## Shopping order process
 
-### 整体流程示意图
+### The schematic diagram of the overall process
 
 ![](../images/database_screen_44.png)
 
-### 移动端流程展示
+### Mobile process display
 
-- 会员选择商品规格  
+- Members choose product specifications  
 ![](../images/database_screen_45.png)
-- 选择购物车中商品去结算  
+- Select the goods in the shopping cart to settle  
 ![](../images/database_screen_46.png)
-- 查看确认单  
+- View confirmation  
 ![](../images/database_screen_47.png)
-- 支付订单  
+- Payment order  
 ![](../images/database_screen_48.png)
-- 支付成功  
+- payment successful  
 ![](../images/database_screen_49.png)
-- 查看订单  
+- check order  
 ![](../images/database_screen_50.png)
 
-### 实现逻辑
+### Implementation logic
 
-#### 加入购物车
+#### add to Shopping Cart
 
-> 购物车的主要功能就是存储用户选择的商品信息及计算购物车中商品的优惠。
+> The main function of the shopping cart is to store the product information selected by the user and calculate the discount of the goods in the shopping cart.
 
-##### 购物车优惠计算流程
+##### Shopping cart discount calculation process
 
 ![](../images/database_screen_51.jpg)
 
-##### 相关注意点
+##### Related notes
 
-- 由于商品优惠都是以商品为单位来设计的，并不是以sku为单位设计的，所以必须以商品为单位来计算商品优惠；
-- 代码实现逻辑可以参考OmsPromotionServiceImpl类中的calcCartPromotion方法。
+- Since product discounts are designed in units of products, not in units of sku, it is necessary to calculate product discounts in units of products;
+- Code implementation logic can refer to the calc Cart Promotion method in the Oms Promotion Service Impl class.
 
-#### 生成确认单
+#### Generate confirmation
 
-> 确认单主要用于用户确认下单的商品信息、优惠信息、价格信息，以及选择收货地址、选择优惠券和使用积分。
+> The confirmation form is mainly used for the user to confirm the product information, preferential information and price information of the order, as well as to select the delivery address, select the coupon and use the points.
 
-##### 生成确认单流程
+##### Confirmation process
 
 ![](../images/database_screen_52.jpg)
 
-##### 相关注意点
+##### Related notes
 
-- 总金额的计算：购物车中所有商品的总价；
-- 活动优惠的计算：购物车中所有商品的优惠金额累加；
-- 应付金额的计算：应付金额=总金额-活动优惠；
-- 代码实现逻辑可以参考OmsPortalOrderServiceImpl类中的generateConfirmOrder方法。
+- Calculation of the total amount: the total price of all items in the shopping cart；
+- Calculation of activity discounts: The discount amount of all products in the shopping cart is accumulated；
+- Calculation of payable amount: payable amount = total amount-activity discount；
+- The code implementation logic can refer to the generate Confirm Order method in the Oms Portal Order Service Impl class.
 
-#### 生成订单
+#### Generate orders
 
-> 对购物车中信息进行处理，综合下单用户的信息来生成订单。
+> The information in the shopping cart processed, and the information of the ordering user integrated to generate the order.
 
-##### 下单流程
+##### Order process
 
 ![](../images/database_screen_53.jpg)
 
-##### 相关注意点
+##### Related notes
 
-- 库存的锁定：库存从获取购物车优惠信息时就已经从`pms_sku_stock`表中查询出来了，lock_stock字段表示锁定库存的数量，会员看到的商品数量为真实库存减去锁定库存；
-- 优惠券分解金额的处理：对全场通用、指定分类、指定商品的优惠券分别进行分解金额的计算：
-  - 全场通用：购物车中所有下单商品进行均摊；
-  - 指定分类：购物车中对应分类的商品进行均摊；
-  - 指定商品：购物车中包含的指定商品进行均摊。
-- 订单中每个商品的实际支付金额计算：原价-促销优惠-优惠券抵扣-积分抵扣，促销优惠就是购物车计算优惠流程中计算出来的优惠金额；
-- 订单号的生成：使用redis来生成，生成规则:8位日期+2位平台号码+2位支付方式+6位以上自增id；
-- 优惠券使用完成后需要修改优惠券的使用状态；
-- 代码实现逻辑可以参考OmsPortalOrderServiceImpl类中的generateOrder方法。
+- Locking of inventory: The inventory has been queried from the `pms sku stock` table when the shopping cart discount information is obtained. The lock stock field indicates the quantity of locked inventory, and the quantity of goods seen by the member is the real inventory minus the locked inventory;
+- Dealing with the amount of discounted coupons: Calculate the amount of breakdown of the coupons for the entire audience, designated categories, and designated products:
+  - Common to all audiences: all products placed in the shopping cart are shared equally;
+  - Specified categories: the product in the corresponding category in the shopping cart are evenly distributed;
+  - Specified products: The specified products included in the shopping cart are evenly distributed.
+- Calculation of the actual payment amount of each product in the order: original price-promotional offer-coupon deduction-point deduction, promotional offer is the discount amount calculated in the shopping cart calculation discount process;
+- Order number generation: use redis to generate, generation rules: 8-digit date + 2 digit platform number + 2 digit payment method + 6 or more self-increasing id;
+- After the use of the coupon is completed, the usage status of the coupon needs to be modified;
+- The code implementation logic can refer to the generate Order method in the Oms Portal Order Service Impl class.
 
-#### 取消订单
+#### cancel order
 
-> 订单生成之后还需开启一个延时任务来取消超时的订单。
+> After the order is generated, a delay task must be started to cancel the overtime order.
 
-##### 订单取消流程
+##### Order cancellation process
 
 ![](../images/database_screen_54.jpg)
 
-##### 相关注意点
+##### Related notes
 
-- 代码实现逻辑可以参考OmsPortalOrderServiceImpl类中的cancelOrder方法。
+- The code implementation logic can refer to the cancel Order method in the Oms Portal Order Service Impl class.
 
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

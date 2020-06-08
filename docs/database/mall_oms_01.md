@@ -1,16 +1,16 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 订单模块数据库表解析（一）
+# Order module database table analysis (1)
 
-> 本文主要对订单及订单设置功能的表进行解析，采用数据库表与功能对照的形式。
+> This article mainly analyzes the tables of orders and order setting functions, using the form of database tables and functions.
 
-## 订单
+## Order form
 
-### 相关表结构
+### Related table structure
 
-#### 订单表
+#### Order Table
 
-> 订单表，需要注意的是订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单。
+> Order form, it should be noted that the order status: 0-> pending payment; 1-> pending shipment; 2-> shipped; 3-> completed; 4-> closed; 5-> invalid order.
 
 ```sql
 create table oms_order
@@ -63,9 +63,9 @@ create table oms_order
 );
 ```
 
-#### 订单商品信息表
+#### Order product information Table
 
-> 订单中包含的商品信息，一个订单中会有多个订单商品信息。
+> The product information contained in the order, there will be multiple order product information in one order.
 
 ```sql
 create table oms_order_item
@@ -98,9 +98,9 @@ create table oms_order_item
 );
 ```
 
-#### 订单操作记录表
+#### Order operation history Table
 
-> 当订单状态发生改变时，用于记录订单的操作信息。
+> When the order status changes, it is used to record the operation information of the order.
 
 ```sql
 create table oms_order_operate_history
@@ -115,38 +115,38 @@ create table oms_order_operate_history
 );
 ```
 
-### 管理端展现
+### Management display
 
-#### 订单列表
+#### Order List
 ![](../images/database_screen_33.png)
 
-#### 查看订单
+#### check order
 ![](../images/database_screen_34.png)
 ![](../images/database_screen_35.png)
 ![](../images/database_screen_36.png)
 
-#### 订单发货
+#### Order delivery
 ![](../images/database_screen_38.png)
 
-### 移动端展现
+### Mobile display
 
-#### 不同状态下的订单
+#### Orders in different states
 ![](../images/database_screen_39.png)
 ![](../images/database_screen_40.png)
 ![](../images/database_screen_41.png)
 
-#### 订单详情
+#### order details
 ![](../images/database_screen_42.png)
 ![](../images/database_screen_43.png)
 
 
-## 订单设置
+## Order settings
 
-### 相关表结构
+### Related table structure
 
-#### 订单设置表
+#### Order setting table
 
-> 用于对订单的一些超时操作进行设置。
+> Used to set some timeout operations for orders.
 
 ```sql
 create table oms_order_setting
@@ -161,10 +161,10 @@ create table oms_order_setting
 );
 ```
 
-### 管理端展现
+### Management display
 
 ![](../images/database_screen_37.png)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

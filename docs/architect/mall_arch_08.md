@@ -337,8 +337,8 @@ public class MemberReadHistoryController {
 ![](../images/arch_screen_47.png)
 
 ## Project source address
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-07](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-07)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-07](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-07)
 
 ## No public
 
-![Public account picture](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

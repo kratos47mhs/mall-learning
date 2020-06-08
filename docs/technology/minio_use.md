@@ -189,13 +189,13 @@ public class GlobalCorsConfig {
 
 ## 后端项目地址
 
-https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-oss
+https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-oss
 
 ## 前端项目地址
 
-https://github.com/macrozheng/mall-admin-web
+https://github.com/kratos47mhs/mall-admin-web
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)
 

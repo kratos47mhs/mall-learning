@@ -107,7 +107,7 @@ docker logs jenkins
 
 - 首先我们需要安装Gitlab（当然你也可以使用Github或者Gitee），然后将`mall-tiny-jenkins`中的代码上传到Gitlab中去，Gitlab的使用请参考：[10分钟搭建自己的Git仓库](https://mp.weixin.qq.com/s/6GyYlR9lpVcjgYmHMYLi0w)
 
-- `mall-tiny-jenkins`项目源码地址：https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-jenkins
+- `mall-tiny-jenkins`项目源码地址：https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-jenkins
 
 - 上传完成后Gitlab中的展示效果如下：
 
@@ -170,7 +170,7 @@ vi mall-tiny-jenkins.sh
 
 ![](../images/jenkins_use_03.png)
 
-- 然后在源码管理中添加我们的git仓库地址：http://192.168.6.132:1080/macrozheng/mall-tiny-jenkins
+- 然后在源码管理中添加我们的git仓库地址：http://192.168.6.132:1080/kratos47mhs/mall-tiny-jenkins
 
 ![](../images/jenkins_use_04.png)
 
@@ -212,10 +212,10 @@ vi mall-tiny-jenkins.sh
 
 ## 项目源码地址
 
-https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-jenkins
+https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-jenkins
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)
 
 

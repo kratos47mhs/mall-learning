@@ -29,8 +29,8 @@ docker pull kibana:6.4.0
 ### 搭建前准备
 
 - elasticsearch 启动成功需要特殊配置，具体参考[mall在Linux环境下的部署（基于Docker Compose）](https://mp.weixin.qq.com/s/JYkvdub9DP5P9ULX4mehUw)中的elasticsearch部分；
-- docker-compose.yml文件地址:https://github.com/macrozheng/mall-learning/blob/master/mall-tiny-elk/src/main/docker/docker-compose.yml
-- logstash-springboot.conf配置文件地址：https://github.com/macrozheng/mall-learning/blob/master/mall-tiny-elk/src/main/docker/logstash-springboot.conf
+- docker-compose.yml文件地址:https://github.com/kratos47mhs/mall-learning/blob/master/mall-tiny-elk/src/main/docker/docker-compose.yml
+- logstash-springboot.conf配置文件地址：https://github.com/kratos47mhs/mall-learning/blob/master/mall-tiny-elk/src/main/docker/logstash-springboot.conf
 
 ### 开始搭建
 
@@ -217,8 +217,8 @@ systemctl stop firewalld
 
 ## 项目源码地址
 
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-elk](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-elk)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-elk](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-elk)
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

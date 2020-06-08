@@ -105,7 +105,7 @@ docker logs gitlab -f
 - 执行以下命令clone项目到本地：
 
 ```bash
-git clone http://192.168.3.101:1080/macrozheng/hello.git
+git clone http://192.168.3.101:1080/kratos47mhs/hello.git
 
 ```
 
@@ -162,4 +162,4 @@ git log
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

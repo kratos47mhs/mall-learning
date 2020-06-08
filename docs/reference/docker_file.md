@@ -68,7 +68,7 @@ MAINTAINER <name>
 ```
 示例：
 ```shell
-MAINTAINER macrozheng
+MAINTAINER kratos47mhs
 ```
 
 ### RUN
@@ -99,7 +99,7 @@ EXPOSE 8080
 # 指定docker容器启动时运行jar包
 ENTRYPOINT ["java", "-jar","/mall-tiny-docker-file.jar"]
 # 指定维护者的名字
-MAINTAINER macrozheng
+MAINTAINER kratos47mhs
 ```
 
 ### 使用maven打包应用
@@ -203,8 +203,8 @@ docker run -p 8080:8080 --name mall-tiny-docker-file \
 
 ## 项目源码地址
 
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-docker-file](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-docker-file)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker-file](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker-file)
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

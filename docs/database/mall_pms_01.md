@@ -1,12 +1,12 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 商品模块数据库表解析（一）
+# Commodity module database table analysis (1)
 
-> 本文主要对商品分类、品牌管理、商品类型这三个功能的表进行解析，采用功能与表结构对照的形式。表解析只会标注一些需要理解的字段，简单字段请自行对照表注释。
+> This article mainly analyzes the table of the three functions of product category, brand management, and product type, using the form of function and table structure comparison. Table analysis will only mark some fields that need to be understood. For simple fields, please refer to the table notes.
 
-## 商品分类
+## Categories
 
-### 商品分类表
+### Product Category Table
 
 ```sql
 create table pms_product_category
@@ -27,21 +27,21 @@ create table pms_product_category
 );
 ```
 
-### 管理端展现
+### Management display
 
-- 商品分类列表
+- Product Category list
 ![](../images/database_screen_02.png)
-- 添加商品分类
+- Add product category
 ![](../images/database_screen_01.png)
 
 
-### 移动端展现
+### Mobile display
 
 ![](../images/database_screen_03.png)
 
-## 品牌管理
+## Brand management
 
-### 商品品牌表
+### Product brand table
 
 ```sql
 create table pms_brand
@@ -61,24 +61,24 @@ create table pms_brand
 );
 ```
 
-### 管理端展现
+### Management display
 
-- 品牌列表
+- Brand list
 ![](../images/database_screen_04.png)
-- 添加品牌
+- Add brand
 ![](../images/database_screen_05.png)
 
-### 移动端展现
+### Mobile display
 
 ![](../images/database_screen_06.png)
 
-## 商品类型
+## Product Types
 
-> 商品类型即商品属性，主要是指商品的规格和参数，规格用于用户购买商品时选择，参数用于标示商品属性及搜索时筛选。
+> The product type is the product attribute, which mainly refers to the specifications and parameters of the product. The specifications are used for selection when the user purchases the product, and the parameters are used to mark the attribute of the product and filter when searching.
 
-### 相关表结构
+### Related table structure
 
-#### 商品属性分类表
+#### Product attribute category table
 
 ```sql
 create table pms_product_attribute_category
@@ -91,9 +91,9 @@ create table pms_product_attribute_category
 );
 ```
 
-#### 商品属性表
+#### Product attribute table
 
-> type字段用于控制其是规格还是参数
+> The type field is used to control whether it is a specification or a parameter
 
 ```sql
 create table pms_product_attribute
@@ -114,9 +114,9 @@ create table pms_product_attribute
 );
 ```
 
-#### 商品属性值表
+#### Product attribute value table
 
-> 如果对应的参数是规格且规格支持手动添加，那么该表用于存储手动新增的值；如果对应的商品属性是参数，那么该表用于存储参数的值。
+> If the corresponding parameter is a specification and the specification supports manual addition, then this table is used to store the manually added value; if the corresponding product attribute is a parameter, then this table is used to store the parameter value.
 
 ```sql
 create table pms_product_attribute_value
@@ -129,9 +129,9 @@ create table pms_product_attribute_value
 );
 ```
 
-#### 商品分类和属性的关系表
+#### Product classification and attribute relationship table
 
-> 用于选中分类后搜索时生成筛选属性。
+> Used to generate filter attributes when searching after selecting a category.
 
 ```sql
 create table pms_product_category_attribute_relation
@@ -143,32 +143,32 @@ create table pms_product_category_attribute_relation
 );
 ```
 
-### 管理端展现
+### Management display
 
-- 商品属性分类列表
+- Product attribute classification list
 ![](../images/database_screen_07.png)
-- 添加商品属性分类  
+- Add product attribute category  
 ![](../images/database_screen_08.png)
-- 商品规格列表
+- Product specification list
 ![](../images/database_screen_09.png)
-- 商品参数列表
+- Product parameter list
 ![](../images/database_screen_10.png)
-- 添加商品属性
+- Add product attributes
 ![](../images/database_screen_11.png)
-- 添加商品时，选中商品属性分类，就会显示该分类的属性，用于生成sku
+- When adding a product, select the product attribute category, and the attributes of the category will be displayed for generating sku
 ![](../images/database_screen_12.png)
-- 添加商品时，选中商品属性分类，会显示该分类的参数用于录入
+- When adding a product, select the product attribute category, and the parameters of the category will be displayed for entry
 ![](../images/database_screen_13.png)
 
-### 移动端展现
+### Mobile display
 
-- 选择商品规格  
+- Select product specifications  
 ![](../images/database_screen_14.png)
-- 查看商品参数  
+- View product parameters  
 ![](../images/database_screen_15.png)
-- 搜索商品时用于选择分类后的筛选  
+- Used to select the classified filter when searching for products  
 ![](../images/database_screen_16.png)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

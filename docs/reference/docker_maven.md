@@ -142,7 +142,7 @@ grant all privileges on *.* to 'root'@'%'
 ```sql
 create database mall character set utf8
 ```
-- 将[mall.sql](https://github.com/macrozheng/mall-learning/blob/master/document/sql/mall.sql)文件拷贝到mysql容器的/目录下：
+- 将[mall.sql](https://github.com/kratos47mhs/mall-learning/blob/master/document/sql/mall.sql)文件拷贝到mysql容器的/目录下：
 ```shell
 docker cp /mydata/mall.sql mysql:/
 ```
@@ -172,8 +172,8 @@ firewall-cmd --reload
 
 ## 项目源码地址
 
-[https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-docker](https://github.com/macrozheng/mall-learning/tree/master/mall-tiny-docker)
+[https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker)
 
 ## 公众号
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![公众号图片](https://kratos47mhs.github.io/images/logo.png)

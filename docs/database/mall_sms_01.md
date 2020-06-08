@@ -1,14 +1,14 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# 营销模块数据库表解析（一）
+# Marketing module database table analysis (1)
 
-> 本文主要对限时购（秒杀）功能相关表进行解析，采用数据库表与功能对照的形式。
+> This article mainly analyzes the time-limited purchase (second spike) function related table, using the form of database table and function comparison.
 
-## 相关表结构
+## Related table structure
 
-### 限时购表
+### Flash Promotion form
 
-> 用于存储限时购活动的信息，包括开始时间、结束时间以及上下线状态。
+> Used to store information about Flash Promotion purchase activities, including start time, end time, and online and offline status.
 
 ```sql
 create table sms_flash_promotion
@@ -23,9 +23,9 @@ create table sms_flash_promotion
 );
 ```
 
-### 限时购场次表
+### Flash Promotion purchase schedule
 
-> 用于存储限时购场次的信息，在一天中，一个限时购活动会有多个不同的活动时间段。
+> It is used to store information about Flash Promotion purchases. In a day, a Flash Promotion purchase will have multiple different time periods.
 
 ```sql
 create table sms_flash_promotion_session
@@ -40,9 +40,9 @@ create table sms_flash_promotion_session
 );
 ```
 
-### 限时购与商品关系表
+### Flash Promotion purchase and product relationship table
 
-> 用于存储与限时购相关的商品信息，一个限时购中有多个场次，每个场次都可以设置不同活动商品。
+> It is used to store product information related to Flash Promotion purchases. There are multiple sessions in a Flash Promotion purchase, and different events can be set for each session.
 
 ```sql
 create table sms_flash_promotion_product_relation
@@ -59,9 +59,9 @@ create table sms_flash_promotion_product_relation
 );
 ```
 
-### 限时购通知记录表
+### Flash Promotion purchase log record Table
 
-> 用于存储会员的限时购预约记录，当有的限时购场次还未开始时，会员可以进行预约操作，当场次开始时，系统会进行提醒。
+> It is used to store the member's Flash Promotion purchase reservation record. When some Flash Promotion purchase sessions have not yet started, the member can make a reservation operation. When the session starts, the system will remind.
 
 ```sql
 create table sms_flash_promotion_log
@@ -77,50 +77,50 @@ create table sms_flash_promotion_log
 );
 ```
 
-## 管理端展现
+## Management display
 
-### 限时购数据列表
+### Flash Promotion purchase data list
 ![](../images/database_screen_72.png)
 
-### 编辑限时购活动
+### Edit Flash Promotion purchases
 ![](../images/database_screen_73.png)
 
-### 限时购场次列表
+### List of Flash Promotion purchases
 ![](../images/database_screen_74.png)
 
-### 编辑限时购场次
+### Edit Flash Promotion purchases
 ![](../images/database_screen_75.png)
 
-### 添加商品到限时购场次
+### Add items to the Flash Promotion session
 
-#### 点击设置商品
+#### Click to set up products
 ![](../images/database_screen_76.png)
 
-#### 点击商品列表
+#### Click on the product list
 ![](../images/database_screen_77.png)
 
-#### 选择商品进行添加
+#### Select products to add
 ![](../images/database_screen_78.png)
 
-**注意：添加到限时购的商品需要修改`pms_product`表的`promotion_type`为5，优惠计算规则也应该改成使用限时购的优惠。**
+**Note: Products added to the limited Flash Promotion need to be modified`pms_product`Table`promotion_type`For 5, the discount calculation rule should also be changed to use the Flash Promotion purchase discount.**
 
-### 编辑限时购商品信息
+### Edit Flash Promotion purchase information
 ![](../images/database_screen_79.png)
 
-## 移动端展现
+## Mobile display
 
-### 已开抢的限时购
+### A Flash Promotion purchase has been opened
 ![](../images/database_screen_80.png)
 
-### 抢购中的限时购
+### Flash Promotion purchase in panic buying
 ![](../images/database_screen_81.png)
 
-### 即将开始的限时购
+### Upcoming Flash Promotion purchase
 ![](../images/database_screen_82.png)
 
-### 即将开始的限时购可以设置预约提醒
+### You can set an appointment reminder for the upcoming Flash Promotion purchase
 ![](../images/database_screen_83.png)
 
-## 公众号
+## No public
 
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
