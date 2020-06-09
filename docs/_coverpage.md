@@ -1,4 +1,4 @@
-![logo](images/mall.svg)
+![logo](images/mall.svg ':size=128x128')
 
 # mall-learning
 
