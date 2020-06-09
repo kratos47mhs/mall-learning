@@ -1,42 +1,42 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) get it immediately.
 
-# IDEA中的Git操作，看这一篇就够了！
+# Git operation in IDEA, it is enough to read this article!
 
-> 大家在使用Git时，都会选择一种Git客户端，在IDEA中内置了这种客户端，可以让你不需要使用Git命令就可以方便地进行操作，本文将讲述IDEA中的一些常用Git操作。
+> When you use Git, you will choose a Git client. This client is built into IDEA, which allows you to easily operate without using Git commands. This article will talk about some common Git operations in IDEA.
 
-## 环境准备
+## Environmental preparation
 
-- 使用前需要安装一个远程的Git仓库和本地的Git客户端，具体参考：[10分钟搭建自己的Git仓库](https://mp.weixin.qq.com/s/6GyYlR9lpVcjgYmHMYLi0w)。
-- 由于IDEA中的Git插件需要依赖本地Git客户端，所以需要进行如下配置：
+- Before use, you need to install a remote Git repository and a local Git client, specific reference: [Build your own Git repository in 10 minutes](https://mp.weixin.qq.com/s/6GyYlR9lpVcjgYmHMYLi0w)。
+- Since the Git plugin in IDEA depends on the local Git client, the following configuration is required:
 
 ![](../images/gitlab_screen_02.png)
 
-## 操作流程
+## Operating procedures
 
-> 我们这里使用mall-tiny项目的源代码来演示，尽可能还原一个正式的操作流程。
+> Here we use the source code of the mall-tiny project to demonstrate, as far as possible to restore a formal operation process.
 
-### 在Gitlab中创建一个项目并添加README文件
+### Create a project in Gitlab and add a README file
 
 ![](../images/gitlab_screen_22.png)
 
-### clone项目到本地
+### clone project to local
 
-- 打开从Git检出项目的界面：  
+- Open the interface to check out the project from Git:
 
 ![](../images/gitlab_screen_23.png)
-- 输入Git地址进行检出：
+- Enter the Git address to check out:
 
 ![](../images/gitlab_screen_24.png)
-- 暂时不生成IDEA项目，因为项目还没初始化：
+- The IDEA project is not generated temporarily because the project has not been initialized:
 
 ![](../images/gitlab_screen_25.png)
 
-### 初始化项目并提交代码
+### Initialize the project and submit the code
 
-- 将mall-tiny的代码复制到该目录中：
+- Copy the mall-tiny code into this directory:
 
 ![](../images/gitlab_screen_26.png)
-- 这里我们需要一个.gitignore文件来防止一些IDEA自动生成的代码被提交到Git仓库去：
+- Here we need a .gitignore file to prevent some IDEA automatically generated code from being submitted to the Git repository:
 
 ```
 # Maven #
@@ -51,97 +51,97 @@ target/
 .classpath
 .project
 ```
-- 使用IDEA打开项目：
+- Use IDEA to open the project:
 
 ![](../images/gitlab_screen_27.png)
-- 右键项目打开菜单，将所有文件添加到暂存区中：
+- Right-click the project to open the menu and add all files to the temporary storage area:
 
 ![](../images/gitlab_screen_28.png)
-- 添加注释并提交代码：
+- Add comments and commit code:
 
 ![](../images/gitlab_screen_29.png)
 
-### 将代码推送到远程仓库
+### Push the code to the remote repository
 
-- 点击push按钮推送代码：
+- Click the push button to push the code:
 
 ![](../images/gitlab_screen_30.png)
-- 确认推送内容：
+- Confirm the push content:
 
 ![](../images/gitlab_screen_31.png)
-- 查看远程仓库发现已经提交完成：
+- Check the remote repository and find that it has been submitted:
 
 ![](../images/gitlab_screen_32.png)
 
-### 从远程仓库拉取代码
+### Pull code from remote repository
 
-- 在远程仓库添加一个README-TEST.md文件：
+- Add a README-TEST.md file in the remote repository：
 
 ![](../images/gitlab_screen_33.png)
-- 从远程仓库拉取代码：
+- Pull the code from the remote repository:
 
 ![](../images/gitlab_screen_34.png)
-- 确认拉取分支信息：
+- Confirm pull branch information：
 
 ![](../images/gitlab_screen_35.png)
 
-### 从本地创建分支并推送到远程
-- 在本地创建dev分支，点击右下角的Git:master按钮：
+### Create branch from local and push to remote
+- Create a dev branch locally and click the Git:master button in the lower right corner:
 
 ![](../images/gitlab_screen_36.png)
-- 使用push将本地dev分支推送到远程：
+- Use push to push the local dev branch to the remote:
 
 ![](../images/gitlab_screen_30.png)
-- 确认推送内容：
+- Confirm the push content:
 
 ![](../images/gitlab_screen_37.png)
-- 查看远程仓库发现已经创建了dev分支：
+- Looking at the remote repository, it is found that the dev branch has been created:
 
 ![](../images/gitlab_screen_38.png)
 
 
-### 分支切换
-- 从dev分支切换回master分支： 
+### Branch switch
+- Switch from the dev branch back to the master branch:
  
 ![](../images/gitlab_screen_39.png)
 
-### Git文件冲突问题解决
+### Git file conflict resolution
 
-- 修改远程仓库代码：
+- Modify the remote repository code:
 
 ![](../images/gitlab_screen_40.png)
-- 修改本地仓库代码：
+- Modify the local repository code:
 
 ![](../images/gitlab_screen_41.png)
-- 提交本地仓库代码并拉取，发现代码产生冲突，点击Merge进行合并：
+- Commit the local repository code and pull it, and find that the code conflicts, click Merge to merge:
 
 ![](../images/gitlab_screen_42.png)
-- 点击箭头将左右两侧代码合并到中间区域：
+- Click the arrow to merge the left and right codes into the middle area:
 
 ![](../images/gitlab_screen_43.png)
-- 冲突合并完成后，点击Apply生效：
+- After the conflict merge is completed, click Apply to take effect:
 
 ![](../images/gitlab_screen_44.png)
-- 提交代码并推送到远程。
+- Commit the code and push it to the remote.
 
-### 从dev分支合并代码到master
+### Merge code from dev branch to master
 
-- 在远程仓库修改dev分支代码：
+- Modify the dev branch code in the remote repository:
 
 ![](../images/gitlab_screen_45.png)
-- 在本地仓库拉取代码，选择从dev分支拉取并进行合并：
+- Pull the code in the local repository, choose to pull from the dev branch and merge:
 
 ![](../images/gitlab_screen_46.png)
-- 发现产生冲突，解决后提交并推送到远程仓库即可。
+- If conflicts are found, commit them and push them to the remote repository.
 
 ![](../images/gitlab_screen_47.png)
 
-### 查看Git仓库提交历史记录
+### View Git repository commit history
 
 ![](../images/gitlab_screen_48.png)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
 
 

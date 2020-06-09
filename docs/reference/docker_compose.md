@@ -1,59 +1,59 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) get it immediately.
 
-# 使用Docker Compose部署SpringBoot应用
+# Use Docker Compose to deploy Spring Boot applications
 
-> Docker Compose是一个用于定义和运行多个docker容器应用的工具。使用Compose你可以用YAML文件来配置你的应用服务，然后使用一个命令，你就可以部署你配置的所有服务了。
+> Docker Compose is a tool for defining and running multiple docker container applications. With Compose, you can use YAML files to configure your application services, and then use one command, you can deploy all the services you configure.
 
-## 安装
+## Installation
 
-### 下载Docker Compose:
+### Download Docker Compose:
 ```shell
-curl -L https://get.daocloud.io/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.26.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 ```
-### 修改该文件的权限为可执行：
+### The permissions to modify the file are executable:
 ```shell
 chmod +x /usr/local/bin/docker-compose
 ```
-### 查看是否已经安装成功：
+### Check whether it has been successfully installed:
 ```shell
 docker-compose --version
 ```
 ![](../images/refer_screen_96.png)
 
-## 使用Docker Compose的步骤
+## Steps to use Docker Compose
 
-- 使用Dockerfile定义应用程序环境，一般需要修改初始镜像行为时才需要使用；
-- 使用docker-compose.yml定义需要部署的应用程序服务，以便执行脚本一次性部署；
-- 使用docker-compose up命令将所有应用服务一次性部署起来。
+- Use Dockerfile to define the application environment, which is generally needed when the initial mirroring behavior needs to be modified;
+- Use docker-compose.yml to define the application services that need to be deployed in order to execute the script for one-time deployment;
+- Use the docker-compose up command to deploy all application services at once.
 
-## docker-compose.yml常用命令
+## docker-compose.yml commonly used commands
 
 ### image
-指定运行的镜像名称
+Specify the name of the running image
 ```yml
-# 运行的是mysql5.7的镜像
+# Is running a mirror of mysql 5.7
 image: mysql:5.7
 ```
 
 ### container_name
-配置容器名称
+Configure the container name
 ```yml
-# 容器名称为mysql
+# The container name is mysql
 container_name: mysql
 ```
 
 ### ports
-指定宿主机和容器的端口映射（HOST:CONTAINER）
+Specify host and container port mapping（HOST:CONTAINER）
 ```yml
-# 将宿主机的3306端口映射到容器的3306端口
+# Map port 3306 of the host to port 3306 of the container
 ports:
   - 3306:3306
 ```
 
 ### volumes
-将宿主机的文件或目录挂载到容器中（HOST:CONTAINER）
+Mount the file or directory of the host machine into the container（HOST:CONTAINER）
 ```yml
-# 将外部文件挂载到myql容器中
+# Mount external files into mysql container
 volumes:
   - /mydata/mysql/log:/var/log/mysql
   - /mydata/mysql/data:/var/lib/mysql
@@ -61,99 +61,99 @@ volumes:
 ```
 
 ### environment
-配置环境变量
+Configure environment variables
 ```yml
-# 设置mysqlroot帐号密码的环境变量
+# Set environment variables for mysqlroot account password
 environment:
   - MYSQL_ROOT_PASSWORD=root
 ```
 
 ### links
-连接其他容器的服务（SERVICE:ALIAS）
+Services to connect to other containers（SERVICE:ALIAS）
 ```yml
-# 可以以database为域名访问服务名称为db的容器
+# You can use the database as the domain name to access the container with the service name as db
 links:
   - db:database
 ```
 
-## Docker Compose常用命令
+## Common commands of Docker Compose
 
-### 构建、创建、启动相关容器：
+### Build, create, and start related containers:
 ```shell
-# -d表示在后台运行
+# -d means run in the background (run Daemon mode)
 docker-compose up -d
 ```
-### 停止所有相关容器：
+### Stop all related containers:
 ```shell
 docker-compose stop
 ```
-### 列出所有容器信息：
+### List all container information:
 ```shell
 docker-compose ps
 ```
 
-## 使用Docker Compose 部署应用
+## Deploy applications using Docker Compose
 
-### 编写docker-compose.yml文件
+### Write docker-compose.yml file
 
-> Docker Compose将所管理的容器分为三层，工程、服务及容器。docker-compose.yml中定义所有服务组成了一个工程，services节点下即为服务，服务之下为容器。容器与容器直之间可以以服务名称为域名进行访问，比如在mall-tiny-docker-compose服务中可以通过jdbc:mysql://db:3306这个地址来访问db这个mysql服务。
+> Docker Compose divides the managed container into three layers, engineering, service and container. In docker-compose.yml, all services are defined as a project, under the services node is the service, and under the service is the container. Between the container and the container, the service name can be used as the domain name for access. For example, in the mall-tiny-docker-compose service, the db mysql service can be accessed through the address jdbc:mysql://db:3306.
 
 ```yml
 version: '3'
 services:
-  # 指定服务名称
+  # Specify service name
   db:
-    # 指定服务使用的镜像
+    # Specify the image used by the service
     image: mysql:5.7
-    # 指定容器名称
+    # Designated container name
     container_name: mysql
-    # 指定服务运行的端口
+    # Specify the port on which the service runs
     ports:
       - 3306:3306
-    # 指定容器中需要挂载的文件
+    # Specify the file to be mounted in the container
     volumes:
       - /mydata/mysql/log:/var/log/mysql
       - /mydata/mysql/data:/var/lib/mysql
       - /mydata/mysql/conf:/etc/mysql
-    # 指定容器的环境变量
+    # Specify the environment variables of the container
     environment:
       - MYSQL_ROOT_PASSWORD=root
-  # 指定服务名称
+  # Specify service name
   mall-tiny-docker-compose:
-    # 指定服务使用的镜像
+    # Specify the image used by the service
     image: mall-tiny/mall-tiny-docker-compose:0.0.1-SNAPSHOT
-    # 指定容器名称
+    # Designated container name
     container_name: mall-tiny-docker-compose
-    # 指定服务运行的端口
+    # Specify the port on which the service runs
     ports:
       - 8080:8080
-    # 指定容器中需要挂载的文件
+    # Specify the file to be mounted in the container
     volumes:
       - /etc/localtime:/etc/localtime
       - /mydata/app/mall-tiny-docker-compose/logs:/var/logs
 ```
-**注意：如果遇到mall-tiny-docker-compose服务无法连接到mysql，需要在mysql中建立mall数据库，同时导入mall.sql脚本。具体参考[使用Dockerfile为SpringBoot应用构建Docker镜像](https://mp.weixin.qq.com/s/U_OcNMpLAJJum_s9jbZLGg)中的运行mysql服务并设置部分。**
+**Note: If you encounter a mall-tiny-docker-compose service that cannot connect to mysql, you need to create a mall database in mysql and import the mall.sql script. For details, please refer to [Run mysql service and setup part] in [Build Docker image for Spring Boot application using Dockerfile] (https://mp.weixin.qq.com/s/U_OcNMpLAJJum_s9jbZLGg).**
 
-### 使用maven插件构建mall-tiny-docker-compose镜像
+### Use maven plugin to build mall-tiny-docker-compose image
 ![](../images/refer_screen_97.png)
 
-**注意：构建有问题的可以参考[使用Maven插件为SpringBoot应用构建Docker镜像](https://mp.weixin.qq.com/s/q2KDzHbPkf3Q0EY8qYjYgw)**
+**Note: You can refer to the problematic construction[Use the Maven plugin to build Docker images for Spring Boot applications](https://mp.weixin.qq.com/s/q2KDzHbPkf3Q0EY8qYjYgw)**
 
-### 运行Docker Compose命令启动所有服务
-先将docker-compose.yml上传至Linux服务器，再在当前目录下运行如下命令：
+### Run Docker Compose command to start all services
+First upload docker-compose.yml to the Linux server, and then run the following command in the current directory:
 ```shell
 docker-compose up -d
 ```
 ![](../images/refer_screen_98.png)
 
-访问接口文档地址http://192.168.3.101:8080/swagger-ui.html：
+Access interface document address http://192.168.3.101:8080/swagger-ui.html:
 
 ![](../images/refer_screen_94.png)
 
-## 项目源码地址
+## Project source address
 
 [https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker-compose](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker-compose)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

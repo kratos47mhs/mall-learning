@@ -1,12 +1,12 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) get it immediately.
 
-# Hutool中那些常用的工具类和方法 
+# The commonly used tool classes and methods in Hutool
 
-> Hutool是一个Java工具包，它帮助我们简化每一行代码，避免重复造轮子。如果你有需要用到某些工具方法的时候，不妨在Hutool里面找找，可能就有。本文将对Hutool中的常用工具类和方法进行介绍。
+> Hutool is a Java toolkit that helps us simplify every line of code and avoid reinventing the wheel. If you need to use certain tools and methods, you may wish to find them in Hutool, there may be. This article will introduce common tools and methods in Hutool.
 
-## 安装
+## Installation
 
-maven项目在pom.xml添加以下依赖即可：
+The maven project can add the following dependencies in pom.xml:
 
 ```xml
 <dependency>
@@ -16,80 +16,80 @@ maven项目在pom.xml添加以下依赖即可：
 </dependency>
 ```
 
-## 常用工具类
+## Common tools
 
 ### Convert
-类型转换工具类，用于各种类型数据的转换。
+Type conversion tool class, used to convert various types of data.
 
 ```java 
-//转换为字符串
+//Convert to string
 int a = 1;
 String aStr = Convert.toStr(a);
-//转换为指定类型数组
+//Convert to an array of the specified type
 String[] b = {"1", "2", "3", "4"};
 Integer[] bArr = Convert.toIntArray(b);
-//转换为日期对象
+//Convert to date object
 String dateStr = "2017-05-06";
 Date date = Convert.toDate(dateStr);
-//转换为列表
+//Convert to list
 String[] strArr = {"a", "b", "c", "d"};
 List<String> strList = Convert.toList(String.class, strArr);
 ```
 
 ### DateUtil
-日期时间工具类，定义了一些常用的日期时间操作方法。
+Date and time tool class defines some commonly used date and time operation methods.
 
 ```java 
-//Date、long、Calendar之间的相互转换
-//当前时间
+//Conversion between Date, Long, and Calendar
+//current time
 Date date = DateUtil.date();
-//Calendar转Date
+//Calendar turn to Date
 date = DateUtil.date(Calendar.getInstance());
-//时间戳转Date
+//Timestamp to Date
 date = DateUtil.date(System.currentTimeMillis());
-//自动识别格式转换
+//Automatic recognition format conversion
 String dateStr = "2017-03-01";
 date = DateUtil.parse(dateStr);
-//自定义格式化转换
+//Custom format conversion
 date = DateUtil.parse(dateStr, "yyyy-MM-dd");
-//格式化输出日期
+//Format the output date
 String format = DateUtil.format(date, "yyyy-MM-dd");
-//获得年的部分
+//Get the part of the year
 int year = DateUtil.year(date);
-//获得月份，从0开始计数
+//Get month, count from 0
 int month = DateUtil.month(date);
-//获取某天的开始、结束时间
+//Get the start and end time of a day
 Date beginOfDay = DateUtil.beginOfDay(date);
 Date endOfDay = DateUtil.endOfDay(date);
-//计算偏移后的日期时间
+//Calculate the offset date and time
 Date newDate = DateUtil.offset(date, DateField.DAY_OF_MONTH, 2);
-//计算日期时间之间的偏移量
+//Calculate the offset between date and time
 long betweenDay = DateUtil.between(date, newDate, DateUnit.DAY);
 ```
 
 ### StrUtil
-字符串工具类，定义了一些常用的字符串操作方法。
+The string tool class defines some commonly used string manipulation methods.
 
 ```java 
-//判断是否为空字符串
+//Determine if it is an empty string
 String str = "test";
 StrUtil.isEmpty(str);
 StrUtil.isNotEmpty(str);
-//去除字符串的前后缀
+//Remove the prefix and suffix of the string
 StrUtil.removeSuffix("a.jpg", ".jpg");
 StrUtil.removePrefix("a.jpg", "a.");
-//格式化字符串
-String template = "这只是个占位符:{}";
-String str2 = StrUtil.format(template, "我是占位符");
+//Format string
+String template = "This is just a placeholder:{}";
+String str2 = StrUtil.format(template, "I am a placeholder");
 LOGGER.info("/strUtil format:{}", str2);
 ```
 
 ### ClassPathResource
 
-获取classPath下的文件，在Tomcat等容器下，classPath一般是WEB-INF/classes。
+Obtain the files under the class path. Under Tomcat and other containers, the class path is generally WEB-INF/classes.
 
 ```java 
-//获取定义在src/main/resources文件夹中的配置文件
+//Get the configuration file defined in the src/main/resources folder
 ClassPathResource resource = new ClassPathResource("generator.properties");
 Properties properties = new Properties();
 properties.load(resource.getStream());
@@ -97,35 +97,35 @@ LOGGER.info("/classPath:{}", properties);
 ```
 
 ### ReflectUtil
-Java反射工具类，可用于反射获取类的方法及创建对象。
+The Java reflection tool class can be used to reflect the methods of obtaining classes and creating objects.
 
 ```java 
-//获取某个类的所有方法
+//Get all methods of a class
 Method[] methods = ReflectUtil.getMethods(PmsBrand.class);
-//获取某个类的指定方法
+//Get the specified method of a class
 Method method = ReflectUtil.getMethod(PmsBrand.class, "getId");
-//使用反射来创建对象
+//Use reflection to create objects
 PmsBrand pmsBrand = ReflectUtil.newInstance(PmsBrand.class);
-//反射执行对象的方法
+//Method of reflecting execution object
 ReflectUtil.invoke(pmsBrand, "setId", 1);
 ```
 
 ### NumberUtil
-数字处理工具类，可用于各种类型数字的加减乘除操作及判断类型。
+Digital processing tools can be used for various types of addition, subtraction, multiplication and division operations and judgment types.
 
 ```java 
 double n1 = 1.234;
 double n2 = 1.234;
 double result;
-//对float、double、BigDecimal做加减乘除操作
+//Add, subtract, multiply, and divide operations on float, double, and Big Decimal
 result = NumberUtil.add(n1, n2);
 result = NumberUtil.sub(n1, n2);
 result = NumberUtil.mul(n1, n2);
 result = NumberUtil.div(n1, n2);
-//保留两位小数
+//Keep two decimal places
 BigDecimal roundNum = NumberUtil.round(n1, 2);
 String n3 = "1.234";
-//判断是否为数字、整数、浮点数
+//Determine whether it is a number, integer, floating point
 NumberUtil.isNumber(n3);
 NumberUtil.isInteger(n3);
 NumberUtil.isDouble(n3);
@@ -133,96 +133,96 @@ NumberUtil.isDouble(n3);
 
 ### BeanUtil
 
-JavaBean的工具类，可用于Map与JavaBean对象的互相转换以及对象属性的拷贝。
+The JavaBean tool class can be used to convert Map and JavaBean objects and copy object attributes.
 
 ```java 
 PmsBrand brand = new PmsBrand();
 brand.setId(1L);
-brand.setName("小米");
+brand.setName("Xiaomi");
 brand.setShowStatus(0);
-//Bean转Map
+//Bean to Map
 Map<String, Object> map = BeanUtil.beanToMap(brand);
 LOGGER.info("beanUtil bean to map:{}", map);
-//Map转Bean
+//Map to Bean
 PmsBrand mapBrand = BeanUtil.mapToBean(map, PmsBrand.class, false);
 LOGGER.info("beanUtil map to bean:{}", mapBrand);
-//Bean属性拷贝
+//Bean attribute copy
 PmsBrand copyBrand = new PmsBrand();
 BeanUtil.copyProperties(brand, copyBrand);
 LOGGER.info("beanUtil copy properties:{}", copyBrand);
 ```
 
 ### CollUtil
-集合操作的工具类，定义了一些常用的集合操作。
+The collection operation tool class defines some commonly used collection operations.
 
 ```java 
-//数组转换为列表
+//Array to list
 String[] array = new String[]{"a", "b", "c", "d", "e"};
 List<String> list = CollUtil.newArrayList(array);
-//join：数组转字符串时添加连接符号
+//join：Add connection symbol when array is converted to string
 String joinStr = CollUtil.join(list, ",");
 LOGGER.info("collUtil join:{}", joinStr);
-//将以连接符号分隔的字符串再转换为列表
+//Convert strings separated by connection symbols into lists
 List<String> splitList = StrUtil.split(joinStr, ',');
 LOGGER.info("collUtil split:{}", splitList);
-//创建新的Map、Set、List
+//Create a new Map、Set、List
 HashMap<Object, Object> newMap = CollUtil.newHashMap();
 HashSet<Object> newHashSet = CollUtil.newHashSet();
 ArrayList<Object> newList = CollUtil.newArrayList();
-//判断列表是否为空
+//Determine if the list is empty
 CollUtil.isEmpty(list);
 ```
 
 ### MapUtil
-Map操作工具类，可用于创建Map对象及判断Map是否为空。
+Map operation tool class can be used to create Map objects and determine whether the Map is empty.
 
 ```java 
-//将多个键值对加入到Map中
+//Add multiple key-value pairs to Map
 Map<Object, Object> map = MapUtil.of(new String[][]{
     {"key1", "value1"},
     {"key2", "value2"},
     {"key3", "value3"}
 });
-//判断Map是否为空
+//Determine if Map is empty
 MapUtil.isEmpty(map);
 MapUtil.isNotEmpty(map);
 ```
 
 ### AnnotationUtil
 
-注解工具类，可用于获取注解与注解中指定的值。
+Annotation tool class can be used to obtain annotations, and the values specified in annotations.
 
 ```java 
-//获取指定类、方法、字段、构造器上的注解列表
+//Get the list of annotations on the specified class, method, field, and constructor
 Annotation[] annotationList = AnnotationUtil.getAnnotations(HutoolController.class, false);
 LOGGER.info("annotationUtil annotations:{}", annotationList);
-//获取指定类型注解
+//Get annotation of specified type
 Api api = AnnotationUtil.getAnnotation(HutoolController.class, Api.class);
 LOGGER.info("annotationUtil api value:{}", api.description());
-//获取指定类型注解的值
+//Get the value of the specified type of annotation
 Object annotationValue = AnnotationUtil.getAnnotationValue(HutoolController.class, RequestMapping.class);
 ```
 
 ### SecureUtil
-加密解密工具类，可用于MD5加密。
+Encryption and decryption tools can be used for MD 5 encryption.
 
 ```java 
-//MD5加密
+//MD5 encryption
 String str = "123456";
 String md5Str = SecureUtil.md5(str);
 LOGGER.info("secureUtil md5:{}", md5Str);
 ```
 
 ### CaptchaUtil
-验证码工具类，可用于生成图形验证码。
+Verification code tools can be used to generate graphical verification codes.
 
 ```java 
-//生成验证码图片
+//Generate verification Captcha
 LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
 try {
     request.getSession().setAttribute("CAPTCHA_KEY", lineCaptcha.getCode());
-    response.setContentType("image/png");//告诉浏览器输出内容为图片
-    response.setHeader("Pragma", "No-cache");//禁止浏览器缓存
+    response.setContentType("image/png");//Tell the browser that the output is a picture
+    response.setHeader("Pragma", "No-cache");//Disable browser caching
     response.setHeader("Cache-Control", "no-cache");
     response.setDateHeader("Expire", 0);
     lineCaptcha.write(response.getOutputStream());
@@ -231,15 +231,15 @@ try {
 }
 ```
 
-### 其他工具类
+### Other tools
 
-Hutool中的工具类很多，可以参考：[https://www.hutool.cn/](https://www.hutool.cn/)
+There are many tools in Hutool, you can refer to: [https://www.hutool.cn/](https://www.hutool.cn/)
 
-## 项目源码地址
+## Project source address
 
 [https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-hutool](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-hutool)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
 

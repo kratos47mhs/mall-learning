@@ -1,23 +1,23 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) get it immediately.
 
-# 10分钟搭建自己的Git仓库
+# Set up your own Git repository in 10 minutes
 
-> GitLab是一款使用MIT许可证的基于网络的Git仓库管理工具，我们可以使用它来搭建自己的Git仓库，本文将介绍如何使用Gitlab在Linux下快速搭建Git仓库。
+> Git Lab is a web-based Git warehouse management tool that uses the MIT license. We can use it to build our own Git warehouse. This article will introduce how to use Gitlab to quickly build a Git warehouse under Linux.
 
 
-## Gitlab服务端搭建
+## Gitlab server build
 
-> 在Linux（CenterOS7.6）下我们会以Docker的方式来安装Gitlab，对Docker不了解的朋友可以参考：[开发者必备Docker命令](https://mp.weixin.qq.com/s/d_CuljDTJq680NTndAay8g)。
+> Under Linux (Center OS 7.6), we will install Gitlab with Docker. Friends who don’t know Docker can refer to: [Developer Essential Docker Command] (https://mp.weixin.qq.com/s/d_CuljDTJq680NTndAay8g).
 
-### 下载Gitlab的Docker镜像
+### Download Gitlab's Docker image
 
 ```bash
 docker pull gitlab/gitlab-ce
 ```
 
-### 运行如下命令来启动Gitlab
+### Run the following command to start Gitlab
 
-> 需要注意的是我们的Gitlab的http服务运行在宿主机的1080端口上，这里我们将Gitlab的配置，日志以及数据目录映射到了宿主机的指定文件夹下，防止我们在重新创建容器后丢失数据。
+> It should be noted that our Gitlab http service runs on port 1080 of the host machine. Here we map the Gitlab configuration, logs and data directory to the specified folder of the host machine to prevent us from losing data after recreating the container.
 
 ```bash
 docker run --detach \
@@ -30,25 +30,25 @@ docker run --detach \
   gitlab/gitlab-ce:latest
 ```
 
-### 开启防火墙的指定端口
+### Open the designated port of the firewall
 
-> 由于Gitlab运行在1080端口上，所以我们需要开放该端口，注意千万不要直接关闭防火墙，否则Gitlab会无法启动。
+> Since Gitlab runs on port 1080, we need to open this port. Be careful not to close the firewall directly, otherwise Gitlab will not start.
 
 ```bash
-# 开启1080端口
+# Open 1080 port
 firewall-cmd --zone=public --add-port=1080/tcp --permanent 
-# 重启防火墙才能生效
+# Restart the firewall to take effect
 systemctl restart firewalld
-# 查看已经开放的端口
+# View the open ports
 firewall-cmd --list-ports
 ```
 
-### 访问Gitlab
-- 访问地址：[http://192.168.3.101:1080/](http://192.168.3.101:1080/)
-- 由于Gitlab启动比较慢，需要耐心等待10分钟左右，如果Gitlab没有启动完成访问，会出现如下错误。
+### Visit Gitlab
+- Address：[http://192.168.3.101:1080/](http://192.168.3.101:1080/)
+- Because Gitlab is slow to start, you need to wait patiently for about 10 minutes. If Gitlab does not start to complete the access, the following error will occur.
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_04.png)
-- 可以通过docker命令动态查看容器启动日志来知道gitlab是否已经启动完成。
+- You can use the docker command to dynamically view the container startup log to know whether gitlab has been started.
 ```bash
 docker logs gitlab -f
 ```
@@ -56,110 +56,110 @@ docker logs gitlab -f
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_05.png)
 
 
-## Gitlab的使用
+## Use of Gitlab
 
-### Gitlab启动完成后第一次访问，会让你重置root帐号的密码
+### Gitlab is accessed for the first time after starting, it will let you reset the password of the root account
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_06.png)
-### 重置完成后输入帐号密码登录
+### After the reset is complete, enter the account password to log in
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_07.png)
-### 选择创建项目、创建组织、创建帐号
+### Choose to create a project, create an organization, create an account
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_08.png)
-### 创建组织
-首先我们需要创建一个组织，然后在这个组织下分别创建用户和项目，这样同组织的用户就可以使用该组织下的项目了。
+### Create Organization
+First, we need to create an organization, and then create users and projects under this organization, so that users in the same organization can use the projects under the organization.
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_09.png)
-### 创建用户并修改密码
+### Create user and change password
 
-#### 找到添加用户的按钮
+#### Find the button to add users
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_10.png)
-#### 输入用户名密码添加用户
+#### Enter username and password to add user
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_11.png)
-#### 在编辑界面中修改用户密码
+#### Modify user password in the editing interface
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_12.png)
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_13.png)
-### 创建项目并添加README文件
+### Create project and add README file
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_14.png)
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_15.png)
-### 将用户分配到组织
+### Assign users to organizations
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_16.png)
 
-## Git客户端安装及使用
+## Git client installation and use
 
-### 下载Git客户端并安装
+### Download the Git client and install
 
-- 下载地址：https://github.com/git-for-windows/git/releases/download/v2.23.0.windows.1/Git-2.23.0-64-bit.exe
-- 下载完成后，一路点击Next安装即可。
+- download link：https://github.com/git-for-windows/git/releases/download/v2.23.0.windows.1/Git-2.23.0-64-bit.exe
+- After the download is complete, click Next to install all the way.
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_01.png)
 
-### clone项目
+### clone project
 
-- 找到项目clone的地址：
+- Find the address of the project clone:
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_17.png)
-- 打开Git命令行工具：
+- Open the Git command line tool:
   
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_18.png)
-- 执行以下命令clone项目到本地：
+- Execute the following command to clone the project to the local:
 
 ```bash
 git clone http://192.168.3.101:1080/kratos47mhs/hello.git
 
 ```
 
-### 提交代码
+### Commit code
 
-进入项目目录，修改一下README.md并提交：
+Enter the project directory, modify README.md and commit:
 ```bash
-# 进入项目工程目录
+# Enter the project engineering directory
 cd hello/
-# 将当前修改的文件添加到暂存区
+# Add the currently modified file to the staging area
 git add .
-# 提交代码
+# Commit code
 git commit -m "first commit"
 ```
 
-### 推送到远程仓库
+### Push to remote repository
 ```bash
 git push
 ```
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_19.png)
 
-### 拉取远程仓库代码
+### Pull remote repository code
 
-- 在Gitlab上修改readme中的文件内容：
+- Modify the content of the file in readme on Gitlab:
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_20.png)
-- 拉取代码：
+- Pull the code:
  ```bash
 git pull
 ```
 
-### 本地创建并提交分支
+### Create and commit branches locally
 
 ```bash
-# 切换并从当前分支创建一个dev分支
+# Switch and create a dev branch from the current branch
 git checkout -b dev
-# 将新创建的dev分支推送到远程仓库
+# Push the newly created dev branch to the remote repository
 git push origin dev
 ```
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/gitlab_screen_21.png)
 
-### 其他常用命令
+### Other common commands
 
 ```bash
-# 切换到dev分支
+# Switch to dev branch
 git checkout dev
-# 查看本地仓库文件状况
+# View the status of local repository files
 git status
-# 查看本地所有分支
+# View all local branches
 git branch
-# 查看提交记录
+# View submission history
 git log
 ```
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

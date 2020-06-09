@@ -6,7 +6,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 
 ## IDEA
 
-1.Specific reference on the installation and use of IDEA[https://github.com/judasn/IntelliJ-IDEA-Tutorial](https://github.com/judasn/IntelliJ-IDEA-Tutorial)
+1.Specific reference on the installation and use of IDEA[https://www.youtube.com/user/intellijideavideo/playlists](https://www.youtube.com/user/intellijideavideo/playlists)
 
 2.Search plugin repository, install lombok plugin .
 

@@ -1,112 +1,112 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) get it immediately.
 
-# 使用Dockerfile为SpringBoot应用构建Docker镜像
+# Use Dockerfile to build Docker images for Spring Boot applications
 
-> 上次写过一篇[使用Maven插件构建Docker镜像](https://mp.weixin.qq.com/s/q2KDzHbPkf3Q0EY8qYjYgw) ，讲述了通过docker-maven-plugin来构建docker镜像的方式，此种方式需要依赖自建的Registry镜像仓库。本文将讲述另一种方式，使用Dockerfile来构建docker镜像，此种方式不需要依赖自建的镜像仓库，只需要应用的jar包和一个Dockerfile文件即可。
+> Last time I wrote an article[Build Docker image using Maven plugin](https://mp.weixin.qq.com/s/q2KDzHbPkf3Q0EY8qYjYgw) ，Describes the way to build a docker image through docker-maven-plugin. This method needs to rely on the self-built Registry image warehouse. This article will describe another way to use Dockerfile to build a docker image. This method does not need to rely on a self-built image warehouse, only the application jar package and a Dockerfile file.
 
-## Dockerfile常用指令
+## Dockerfile common instructions
 
 ### ADD
-用于复制文件，格式：
+Used to copy files, format:
 ```
 ADD <src> <dest>
 ```
-示例：
+Examples：
 ```shell
-# 将当前目录下的mall-tiny-docker-file.jar包复制到docker容器的/目录下
+# Copy the mall-tiny-docker-file.jar package in the current directory to the / directory of the docker container
 ADD mall-tiny-docker-file.jar /mall-tiny-docker-file.jar
 ```
 
 ### ENTRYPOINT
-指定docker容器启动时执行的命令，格式：
+Specify the command to be executed when the docker container starts, the format:
 ```
 ENTRYPOINT ["executable", "param1","param2"...]
 ```
-示例：
+Examples：
 ```shell
-# 指定docker容器启动时运行jar包
+# Specify to run the jar package when the docker container starts
 ENTRYPOINT ["java", "-jar","/mall-tiny-docker-file.jar"]
 ```
 
 ### ENV
-用于设置环境变量，格式：
+Used to set environment variables, format:
 ```
 ENV <key> <value>
 ```
-示例：
+Examples:
 ```shell
-# mysql运行时设置root密码
+# Set root password when mysql is running
 ENV MYSQL_ROOT_PASSWORD root
 ```
 
 ### EXPOSE
-声明需要暴露的端口(只声明不会打开端口)，格式：
+Declare the port that needs to be exposed (only declare that the port will not be opened), format:
 ```
 EXPOSE <port1> <port2> ...
 ```
-示例：
+Examples：
 ```shell
-# 声明服务运行在8080端口
+# Declare that the service is running on port 8080
 EXPOSE 8080
 ```
 
 ### FROM
-指定所需依赖的基础镜像，格式：
+Specify the required base image, format:
 ```
 FROM <image>:<tag>
 ```
-示例：
+Examples:
 ```shell
-# 该镜像需要依赖的java8的镜像
+# This image needs to depend on the image of java 8
 FROM java:8
 ```
 
 ### MAINTAINER
-指定维护者的名字，格式：
+Specify the name of the maintainer, format:
 ```
 MAINTAINER <name>
 ```
-示例：
+Examples:
 ```shell
 MAINTAINER kratos47mhs
 ```
 
 ### RUN
-在容器构建过程中执行的命令，我们可以用该命令自定义容器的行为，比如安装一些软件，创建一些文件等，格式：
+Commands executed during the container construction process, we can use this command to customize the behavior of the container, such as installing some software, creating some files, etc., format:
 ```
 RUN <command>
 RUN ["executable", "param1","param2"...]
 ```
-示例：
+Examples:
 ```shell
-# 在容器构建过程中需要在/目录下创建一个mall-tiny-docker-file.jar文件
+# During the container building process, a mall-tiny-docker-file.jar file needs to be created in the / directory
 RUN bash -c 'touch /mall-tiny-docker-file.jar'
 ```
 
-## 使用Dockerfile构建SpringBoot应用镜像
+## Use Dockerfile to build Spring Boot application image
 
-### 编写Dockerfile文件
+### Write Dockerfile
 
 ```shell
-# 该镜像需要依赖的基础镜像
+# The base image that this image needs to depend on
 FROM java:8
-# 将当前目录下的jar包复制到docker容器的/目录下
+# Copy the jar package in the current directory to the / directory of the docker container
 ADD mall-tiny-docker-file-0.0.1-SNAPSHOT.jar /mall-tiny-docker-file.jar
-# 运行过程中创建一个mall-tiny-docker-file.jar文件
+# Create a mall-tiny-docker-file.jar file during operation
 RUN bash -c 'touch /mall-tiny-docker-file.jar'
-# 声明服务运行在8080端口
+# Declare that the service is running on port 8080
 EXPOSE 8080
-# 指定docker容器启动时运行jar包
+# Specify to run the jar package when the docker container starts
 ENTRYPOINT ["java", "-jar","/mall-tiny-docker-file.jar"]
-# 指定维护者的名字
+# Specify the name of the maintainer
 MAINTAINER kratos47mhs
 ```
 
-### 使用maven打包应用
+### Package the application using maven
 
-在IDEA中双击package命令进行打包:  
+Double-click the package command in IDEA to package:
 ![](../images/refer_screen_91.png)  
-打包成功后展示：
+After successful packaging, display:
 ```shell
 [INFO] --- spring-boot-maven-plugin:2.1.3.RELEASE:repackage (repackage) @ mall-tiny-docker-file ---
 [INFO] Replacing main artifact with repackaged archive
@@ -118,17 +118,17 @@ MAINTAINER kratos47mhs
 [INFO] Final Memory: 43M/306M
 [INFO] ------------------------------------------------------------------------
 ```
-将应用jar包及Dockerfile文件上传到linux服务器：
+Upload the application jar package and Dockerfile file to the Linux server:
 ![](../images/refer_screen_92.png)
 ![](../images/refer_screen_95.png)
-### 在Linux上构建docker镜像
-在Dockerfile所在目录执行以下命令：
+### Build docker image on Linux
+Execute the following command in the directory where the Dockerfile is located:
 ```shell
-# -t 表示指定镜像仓库名称/镜像名称:镜像标签 .表示使用当前目录下的Dockerfile
+# -t Represents the specified image repository name/image name: image label. Represents the use of Dockerfile in the current directory
 docker build -t mall-tiny/mall-tiny-docker-file:0.0.1-SNAPSHOT .
 ```
 
-输出如下信息：
+The following information is output:
 ```shell
 Sending build context to Docker daemon  36.37MB
 Step 1/5 : FROM java:8
@@ -150,11 +150,11 @@ Removing intermediate container 0c5bf61a0032
 Successfully built c3614dad21b7
 Successfully tagged mall-tiny/mall-tiny-docker-file:0.0.1-SNAPSHOT
 ```
-查看docker镜像：
+View the docker image:
 ![](../images/refer_screen_93.png)
-### 运行mysql服务并设置
+### Run mysql service and set up
 
-#### 1.使用docker命令启动：
+#### 1.Use the docker command to start:
 ```shell
 docker run -p 3306:3306 --name mysql \
 -v /mydata/mysql/log:/var/log/mysql \
@@ -163,33 +163,33 @@ docker run -p 3306:3306 --name mysql \
 -e MYSQL_ROOT_PASSWORD=root  \
 -d mysql:5.7
 ```
-#### 2.进入运行mysql的docker容器：
+#### 2.Enter the docker container running mysql:
 ```shell
 docker exec -it mysql /bin/bash
 ```
-#### 3.使用mysql命令打开客户端：
+#### 3.Use the mysql command to open the client:
 ```shell
 mysql -uroot -proot --default-character-set=utf8
 ```
-#### 4.修改root帐号的权限，使得任何ip都能访问：
+#### 4.Modify the permissions of the root account so that any ip can access:
 ```sql
 grant all privileges on *.* to 'root'@'%'
 ```
-#### 5.创建mall数据库：
+#### 5.Create the mall database:
 ```sql
 create database mall character set utf8
 ```
-#### 6.将mall.sql文件拷贝到mysql容器的/目录下：
+#### 6.Copy the mall.sql file to the / directory of the mysql container:
 ```shell
 docker cp /mydata/mall.sql mysql:/
 ```
-#### 7.将sql文件导入到数据库：
+#### 7.Import the sql file to the database:
 ```shell
 use mall;
 source /mall.sql;
 ```
 
-### 运行mall-tiny-docker-file应用
+### Run the mall-tiny-docker-file application
 
 ```shell
 docker run -p 8080:8080 --name mall-tiny-docker-file \
@@ -198,13 +198,13 @@ docker run -p 8080:8080 --name mall-tiny-docker-file \
 -v /mydata/app/mall-tiny-docker-file/logs:/var/logs \
 -d mall-tiny/mall-tiny-docker-file:0.0.1-SNAPSHOT
 ```
-访问接口文档地址http://192.168.3.101:8080/swagger-ui.html：
+Access interface document address http://192.168.3.101:8080/swagger-ui.html：
 ![](../images/refer_screen_94.png)
 
-## 项目源码地址
+## Project source address
 
 [https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker-file](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker-file)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

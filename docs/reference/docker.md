@@ -1,208 +1,208 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public Number) get it immediately.
 
-# 开发者必备Docker命令
+# Developer essential Docker commands
 
-> 本文主要讲解Docker环境的安装以及Docker常用命令的使用，掌握这些对Docker环境下应用的部署具有很大帮助。
+> This article mainly explains the installation of the Docker environment and the use of Docker common commands. Mastering these is very helpful for the deployment of applications in the Docker environment.
 
-## Docker 简介
+## Introduction to Docker
 
- Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows机器上。使用Docker可以更方便低打包、测试以及部署应用程序。
+ Docker is an open source application container engine that allows developers to package their applications and dependent packages into a portable image and then publish it to any popular Linux or Windows machine. Using Docker makes it easier to package, test, and deploy applications.
 
-## Docker 环境安装
-- 安装yum-utils：
+## Docker environment installation
+- Install yum-utils：
 ```bash
 yum install -y yum-utils device-mapper-persistent-data lvm2
 ```
-- 为yum源添加docker仓库位置：
+- Add docker repository location for yum source：
 ```bash
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 ```
-- 安装docker:
+- Install docker:
 ```bash
 yum install docker-ce
 ```
-- 启动docker:
+- Start docker:
 ```bash
 systemctl start docker
 ```
 
-## Docker 镜像常用命令
+## Common commands for Docker images
 
-### 搜索镜像
+### Search image
 ```bash
 docker search java
 ```
 ![](../images/refer_screen_51.png)
-### 下载镜像
+### Download image
 ```bash
 docker pull java:8
 ```
-### 如何查找镜像支持的版本
-> 由于docker search命令只能查找出是否有该镜像，不能找到该镜像支持的版本，所以我们需要通过docker hub来搜索支持的版本。
+### How to find the version supported by the image
+> Since the docker search command can only find out whether the image is available, and cannot find the version supported by the image, we need to search the supported version through the docker hub.
 
-- 进入docker hub的官网，地址：[https://hub.docker.com](https://hub.docker.com)
-- 然后搜索需要的镜像：
+- Enter the official website of docker hub, address：[https://hub.docker.com](https://hub.docker.com)
+- Then search for the required image：
 ![](../images/refer_screen_52.png)
-- 查看镜像支持的版本：
+- View the version supported by the image：
 ![](../images/refer_screen_53.png)
 
-- 进行镜像的下载操作：
+- Download the image：
 ```bash
 docker pull nginx:1.17.0
 ```
 
-### 列出镜像
+### List images
 ```bash
 docker images
 ```
 ![](../images/refer_screen_54.png)
-### 删除镜像
-- 指定名称删除镜像
+### Delete image
+- Delete the image with the specified name
 ```bash
 docker rmi java:8
 ```
-- 指定名称删除镜像（强制）
+- Delete the image with the specified name (mandatory)
 ```bash
 docker rmi -f java:8
 ```
-- 删除所有没有引用的镜像
+- Delete all unreferenced images
 ```bash
 docker rmi `docker images | grep none | awk '{print $3}'`
 ```
-- 强制删除所有镜像
+- Force delete all images
 ```bash
 docker rmi -f $(docker images)
 ```
 
-## Docker 容器常用命令
-### 新建并启动容器
+## Common commands for Docker containers
+### Create and start a container
 ```bash
 docker run -p 80:80 --name nginx -d nginx:1.17.0
 ```
-- -d选项：表示后台运行
-- --name选项：指定运行后容器的名字为nginx,之后可以通过名字来操作容器
-- -p选项：指定端口映射，格式为：hostPort:containerPort
+- -d option: indicates running in the background
+- --name option: specify the name of the container after running as nginx, and then you can operate the container by name
+- -p option: specify port mapping, the format is：hostPort:containerPort
 
-### 列出容器
-- 列出运行中的容器：
+### List containers
+- List running containers:
 ```bash
 docker ps
 ```
 ![](../images/refer_screen_55.png)
-- 列出所有容器
+- List all containers
 ```bash
 docker ps -a
 ```
 ![](../images/refer_screen_56.png)
-### 停止容器
+### Stop the container
 ```bash
-# $ContainerName及$ContainerId可以用docker ps命令查询出来
-docker stop $ContainerName(或者$ContainerId)
+# $ContainerName and $ContainerId can be queried with the docker ps command
+docker stop $ContainerName(Or $ContainerId)
 ```
-比如：
+for Example
 ```bash
 docker stop nginx
-#或者
+#Or
 docker stop c5f5d5125587
 ```
-### 强制停止容器
+### Force stop container
 ```bash
-docker kill $ContainerName(或者$ContainerId)
+docker kill $ContainerName(Or $ContainerId)
 ```
-### 启动已停止的容器
+### Start a stopped container
 ```bash
-docker start $ContainerName(或者$ContainerId)
+docker start $ContainerName(Or $ContainerId)
 ```
-### 进入容器
-- 先查询出容器的pid：
+### Into the container
+- First query the pid of the container:
 ```bash
-docker inspect --format "{{.State.Pid}}" $ContainerName(或者$ContainerId)
+docker inspect --format "{{.State.Pid}}" $ContainerName(Or $ContainerId)
 ```
-- 根据容器的pid进入容器：
+- Enter the container according to the pid of the container:
 ```bash
 nsenter --target "$pid" --mount --uts --ipc --net --pid
 ```
 ![](../images/refer_screen_57.png)
-### 删除容器
-- 删除指定容器：
+### Delete container
+- Delete the specified container:
 ```bash
-docker rm $ContainerName(或者$ContainerId)
+docker rm $ContainerName(Or $ContainerId)
 ```
-- 按名称删除容器
+- Delete container by name
 ```bash
 docker rm `docker ps -a | grep mall-* | awk '{print $1}'`
 ```
-- 强制删除所有容器；
+- Forcibly delete all containers;
 ```bash
 docker rm -f $(docker ps -a -q)
 ```
-### 查看容器的日志
-- 查看当前全部日志
+### View container logs
+- View all current logs
 ```bash
-docker logs $ContainerName(或者$ContainerId)
+docker logs $ContainerName(Or $ContainerId)
 ```
-- 动态查看日志
+- View logs dynamically
 ```bash
-docker logs $ContainerName(或者$ContainerId) -f
+docker logs $ContainerName(Or $ContainerId) -f
 ```
 ![](../images/refer_screen_58.png)
-### 查看容器的IP地址
+### View the IP address of the container
 ```bash
-docker inspect --format '{{ .NetworkSettings.IPAddress }}' $ContainerName(或者$ContainerId)
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' $ContainerName(Or $ContainerId)
 ```
 ![](../images/refer_screen_59.png)
-### 修改容器的启动方式
+### Modify the container startup method
 ```bash
 docker container update --restart=always $ContainerName
 ```
-### 同步宿主机时间到容器
+### Synchronize host time to container
 ```bash
-docker cp /etc/localtime $ContainerName(或者$ContainerId):/etc/
+docker cp /etc/localtime $ContainerName(Or $ContainerId):/etc/
 ```
-### 在宿主机查看docker使用cpu、内存、网络、io情况
-- 查看指定容器情况：
+### View docker usage cpu, memory, network, io on the host machine
+- View the specified container:
 ```bash
-docker stats $ContainerName(或者$ContainerId)
+docker stats $ContainerName(Or $ContainerId)
 ```
 ![](../images/refer_screen_60.png)
-- 查看所有容器情况：
+- View all containers:
 ```bash
 docker stats -a
 ```
 ![](../images/refer_screen_61.png)
-### 查看Docker磁盘使用情况
+### View Docker disk usage
 ```bash
 docker system df
 ```
 ![](../images/refer_screen_108.png)
-### 进入Docker容器内部的bash
+### Enter the bash inside the Docker container
 ```bash
 docker exec -it $ContainerName /bin/bash
 ```
 ![](../images/refer_screen_62.png)
 
-## 修改Docker镜像的存放位置
-- 查看Docker镜像的存放位置：
+## Modify the storage location of the Docker image
+- Check the storage location of the Docker image:
 ```bash
 docker info | grep "Docker Root Dir"
 ```
 ![](../images/refer_screen_63.png)
-- 关闭Docker服务：
+- Shut down the Docker service:
 ```bash
 systemctl stop docker
 ```
-- 移动目录到目标路径：
+- Move the directory to the target path:
 ```bash
 mv /var/lib/docker /mydata/docker
 ```
-- 建立软连接：
+- Establish a soft connection:
 ```bash
 ln -s /mydata/docker /var/lib/docker
 ```
 ![](../images/refer_screen_64.png)
 ![](../images/refer_screen_65.png)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
 

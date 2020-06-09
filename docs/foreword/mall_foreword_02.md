@@ -7,7 +7,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 ## Recommended materials
 
 ### IDEA
-《IntelliJ-IDEA-Tutorial》：[https://github.com/judasn/IntelliJ-IDEA-Tutorial](https://github.com/judasn/IntelliJ-IDEA-Tutorial)
+《IntelliJ-IDEA-Tutorial》：[https://www.youtube.com/user/intellijideavideo/playlists](https://www.youtube.com/user/intellijideavideo/playlists)
 > Especially complete IDEA tutorials, you can learn many practical skills.
 
 ### Spring

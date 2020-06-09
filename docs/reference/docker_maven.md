@@ -1,55 +1,55 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
-# 使用Maven插件为SpringBoot应用构建Docker镜像
->本文主要介绍如何使用Maven插件将SpringBoot应用打包为Docker镜像，并上传到私有镜像仓库Docker Registry的过程。
+# Use the Maven plugin to build Docker images for Spring Boot applications
+> This article mainly describes how to use the Maven plugin to package the SpringBoot application as a Docker image and upload it to the private image warehouse Docker Registry.
 
 ## Docker Registry
-### Docker Registry 2.0搭建
+### Docker Registry 2.0 build
 ```shell
 docker run -d -p 5000:5000 --restart=always --name registry2 registry:2
 ```
-如果遇到镜像下载不下来的情况，需要修改 /etc/docker/daemon.json 文件并添加上 registry-mirrors 键值，然后重启docker服务：
+If the image cannot be downloaded, you need to modify the /etc/docker/daemon.json file and add the registry-mirrors key value, and then restart the docker service:
 ```json
 {
   "registry-mirrors": ["https://registry.docker-cn.com"]
 }
 ```
-### Docker开启远程API
-#### 用vim编辑器修改docker.service文件
+### Docker opens remote API
+#### Modify the docker.service file with vim editor
 ```
 vi /usr/lib/systemd/system/docker.service
 ```
-需要修改的部分：
+Parts that need to be modified:
 ```shell
 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 ```
-修改后的部分：
+Modified part:
 ```shell
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 ```
-#### 让Docker支持http上传镜像
+#### Let Docker support http upload image
 ```shell
 echo '{ "insecure-registries":["192.168.3.101:5000"] }' > /etc/docker/daemon.json
 ```
-#### 修改配置后需要使用如下命令使配置生效
+#### After modifying the configuration, you need to use the following command to make the configuration effective
 ```shell
 systemctl daemon-reload
 ```
-#### 重新启动Docker服务
+#### Restart the Docker service
 ```shell
 systemctl stop docker
 systemctl start docker
 ```
-#### 开启防火墙的Docker构建端口
+#### Open the firewall's Docker build port
 ```shell
 firewall-cmd --zone=public --add-port=2375/tcp --permanent
 firewall-cmd --reload
 ```
 
-## 使用Maven构建Docker镜像
-> 该代码是在mall-tiny-02的基础上修改的。
+## Use Maven to build Docker images
+> The code is modified on the basis of mall-tiny-02.
 
-### 在应用的pom.xml文件中添加docker-maven-plugin的依赖
+### Add the dependency of docker-maven-plugin in the pom.xml file of the application
 
 ```xml
 <plugin>
@@ -81,18 +81,18 @@ firewall-cmd --reload
     </configuration>
 </plugin>
 ```
-相关配置说明：
-- executions.execution.phase:此处配置了在maven打包应用时构建docker镜像；
-- imageName：用于指定镜像名称，mall-tiny是仓库名称，`${project.artifactId}`为镜像名称，`${project.version}`为仓库名称；
-- dockerHost：打包后上传到的docker服务器地址；
-- baseImage：该应用所依赖的基础镜像，此处为java；
-- entryPoint：docker容器启动时执行的命令；
-- resources.resource.targetPath：将打包后的资源文件复制到该目录；
-- resources.resource.directory：需要复制的文件所在目录，maven打包的应用jar包保存在target目录下面；
-- resources.resource.include：需要复制的文件，打包好的应用jar包。
+The related configuration instructions：
+- executions.execution.phase:Here is configured to build a docker image when maven packages the application;
+- imageName：Used to specify the image name, mall-tiny is the repository name, `${project.artifactId}` is the mirror name, and `${project.version}` is the warehouse name;
+- dockerHost：The docker server address to upload to after packaging；
+- baseImage：The basic image that the application depends on, here java；
+- entryPoint：Commands executed when the docker container starts；
+- resources.resource.targetPath：Copy the packaged resource file to this directory；
+- resources.resource.directory：The directory of the file to be copied, the application jar package packaged by maven is saved under the target directory；
+- resources.resource.include：Files that need to be copied are packaged application jar packages.
 
-### 修改application.yml，将localhost改为db
-> 可以把docker中的容器看作独立的虚拟机，mall-tiny-docker访问localhost自然会访问不到mysql，docker容器之间可以通过指定好的服务名称db进行访问，至于db这个名称可以在运行mall-tiny-docker容器的时候指定。
+### Modify application.yml, change localhost to db
+> You can think of the container in docker as an independent virtual machine. Mall-tiny-docker will not be able to access mysql when accessing localhost. The docker container can be accessed through the specified service name db. As for the name db, you can run mall-tiny-docker is specified when the container.
 
 ```yml
 spring:
@@ -102,20 +102,20 @@ spring:
     password: root
 ```
 
-### 使用IDEA打包项目并构建镜像
->注意：依赖的基础镜像需要先行下载，否则会出现构建镜像超时的情况，比如我本地并没有java8的镜像，就需要先把镜像pull下来，再用maven插件进行构建。
+### Use IDEA to package the project and build the image
+> Note: The dependent basic image needs to be downloaded first, otherwise there will be a timeout when building the image. For example, if I don't have a java 8 image locally, I need to pull down the image first and then use the maven plugin to build it.
 
-- 执行maven的package命令:  
+- Execute maven's package command:  
 ![](../images/refer_screen_68.png)
-- 构建成功:  
+- Successful build:  
 ![](../images/refer_screen_66.png)
-- 镜像仓库已有该镜像：  
+- The image repository already has the image: 
 ![](../images/refer_screen_67.png)
 
-## 运行mall-tiny-docker项目
+## Run the mall-tiny-docker project
 
-### 启动mysql服务
-- 使用docker命令启动：
+### Start mysql service
+- Use the docker command to start:
 ```shell
   docker run -p 3306:3306 --name mysql \
   -v /mydata/mysql/log:/var/log/mysql \
@@ -124,36 +124,36 @@ spring:
   -e MYSQL_ROOT_PASSWORD=root  \
   -d mysql:5.7
 ```
-- 进入运行mysql的docker容器：
+- Enter the docker container running mysql:
 ```shell
 docker exec -it mysql /bin/bash
 ```
-- 使用mysql命令打开客户端：
+- Use the mysql command to open the client:
 ```shell
 mysql -uroot -proot --default-character-set=utf8
 ```
 ![](../images/refer_screen_69.png)
-- 修改root帐号的权限，使得任何ip都能访问：
+- Modify the permissions of the root account so that any ip can access:
 ```sql
 grant all privileges on *.* to 'root'@'%'
 ```
 ![](../images/refer_screen_70.png)
-- 创建mall数据库：
+- Create the mall database:
 ```sql
 create database mall character set utf8
 ```
-- 将[mall.sql](https://github.com/kratos47mhs/mall-learning/blob/master/document/sql/mall.sql)文件拷贝到mysql容器的/目录下：
+- Use [mall.sql](https://github.com/kratos47mhs/mall-learning/blob/master/document/sql/mall.sql) Copy the file to the / directory of the mysql container:
 ```shell
 docker cp /mydata/mall.sql mysql:/
 ```
-- 将sql文件导入到数据库：
+- Import the sql file to the database:
 ```shell
 use mall;
 source /mall.sql;
 ```
 ![](../images/refer_screen_71.png)
-### 启动mall-tiny-docker应用服务
-- 使用docker命令启动（--link表示应用可以用db这个域名访问mysql服务）：
+### Start the mall-tiny-docker application service
+- Use the docker command to start (--link indicates that the application can use the domain name db to access the mysql service):
 ```shell
   docker run -p 8080:8080 --name mall-tiny-docker \
   --link mysql:db \
@@ -162,18 +162,18 @@ source /mall.sql;
   -d mall-tiny/mall-tiny-docker:0.0.1-SNAPSHOT
 ```
 ![](../images/refer_screen_72.png)
-- 开启8080端口：
+- Open port 8080:
 ```shell
 firewall-cmd --zone=public --add-port=8080/tcp --permanent
 firewall-cmd --reload
 ```
-- 进行访问测试，地址：[http://192.168.3.101:8080/swagger-ui.html](http://192.168.3.101:8080/swagger-ui.html)
+- Conduct an access test, address：[http://192.168.3.101:8080/swagger-ui.html](http://192.168.3.101:8080/swagger-ui.html)
 ![](../images/refer_screen_73.png)
 
-## 项目源码地址
+## Project source address
 
 [https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-docker)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
