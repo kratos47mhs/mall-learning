@@ -1,8 +1,8 @@
-* Demo
+* Demo (Oops...)
   * [Admin management](http://www.kratos47mhs.com/admin/index.html)
   * [Mobile](http://www.kratos47mhs.com/app/index.html)
 
-* project address
+* Project Address
   * [Back-end project](https://github.com/kratos47mhs/mall)
   * [Front-end project](https://github.com/kratos47mhs/mall-admin-web)
   * [Study course](https://github.com/kratos47mhs/mall-learning)
