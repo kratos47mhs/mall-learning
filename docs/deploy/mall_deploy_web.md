@@ -1,21 +1,21 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# mall前端项目的安装与部署
+# Installation and deployment of mall front-end projects
 
-> 本文主要讲解mall前端项目mall-admin-web的在Windows和Linux环境下的安装及部署。
+> This article mainly explains the installation and deployment of the mall-admin-web mall front-end project under Windows and Linux environments.
 
-## Windows下的安装及部署
+## Installation and deployment under Windows
 
-### 下载nodejs并安装
-下载地址：https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi
+### Download nodejs and install
+download link：https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi
 
-### 下载mall-admin-web的代码
-下载地址（github）：https://github.com/kratos47mhs/mall-admin-web
-下载地址（码云）：https://gitee.com/kratos47mhs/mall-admin-web
+### Download the code for mall-admin-web
+download link（github）：https://github.com/kratos47mhs/mall-admin-web
+download link（码云）：https://gitee.com/kratos47mhs/mall-admin-web
 
-### 从IDEA中打开mall-admin-web项目
+### Open the mall-admin-web project from IDEA
 ![](../images/tech_screen_12.png)
-### 打开控制台输入命令安装相关依赖
+### Open the console and enter the command to install related dependencies
 ```shell
 npm install
 ```
@@ -23,88 +23,88 @@ npm install
 
 ![](../images/tech_screen_14.png)
 
-### 已经搭建了mall后台环境的启动
+### The start of the mall back-end environment has been built
 
-#### 运行本地mall-admin服务
+#### Run local mall-admin service
 ![](../images/tech_screen_15.png)
 
-#### 使用命令启动mall-admin-web
-- 在IDEA控制台中输入如下命令：
+#### Use the command to start mall-admin-web
+- Enter the following command in the IDEA console:
 ```shell
 npm run dev
 ```
 ![](../images/tech_screen_16.png)
-- 访问地址http://localhost:8090 查看效果：
+- Visit the address http://localhost:8090 to see the effect:
 ![](../images/tech_screen_17.png)
-- 进行登录操作，发现调用的是本地接口：
+- Perform a login operation and find that the local interface is called:
 ![](../images/tech_screen_18.png)
 
-### 未搭建mall后台环境的启动
+### Start without building a mall background environment
 
-> 未搭建mall后台的需要使用线上api进行访问，线上API地址：http://120.27.63.9:8080 。
+> Those who have not set up the mall background need to use online api to access, online API address: http://120.27.63.9:8080.
 
-#### 修改dev.env.js文件中的BASE_API为线上地址
+#### Modify the BASE API in the dev.env.js file to an online address
 
 ![](../images/tech_screen_19.png)
 
-#### 使用命令启动mall-admin-web
+#### Use the command to start mall-admin-web
 
-- 在IDEA控制台中输入如下命令：
+- Enter the following command in the IDEA console:
 ```shell
 npm run dev
 ```
 ![](../images/tech_screen_16.png)
-- 访问地址http://localhost:8090 查看效果：
+- Visit the address http://localhost:8090 to see the effect:
 ![](../images/tech_screen_17.png)
-- 进行登录操作，发现调用的是线上接口：
+- After logging in, it is found that the online interface is called:
 ![](../images/tech_screen_20.png)
 
-## Linux下的部署
+## Linux deployment
 
-- 修改prod.env.js文件的配置
+- Modify the configuration of prod.env.js file
 ![](../images/tech_screen_21.png)
-- 使用命令进行打包
+- Use commands to package
 ```shell
 npm run build
 ```
 ![](../images/tech_screen_22.png)
-- 打包后的代码位置
+- Packaged code location
 ![](../images/tech_screen_23.png)
 
-- 将dist目录打包为dist.tar.gz文件
+- Package the dist directory as a dist.tar.gz file
 ![](../images/tech_screen_24.png)
-- Linux上nginx的安装可以参考[mall在Linux环境下的部署（基于Docker容器）](https://mp.weixin.qq.com/s/0fVMK107i5bBq8kGQqg8KA)中的nginx部分
-- 将dist.tar.gz上传到linux服务器（nginx相关目录）
+- You can refer to the installation of nginx on Linux[Mall deployment in Linux environment (based on Docker container)](https://mp.weixin.qq.com/s/0fVMK107i5bBq8kGQqg8KA)中的nginx部分
+- Upload dist.tar.gz to linux server (nginx related directory)
 ![](../images/tech_screen_27.png)
-- 使用该命令进行解压操作
+- Use this command to decompress
 ```shell
 tar -zxvf dist.tar.gz
 ```
-- 删除nginx的html文件夹
+- Delete nginx html folder
 ```shell
 rm -rf html
 ```
-- 移动dist文件夹到html文件夹
+- Move dist folder to html folder
 ```shell
 mv dist html
 ```
-- 运行mall-admin服务
+- Run the mall-admin service
 ```shell
 docker start mall-admin
 ```
-- 重启nginx
+- Restart nginx
 ```shell
 docker restart nginx
 ```
-- 访问首页并登录：http://192.168.3.101
+- Visit the homepage and log in：http://192.168.3.101
 ![](../images/tech_screen_25.png)
-- 发现调用的是Linux服务器地址
+- It is found that the Linux server address is called
 ![](../images/tech_screen_26.png)
 
-## 项目源码地址
+## Project source address
 
 [https://github.com/kratos47mhs/mall-admin-web](https://github.com/kratos47mhs/https://github.com/kratos47mhs/mall-admin-web)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

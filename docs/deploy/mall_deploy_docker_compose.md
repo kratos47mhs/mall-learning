@@ -1,32 +1,32 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# mall在Linux环境下的部署（基于Docker Compose）
-> 最简单的mall在Linux下部署方式，使用两个docker-compse脚本就可以完成部署。第一个脚本用于部署mall运行所依赖的服务（mysql、redis、nginx、rabbitmq、elasticsearch、kibana、mongo），第二个脚本用于部署mall中的应用（mall-admin、mall-search、mall-portal）。
+# Mall deployment in Linux environment (based on Docker Compose)
+> The simplest way to deploy mall under Linux is to use two docker-compose scripts to complete the deployment. The first script is used to deploy services that Mall depends on (mysql, redis, nginx, rabbitmq, elasticsearch, kibana, mongo), and the second script is used to deploy applications in mall (mall-admin, mall-search, mall -portal).
 
-## docker环境搭建及使用
-具体参考：[开发者必备Docker命令](https://mp.weixin.qq.com/s/d_CuljDTJq680NTndAay8g)
+## Docker environment to build and use
+Specific reference：[Developer essential Docker commands](https://mp.weixin.qq.com/s/d_CuljDTJq680NTndAay8g)
 
-## docker-compose环境搭建及使用
-具体参考：[使用Docker Compose部署SpringBoot应用](https://mp.weixin.qq.com/s/iMl9bJ4SxUsNHBbiS5VUcw)
+## Docker-compose environment setup and use
+Specific reference：[Use Docker Compose to deploy Spring Boot applications](https://mp.weixin.qq.com/s/iMl9bJ4SxUsNHBbiS5VUcw)
 
-## mall项目的docker-compose部署
+## docker-compose deployment of mall project
 
-### 运行配置要求
-CenterOS7.6版本，推荐4G以上内存
+### Operating configuration requirements
+Center OS 7.6 version, recommend more than 4G memory
 
 ### 部署相关文件
 
-- 数据库脚本mall.sql：https://github.com/kratos47mhs/mall/blob/master/document/sql/mall.sql
-- nginx配置文件nginx.conf：https://github.com/kratos47mhs/mall/blob/master/document/docker/nginx.conf
+- Database script mall.sql：https://github.com/kratos47mhs/mall/blob/master/document/sql/mall.sql
+- nginx configuration file nginx.conf：https://github.com/kratos47mhs/mall/blob/master/document/docker/nginx.conf
 - docker-compose-env.yml：https://github.com/kratos47mhs/mall/tree/master/document/docker/docker-compose-env.yml
 - docker-compose-app.yml：https://github.com/kratos47mhs/mall/tree/master/document/docker/docker-compose-app.yml
 
-### 部署前准备
+### Preparation before deployment
 
-#### 打包并上传mall应用的镜像
-需要打包mall-admin、mall-search、mall-portal的docker镜像，具体参考：[使用Maven插件为SpringBoot应用构建Docker镜像](https://mp.weixin.qq.com/s/q2KDzHbPkf3Q0EY8qYjYgw)
+#### Package and upload the mirror of the mall application
+Need to package docker images of mall-admin, mall-search, mall-portal, specific reference：[Use the Maven plugin to build Docker images for Spring Boot applications](https://mp.weixin.qq.com/s/q2KDzHbPkf3Q0EY8qYjYgw)
 
-#### 下载所有需要安装的Docker镜像
+#### Download all Docker images that need to be installed
 
 ```shell
 docker pull mysql:5.7
@@ -40,31 +40,31 @@ docker pull mongo:3.2
 
 #### elasticsearch
 
-- 需要设置系统内核参数，否则会因为内存不足无法启动。
+- Need to set the system kernel parameters, otherwise it will not start due to insufficient memory.
 ```shell
-# 改变设置
+# Change settings
 sysctl -w vm.max_map_count=262144
-# 使之立即生效
+# Make it effective immediately
 sysctl -p
 ```
-- 需要创建/mydata/elasticsearch/data目录并设置权限，否则会因为无权限访问而启动失败。
+- Need to create /mydata/elasticsearch/data directory and set permissions, otherwise it will fail to start due to unauthorized access.
 ```shell
-# 创建目录
+# Create a directory
 mkdir /mydata/elasticsearch/data/
-# 创建并改变该目录权限
+# Create and change the permissions of this directory
 chmod 777 /mydata/elasticsearch/data
 ```
 
 #### nginx
 
-需要拷贝nginx配置文件，否则挂载时会因为没有配置文件而启动失败。
+You need to copy the nginx configuration file, otherwise it will fail to start because there is no configuration file when mounting.
 ```shell
-# 创建目录之后将nginx.conf文件上传到该目录下面
+# After creating the directory, upload the nginx.conf file to the directory
 mkdir /mydata/nginx/
 ```
 
-### 执行docker-compose-env.yml脚本
-> 将该文件上传的linux服务器上，执行docker-compose up命令即可启动mall所依赖的所有服务。
+### Execute the docker-compose-env.yml script
+> Upload the file to the Linux server and execute the docker-compose up command to start all services that Mall depends on.
 
 ```yml
 version: '3'
@@ -75,36 +75,36 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root #设置root帐号密码
+      MYSQL_ROOT_PASSWORD: root #Set root account password
     ports:
       - 3306:3306
     volumes:
-      - /mydata/mysql/data/db:/var/lib/mysql #数据文件挂载
-      - /mydata/mysql/data/conf:/etc/mysql/conf.d #配置文件挂载
-      - /mydata/mysql/log:/var/log/mysql #日志文件挂载
+      - /mydata/mysql/data/db:/var/lib/mysql #Data volume mounting
+      - /mydata/mysql/data/conf:/etc/mysql/conf.d #Configuration Thematic mounting
+      - /mydata/mysql/log:/var/log/mysql #Log Thematic mounting
   redis:
     image: redis:3.2
     container_name: redis
     command: redis-server --appendonly yes
     volumes:
-      - /mydata/redis/data:/data #数据文件挂载
+      - /mydata/redis/data:/data #Data volume mounting
     ports:
       - 6379:6379
   nginx:
     image: nginx:1.10
     container_name: nginx
     volumes:
-      - /mydata/nginx/nginx.conf:/etc/nginx/nginx.conf #配置文件挂载
-      - /mydata/nginx/html:/usr/share/nginx/html #静态资源根目录挂载
-      - /mydata/nginx/log:/var/log/nginx #日志文件挂载
+      - /mydata/nginx/nginx.conf:/etc/nginx/nginx.conf #Configuration volume mounting
+      - /mydata/nginx/html:/usr/share/nginx/html #Static resource root directory mount
+      - /mydata/nginx/log:/var/log/nginx #Log volume mounting
     ports:
       - 80:80
   rabbitmq:
     image: rabbitmq:3.7.15-management
     container_name: rabbitmq
     volumes:
-      - /mydata/rabbitmq/data:/var/lib/rabbitmq #数据文件挂载
-      - /mydata/rabbitmq/log:/var/log/rabbitmq #日志文件挂载
+      - /mydata/rabbitmq/data:/var/lib/rabbitmq #Data volume mounting
+      - /mydata/rabbitmq/log:/var/log/rabbitmq #Log volume mounting
     ports:
       - 5672:5672
       - 15672:15672
@@ -112,97 +112,97 @@ services:
     image: elasticsearch:6.4.0
     container_name: elasticsearch
     environment:
-      - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
-      - "discovery.type=single-node" #以单一节点模式启动
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #设置使用jvm内存大小
+      - "cluster.name=elasticsearch" #Set the cluster name to elasticsearch
+      - "discovery.type=single-node" #Start in single node mode
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #Set use jvm memory size
     volumes:
-      - /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins #插件文件挂载
-      - /mydata/elasticsearch/data:/usr/share/elasticsearch/data #数据文件挂载
+      - /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins #Plugin volume mounting
+      - /mydata/elasticsearch/data:/usr/share/elasticsearch/data #Data volume mounting
     ports:
       - 9200:9200
   kibana:
     image: kibana:6.4.0
     container_name: kibana
     links:
-      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
+      - elasticsearch:es #You can use the domain name es to access the elasticsearch service
     depends_on:
-      - elasticsearch #kibana在elasticsearch启动之后再启动
+      - elasticsearch #kibana Start after elasticsearch starts
     environment:
-      - "elasticsearch.hosts=http://es:9200" #设置访问elasticsearch的地址
+      - "elasticsearch.hosts=http://es:9200" #Set the address to access elasticsearch
     ports:
       - 5601:5601
   mongo:
     image: mongo:3.2
     container_name: mongo
     volumes:
-      - /mydata/mongo/db:/data/db #数据文件挂载
+      - /mydata/mongo/db:/data/db #Data volume mounting
     ports:
       - 27017:27017
 ```
-上传完后在当前目录下执行如下命令：
+After uploading, execute the following command in the current directory：
 ```shell
 docker-compose -f docker-compose-env.yml up -d
 ```
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_103.png)
 
-### 对依赖服务进行以下设置
+### Make the following settings for dependent services
 
-当所有依赖服务启动完成后，需要对以下服务进行一些设置。
+When all dependent services are started, you need to make some settings for the following services.
 
 #### mysql
 
-> 需要创建mall数据库并创建一个可以远程访问的对象reader。
+> Need to create a mall database and create an object reader that can be accessed remotely.
 
-- 将mall.sql文件拷贝到mysql容器的/目录下：
+- Copy the mall.sql file to the / directory of the mysql container:
 ```shell
 docker cp /mydata/mall.sql mysql:/
 ```
-- 进入mysql容器并执行如下操作：
+- Enter the mysql container and perform the following operations:
 ```shell
-#进入mysql容器
+#Enter the mysql container
 docker exec -it mysql /bin/bash
-#连接到mysql服务
+#Connect to mysql service
 mysql -uroot -proot --default-character-set=utf8
-#创建远程访问用户
+#Create a remote access user
 grant all privileges on *.* to 'reader' @'%' identified by '123456';
-#创建mall数据库
+#Create mall database
 create database mall character set utf8;
-#使用mall数据库
+#Use mall database
 use mall;
-#导入mall.sql脚本
+#Import mall.sql script
 source /mall.sql;
 ```
 
 #### elasticsearch
 
-> 需要安装中文分词器IKAnalyzer，并重新启动。
+> Need to install the Chinese word breaker IK Analyzer, and restart.
 
 ```shell
 docker exec -it elasticsearch /bin/bash
-#此命令需要在容器中运行
+#This command needs to be run in the container
 elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.4.0/elasticsearch-analysis-ik-6.4.0.zip
 docker restart elasticsearch
 ```
 
 #### rabbitmq
 
-> 需要创建一个mall用户并设置虚拟host为/mall。
+> You need to create a mall user and set the virtual host to /mall.
 
-- 访问管理页面地址：[http://192.168.3.101:15672/](http://192.168.3.101:15672/)
+- Visit management page address：[http://192.168.3.101:15672/](http://192.168.3.101:15672/)
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_76.png)
-- 输入账号密码并登录：guest guest
-- 创建帐号并设置其角色为管理员：mall mall
+- Enter account password and login：guest guest
+- Create an account and set its role as an administrator：mall mall
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_77.png)
-- 创建一个新的虚拟host为：/mall
+- Create a new virtual host as：/mall
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_78.png)
-- 点击mall用户进入用户配置页面
+- Click the mall user to enter the user configuration page
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_79.png)
-- 给mall用户配置该虚拟host的权限
+- Configure the permission of the virtual host for the mall user
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_80.png)
 
-### 执行docker-compose-app.yml脚本
+### Execute the docker-compose-app.yml script
 
-> 将该文件上传的linux服务器上，执行docker-compose up命令即可启动mall所有的应用。
+> Upload the file to the linux server and execute the docker-compose up command to start all the mall applications.
 
 ```yml
 version: '3'
@@ -213,45 +213,45 @@ services:
     ports:
       - 8080:8080
     external_links:
-      - mysql:db #可以用db这个域名访问mysql服务
+      - mysql:db #You can use the domain name db to access the mysql service
   mall-search:
     image: mall/mall-search:1.0-SNAPSHOT
     container_name: mall-search
     ports:
       - 8081:8081
     external_links:
-      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
-      - mysql:db #可以用db这个域名访问mysql服务
+      - elasticsearch:es #You can use the domain name es to access the elasticsearch service
+      - mysql:db #You can use the domain name db to access the mysql service
   mall-portal:
     image: mall/mall-portal:1.0-SNAPSHOT
     container_name: mall-portal
     ports:
       - 8085:8085
     external_links:
-      - redis:redis #可以用redis这个域名访问redis服务
-      - mongo:mongo #可以用mongo这个域名访问mongo服务
-      - mysql:db #可以用db这个域名访问mysql服务
-      - rabbitmq:rabbit #可以用rabbit这个域名访问rabbitmq服务
+      - redis:redis #You can use the domain name redis to access the redis service
+      - mongo:mongo #You can use the domain name mongo to access the mongo service
+      - mysql:db #You can use the domain name db to access the mysql service
+      - rabbitmq:rabbit #You can use the domain name rabbit to access the rabbitmq service
 ```
 
-上传完后在当前目录下执行如下命令：
+After uploading, execute the following command in the current directory:
 ```shell
 docker-compose -f docker-compose-app.yml up -d
 ```
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_104.png)
 
-### 开启防火墙即可在其他主机上访问所有服务
+### Turn on the firewall to access all services on other hosts
 
 ```shell
 systemctl stop firewalld
 ```
 
-### 至此所有服务已经正常启动
+### So far all services have been started normally
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_105.png)
 
 ![](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/blog/refer_screen_106.png)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

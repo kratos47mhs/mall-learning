@@ -1,76 +1,76 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
-# mall架构及功能概览
+# Mall architecture and function overview
 
-> mall架构、功能及数据库结构概览
+> Overview of mall architecture, functions and database structure
 
-## mall项目简介
+## Mall project introduction
 
-mall项目是一套电商系统，包括前台商城系统及后台管理系统，基于SpringBoot+MyBatis实现。 前台商城系统包含首页门户、商品推荐、商品搜索、商品展示、购物车、订单流程、会员中心、客户服务、帮助中心等模块。 后台管理系统包含商品管理、订单管理、会员管理、促销管理、运营管理、内容管理、统计报表、财务管理、权限管理、设置等模块。
+The mall project is a set of e-commerce systems, including a front-end mall system and a back-end management system, based on SpringBoot+MyBatis. The front-end mall system includes modules such as home portal, product recommendation, product search, product display, shopping cart, order process, member center, customer service, and help center. The background management system includes modules for commodity management, order management, membership management, promotion management, operation management, content management, statistical reports, financial management, authority management, and settings.
 
-## 项目演示
+## Project demo
 
-- 后台项目演示：[http://www.kratos47mhs.com/admin/index.html](http://www.kratos47mhs.com/admin/index.html)
-- 移动端项目演示：[http://www.kratos47mhs.com/app/index.html](http://www.kratos47mhs.com/app/index.html)
+- back-end project demo：[http://www.kratos47mhs.com/admin/index.html](http://www.kratos47mhs.com/admin/index.html)
+- Mobile project demonstration：[http://www.kratos47mhs.com/app/index.html](http://www.kratos47mhs.com/app/index.html)
 
-## mall中使用的技术
+## Technology used in mall
 
-> mall采用现阶主流技术实现，涵盖了一般项目中几乎所有使用的技术。
+> Mall is implemented using current mainstream technology, covering almost all technologies used in general projects.
 
-技术 | 版本 | 说明
+Technology | Version | Description
 ----|----|----
-Spring Boot | 2.1.3 | 容器+MVC框架
-Spring Security | 5.1.4 | 认证和授权框架
-MyBatis | 3.4.6 | ORM框架  
-MyBatisGenerator | 1.3.3 | 数据层代码生成
-PageHelper | 5.1.8 | MyBatis物理分页插件
-Swagger-UI | 2.7.0 | 文档生产工具
-Elasticsearch | 6.2.2 | 搜索引擎
-RabbitMq |3.7.14 | 消息队列
-Redis | 3.2 | 分布式缓存
-MongoDb | 3.2 | NoSql数据库
-Docker | 18.09.0 | 应用容器引擎
-Druid | 1.1.10 | 数据库连接池
-OSS | 2.5.0 | 对象存储
-JWT | 0.9.0 | JWT登录支持
-Lombok | 1.18.6 | 简化对象封装工具
+Spring Boot | 2.1.3 | Container + MVC framework
+Spring Security | 5.1.4 | Authentication and authorization framework
+MyBatis | 3.4.6 | ORM framework  
+MyBatisGenerator | 1.3.3 | Data layer code generation
+PageHelper | 5.1.8 | My Batis physical paging plugin
+Swagger-UI | 2.7.0 | Document production tools
+Elasticsearch | 6.2.2 | search engine
+RabbitMq |3.7.14 | message queue
+Redis | 3.2 | Distributed cache
+MongoDb | 3.2 | No Sql database
+Docker | 18.09.0 | Application container engine
+Druid | 1.1.10 | Database connection pool
+OSS | 2.5.0 | Object storage
+JWT | 0.9.0 | JWT login support
+Lombok | 1.18.6 | reduce boilerplate code for model/data objects
 
-## mall实现的功能概览
+## Overview of the functions implemented by mall
 
-> 具体可以看下演示地址，亲自体验下：[http://www.kratos47mhs.com/admin/index.html](http://www.kratos47mhs.com/admin/index.html)
+> For details, please see the demo address and experience it for yourself：[http://www.kratos47mhs.com/admin/index.html](http://www.kratos47mhs.com/admin/index.html)
 
-- 商品模块
-  - 商品管理
-  - 商品分类管理
-  - 商品类型管理
-  - 品牌管理
-- 订单模块
-  - 订单管理
-  - 订单设置
-  - 退货申请处理
-  - 退货原因设置
-- 营销模块
-  - 秒杀活动管理
-  - 优惠价管理
-  - 品牌推荐管理
-  - 新品推荐管理
-  - 人气推荐管理
-  - 专题推荐管理
-  - 首页广告管理
+- Product module
+  - Product management
+  - Product category management
+  - Product type management
+  - Brand management
+- Order module
+  - Order management
+  - Order settings
+  - Return application processing
+  - returnReasonSetting
+- Sale module
+  - Flash Promotion activity management
+  - Discount price management
+  - Brand recommendation management
+  - New product recommendation management
+  - Popular recommendation management
+  - Subject recommendation management
+  - Homepage advertising management
 
-## mall数据库表概览
-> mall项目目前有71张数据表，业务逻辑有一定复杂度，平时做项目参考也够了。
+## Mall database table overview
+> The mall project currently has 71 data sheets, and the business logic has a certain complexity. Usually, it is enough to make a project reference.
 
-![mall数据库表展示](../images/mall_mysql_all.png)
+![Mall database table display](../images/mall_mysql_all.png)
 
-### 数据库表前缀说明
+### Database table prefix description
 
-- cms_*：内容管理模块相关表
-- oms_*：订单管理模块相关表
-- pms_*：商品模块相关表
-- sms_*：营销模块相关表
-- ums_*：会员模块相关表
+- cms_*：Content management module related table
+- oms_*：Order management module related table
+- pms_*：Product module related table
+- sms_*：Sale module related table
+- ums_*：User module related table
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

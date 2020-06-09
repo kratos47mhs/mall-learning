@@ -1,28 +1,28 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
 
-# mall在Linux环境下的自动化部署（基于Jenkins）
+# Automated deployment of mall in Linux environment (based on Jenkins)
 
-> 本文是`mall`项目的专属Jenkins自动化部署方法。
+> This article is the exclusive Jenkins automated deployment method for the `mall` project.
 
-## Jenkins的基本使用
+## Basic use of Jenkins
 
-关于Jenkins的基本使用可以参考：[使用Jenkins一键打包部署SpringBoot应用，就是这么6！](https://mp.weixin.qq.com/s/tQqvgSc9cHBtnqRQSbI4aw)
+About the basic use of Jenkins can refer to：[One-click packaging and deployment of Spring Boot applications using Jenkins, that's it 6!](https://mp.weixin.qq.com/s/tQqvgSc9cHBtnqRQSbI4aw)
 
-## 执行脚本准备
+## Execute script preparation
 
-> 首先我们先把需要远程执行的脚本准备好。
+> First, we first prepare the script that needs to be executed remotely.
 
-- 脚本文件都存放在了`mall`项目的`/document/sh`目录下：
+- The script files are stored in the `/document/sh` directory of the `mall` project:
 
-- 上传脚本前在IDEA中修改所有脚本文件的换行符格式为`LF`，否则脚本会无法执行；
+- Before uploading the script, modify the line break format of all script files in IDEA to `LF`, otherwise the script will fail to execute;
 
 ![](../images/mall_deploy_jenkins_01.png)
 
-- 将所有脚本文件上传到指定目录，这里我们上传到`/mydata/sh`目录下；
+- Upload all script files to the specified directory, here we upload to the `/mydata/sh` directory;
 
 ![](../images/mall_deploy_jenkins_02.png)
 
-- 将所有脚本文件都修改为可执行文件:
+- Modify all script files to executable files:
 
 ```bash
 chmod +x ./mall-*
@@ -30,69 +30,70 @@ chmod +x ./mall-*
 
 ![](../images/mall_deploy_jenkins_03.png)
 
-## Jenkins中创建任务
+## Create tasks in Jenkins
 
-> 接下来我们将通过在Jenkins中创建任务来实现自动化部署。由于我们的`mall`是个多模块的项目，部署上面和曾经的单模块项目还是有所区别的。
+> Next we will implement automated deployment by creating tasks in Jenkins. Since our `mall` is a multi-module project, deploying the above is different from the previous single-module project.
 
 ### mall-admin
 
-> 由于各个模块的执行任务的创建都大同小异，下面将详细讲解mall-admin模块任务的创建，其他模块将简略讲解。
+> Since the creation of the execution tasks of each module is similar, the creation of the mall-admin module task will be explained in detail below, and the other modules will be briefly explained.
+>
 
-- 首先我们选择`构建一个自由风格的软件项目`mall-admin，然后配置其Git仓库地址，这里我直接使用了Gitee上面的地址：
+- First we choose `Build a free-style software project` mall-admin, and then configure its Git repository address, here I directly use the address above Gitee:
 
 ![](../images/mall_deploy_jenkins_04.png)
 
-- 之后我们创建一个构建，构建`mall`项目中的依赖模块，否则当构建可运行的服务模块时会因为无法找到这些模块而构建失败；
+- Then we create a build to build the dependent modules in the `mall` project, otherwise when building a serviceable module, the build will fail because these modules cannot be found;
 
 ```bash
-# 只install mall-common,mall-mbg,mall-security三个模块
+# Only install three modules mall-common, mall-mbg, mall-security
 clean install -pl mall-common,mall-mbg,mall-security -am
 ```
 
-- 依赖项目构建示意图：
+- The schematic diagram of dependent project construction:
 
 ![](../images/mall_deploy_jenkins_05.png)
 
-- 再创建一个构建，单独构建并打包mall-admin模块：
+- Create another build, build and package the mall-admin module separately:
 
 ![](../images/mall_deploy_jenkins_06.png)
 
-- 添加一个远程SSH执行任务，去执行mall-admin的运行脚本：
+- Add a remote SSH execution task to execute the running script of mall-admin:
 
 ![](../images/mall_deploy_jenkins_07.png)
 
-- 点击保存，完成mall-admin的执行任务创建。
+- Click Save to complete the execution task of mall-admin.
 
 ### mall-portal
 
-> mall-portal和其他模块与mall-admin创建任务方式基本一致，只需修改构建模块时的pom.xml文件位置和执行脚本位置即可。
+> Mall-portal and other modules are basically consistent with mall-admin's task creation method. You only need to modify the pom.xml file location and script execution location when building the module.
 
-- 我们可以直接从mall-admin模块的任务复制一个过来创建：
+- We can directly copy one from the task of the mall-admin module and create it:
 
 ![](../images/mall_deploy_jenkins_08.png)
 
-- 修改第二个构建中的pom.xml文件位置，改为：${WORKSPACE}/mall-portal/pom.xml
+- Modify the location of the pom.xml file in the second build to: ${WORKSPACE}/mall-portal/pom.xml
 
 ![](../images/mall_deploy_jenkins_09.png)
 
-- 修改第三个构建中的SSH执行脚本文件位置，改为：/mydata/sh/mall-portal.sh
+- Modify the location of the SSH execution script file in the third build to: /mydata/sh/mall-portal.sh
 
 ![](../images/mall_deploy_jenkins_10.png)
 
-- 点击保存，完成mall-portal的执行任务创建。
+- Click Save to complete the execution of the mall-portal task.
 
 ### mall-search
 
-参考mall-admin和mall-portal的创建即可。
+Refer to the creation of mall-admin and mall-portal.
 
-### 任务创建完成
+### The task is created
 
 ![](../images/mall_deploy_jenkins_11.png)
 
-## 项目地址
+## project address
 
 [https://github.com/kratos47mhs/mall](https://github.com/kratos47mhs/mall)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
