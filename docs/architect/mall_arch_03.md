@@ -26,19 +26,19 @@ In the serialization of the full set of learning tutorials for the mall project,
 ### Add project dependencies
 > Added Redis related dependencies in pom.xml
 
-`` `xml
+```xml
 <!-redis dependency configuration->
 <dependency>
   <groupId> org.springframework.boot </ groupId>
   <artifactId> spring-boot-starter-data-redis </ artifactId>
 </ dependency>
-`` `
+```
 ### Modify the Spring Boot configuration file
 
 > Add Redis configuration and Redis custom key configuration in application.yml.
 #### Add Redis configuration under spring node
 
-`` `yml
+```yml
   redis:
     host: localhost # Redis server address
     database: 0 # Redis database index (default is 0)
@@ -51,11 +51,11 @@ In the serialization of the full set of learning tutorials for the mall project,
         max-idle: 8 # The largest idle connection in the connection pool
         min-idle: 0 # The smallest idle connection in the connection pool
     timeout: 3000ms # connection timeout time (ms)
-`` `
+```
 
 #### Add Redis custom key configuration under the root node
 
-`` `yml
+```yml
 # Custom redis key
 redis:
   key:
@@ -63,11 +63,11 @@ redis:
       authCode: "portal: authCode:"
     expire:
       authCode: 120 # Verification code expiration time
-`` `
+```
 
 ### Add RedisService interface to define some common Redis operations
 
-`` `java
+```java
 package com.macro.mall.tiny.service;
 
 / **
@@ -104,11 +104,11 @@ public interface RedisService {
 
 }
 
-`` `
+```
 
 ### Inject StringRedisTemplate to implement RedisService interface
 
-`` `java
+```java
 package com.macro.mall.tiny.service.impl;
 
 import com.macro.mall.tiny.service.RedisService;
@@ -153,12 +153,12 @@ public class RedisServiceImpl implements RedisService {
     }
 }
 
-`` `
+```
 
 ### Add UmsMemberController
 > Add an interface to obtain the verification code based on the phone number and an interface to verify the verification code
 
-`` `java
+```java
 package com.macro.mall.tiny.controller;
 
 import com.macro.mall.tiny.common.api.CommonResult;
@@ -199,11 +199,11 @@ public class UmsMemberController {
     }
 }
 
-`` `
+```
 
 ### Add UmsMemberService interface
 
-`` `java
+```java
 package com.macro.mall.tiny.service;
 
 import com.macro.mall.tiny.common.api.CommonResult;
@@ -226,13 +226,13 @@ public interface UmsMemberService {
 
 }
 
-`` `
+```
 
 ### Add UmsMemberService interface implementation class UmsMemberServiceImpl
 
 > When generating a verification code, add a custom Redis key value to the mobile phone number to generate a Redis key, store the verification code as the value in Redis, and set the expiration time to the time you configured (120s here) When verifying the verification code, the verification code stored in Redis is obtained according to the mobile phone number and compared with the incoming verification code.
 
-`` `java
+```java
 package com.macro.mall.tiny.service.impl;
 
 import com.macro.mall.tiny.common.api.CommonResult;
@@ -289,7 +289,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 
 }
 
-`` `
+```
 ### Run the project
 > Visit Swagger's API document address http: // localhost: 8080 / swagger-ui.html to test the interface.
 
