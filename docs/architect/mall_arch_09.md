@@ -58,13 +58,13 @@ rabbitmq-plugins enable rabbitmq_management
 
 ![](../images/arch_screen_52.png)
 
-Symbol | Chinese name | English name| Description
-----|----|----|----
-P	|生产者	|Producer |The sender of the message can send the message to the switch
-C	|消费者	|Consumer |The receiver of the message gets the message from the queue for consumption
-X	|交换机	|Exchange |Receive the message sent by the producer and send it to the specified queue according to the routing key
-Q	|队列	|Queue |Store messages from the switch
-type | 交换机类型 |type |direct means to send the message directly according to the routing key (orange / black)
+Symbol | English name| Description
+----|----|----
+P		|Producer |The sender of the message can send the message to the switch
+C		|Consumer |The receiver of the message gets the message from the queue for consumption
+X		|Exchange |Receive the message sent by the producer and send it to the specified queue according to the routing key
+Q		|Queue |Store messages from the switch
+type |type |direct means to send the message directly according to the routing key (orange / black)
 
 ### Lombok
 

@@ -62,7 +62,7 @@ Remove service：D:\developer\env\MongoDB\bin\mongod.exe --remove
 - @Id:Mark a domain as an ID domain
 - @Indexed:Mark a field as the index field of Mongodb
 
-#### Sping Data data operation
+#### Spring-Data data operation
 
 ##### Inherit the Mongo Repository interface to get commonly used data manipulation methods
 

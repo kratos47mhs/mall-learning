@@ -1,4 +1,4 @@
-The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public)Get it the first time.
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
 # Mall-swarm deployment in Linux environment (based on Docker container)
 

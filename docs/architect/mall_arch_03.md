@@ -11,15 +11,15 @@ In the serialization of the full set of learning tutorials for the mall project,
 
 - Download Redis, download address: https://github.com/MicrosoftArchive/redis/releases
 
-! [] (../ images / arch_screen_09.png)
+! [](../images/arch_screen_09.png)
 
 - After downloading, unzip to the specified directory
 
-! [] (../ images / arch_screen_10.png)
+! [](../images/arch_screen_10.png)
 
 -After entering cmd in the current address bar, execute the redis start command: redis-server.exe redis.windows.conf
 
-! [] (../ images / arch_screen_11.png)
+! [](../images/arch_screen_11.png)
 
 ## Integrate Redis
 
@@ -27,7 +27,7 @@ In the serialization of the full set of learning tutorials for the mall project,
 > Added Redis related dependencies in pom.xml
 
 ```xml
-<!-redis dependency configuration->
+<!-- redis dependency configuration -->
 <dependency>
   <groupId> org.springframework.boot </ groupId>
   <artifactId> spring-boot-starter-data-redis </ artifactId>
@@ -70,36 +70,36 @@ redis:
 ```java
 package com.macro.mall.tiny.service;
 
-/ **
+/**
  * Redis operation Service,
  * Objects and arrays are stored in json format
  * Created by macro on 2018/8/7.
- * /
+ */
 public interface RedisService {
-    / **
+    /**
      * Storing data
-     * /
+     */
     void set (String key, String value);
 
-    / **
+    /**
      * retrieve data
-     * /
+     */
     String get (String key);
 
-    / **
+    /**
      * Set overdue time
-     * /
+     */
     boolean expire (String key, long expire);
 
-    / **
+    /**
      * delete data
-     * /
+     */
     void remove (String key);
 
-    / **
+    /**
      * Self-increasing operation
      * @param delta increment step
-     * /
+     */
     Long increment (String key, long delta);
 
 }
@@ -118,10 +118,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
-/ **
+/**
  * Redis operation Service implementation class
  * Created by macro on 2018/8/7.
- * /
+ */
 @Service
 public class RedisServiceImpl implements RedisService {
     @Autowired
@@ -156,7 +156,7 @@ public class RedisServiceImpl implements RedisService {
 ```
 
 ### Add UmsMemberController
-> Add an interface to obtain the verification code based on the phone number and an interface to verify the verification code
+> Add an interface to obtain the verification code based on the phone number, and an interface to verify the verification code
 
 ```java
 package com.macro.mall.tiny.controller;
@@ -172,10 +172,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/ **
+ /**
  * Member login registration management Controller
  * Created by macro on 2018/8/3.
- * /
+ */
 @Controller
 @Api (tags = "UmsMemberController", description = "Member login registration management")
 @RequestMapping ("/ sso")
@@ -208,20 +208,20 @@ package com.macro.mall.tiny.service;
 
 import com.macro.mall.tiny.common.api.CommonResult;
 
-/ **
+ /**
  * Member Management Service
  * Created by macro on 2018/8/3.
- * /
+ */
 public interface UmsMemberService {
 
-    / **
+    /**
      * Generate verification code
-     * /
+     */
     CommonResult generateAuthCode (String telephone);
 
-    / **
+    /**
      * Determine whether the verification code and mobile phone number match
-     * /
+     */
     CommonResult verifyAuthCode (String telephone, String authCode);
 
 }
@@ -245,10 +245,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.Random;
 
-/ **
+/**
  * Member Management Service implementation class
  * Created by macro on 2018/8/3.
- * /
+ */
 @Service
 public class UmsMemberServiceImpl implements UmsMemberService {
     @Autowired
@@ -293,7 +293,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 ### Run the project
 > Visit Swagger's API document address http: // localhost: 8080 / swagger-ui.html to test the interface.
 
-! [] (../ images / arch_screen_12.png)
+! [](../images/arch_screen_12.png)
 
 ## Project source address
 [https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-03](https://github.com/kratos47mhs/mall-learning/tree/master/mall-tiny-03)

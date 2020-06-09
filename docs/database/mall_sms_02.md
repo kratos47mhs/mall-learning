@@ -1,4 +1,4 @@
-The full set of learning tutorials for the mall project are in serial，[Follow the public account](#公众号)Get it the first time.
+The full set of learning tutorials for the mall project are in serial，[Follow the public account](#No public) Get it the first time.
 
 # Marketing module database table analysis (2)
 

@@ -2,7 +2,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 
 # Mall deployment in Windows environment
 
-> This article mainly explains the installation of the environment required by the mall project in windows in the form of graphics, mainly including IDEA, Mysql, Redis, Elasticsearch, Mongodb, Rabbit MQ, OSS.
+> This article mainly explains the installation of the environment required by the mall project in windows, in the form of graphics, mainly including IDEA, Mysql, Redis, Elasticsearch, Mongodb, Rabbit MQ, OSS.
 
 ## IDEA
 
@@ -31,7 +31,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 
 ![](../images/arch_screen_09.png)
 
-2.After downloading, unzip to the specified directory
+2.After downloading, unzip to the specified directory.
 
 ![](../images/arch_screen_10.png)
 

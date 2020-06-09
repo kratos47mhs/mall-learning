@@ -5,7 +5,7 @@ The full set of learning tutorials for the mall project are in serial，[Follow 
 > This article mainly explains the process of uploading files by integrating OSS with Mall. It adopts the method of front-end direct transmission after server-side signature.
 
 ## OSS
-> Alibaba Cloud Object Storage Service (OSS) is a massive, safe, low-cost, and highly reliable cloud storage service provided by Alibaba Cloud. OSS can be used to store massive files such as pictures, audio and video, and logs. Various terminal devices, Web site programs, and mobile applications can directly write or read data to OSS.
+> Alibaba Cloud Object Storage Service (OSS) is a massive, safe, low-cost, and highly reliable cloud storage service provided by Alibaba Cloud. OSS can be used to store massive files such as pictures, audio and video, and logs. Various terminal devices, Website programs, and mobile applications can directly write or read data to OSS.
 
 ### Related concepts in OSS
 
