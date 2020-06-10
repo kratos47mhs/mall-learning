@@ -1,46 +1,46 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) will be obtained immediately.
 
-## Linux防火墙Firewall和Iptables的使用
+## Use of Linux Firewall and Iptables
 
-> Linux中有两种防火墙软件，ConterOS7.0以上使用的是firewall，ConterOS7.0以下使用的是iptables，本文将分别介绍两种防火墙软件的使用。
+> There are two kinds of firewall software in Linux. Conter OS 7.0 and above use firewall and Conter OS 7.0 and below use iptables. This article will introduce the use of two firewall software.
 
 ## Firewall
 
-- 开启防火墙：
+- Turn on the firewall:
 ```shell
 systemctl start firewalld
 ```
-- 关闭防火墙：
+- Turn off the firewall:
 ```shell
 systemctl stop firewalld
 ```
-- 查看防火墙状态：
+- Check the firewall status:
 ```shell
 systemctl status firewalld
 ```
-- 设置开机启动：
+- Set start service at startup:
 ```shell
 systemctl enable firewalld
 ```
-- 禁用开机启动：
+- Disable start at startup:
 ```shell
 systemctl disable firewalld
 ```
-- 重启防火墙：
+- Restart the firewall:
 ```shell
 firewall-cmd --reload
 ```
-- 开放端口（修改后需要重启防火墙方可生效）：
+- Open port (the firewall needs to be restarted after modification to take effect):
 ```shell
 firewall-cmd --zone=public --add-port=8080/tcp --permanent
 ```
 ![](../images/refer_screen_31.png)
-- 查看开放的端口：
+- View open ports:
 ```shell
 firewall-cmd --list-ports
 ```
 ![](../images/refer_screen_32.png)
-- 关闭端口：
+- Close the port:
 ```shell
 firewall-cmd --zone=public --remove-port=8080/tcp --permanent
 ```
@@ -48,55 +48,55 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
 
 ## Iptables
 
-### 安装
+### Installation
 
-> 由于CenterOS7.0以上版本并没有预装Iptables,我们需要自行装。
+> Since Center OS 7.0 and above does not pre-install Iptables, we need to install it by ourselves.
 
-- 安装前先关闭firewall防火墙
+- Turn off the firewall before installation
 ![](../images/refer_screen_34.png)
-- 安装iptables:
+- Install iptables:
 ```shell
 yum install iptables
 ```
-- 安装iptables-services:
+- Install iptables-services:
 ```shell
 yum install iptables-services
 ```
 
 ### 使用
 
-- 开启防火墙：
+- Turn on the firewall:
 ```shell
 systemctl start iptables.service
 ```
 ![](../images/refer_screen_35.png)
-- 关闭防火墙：
+- Turn off the firewall:
 ```shell
 systemctl stop iptables.service
 ```
-- 查看防火墙状态：
+- Check the firewall status:
 ```shell
 systemctl status iptables.service
 ```
-- 设置开机启动：
+- Set the boot to start:
 ```shell
 systemctl enable iptables.service
 ```
-- 禁用开机启动：
+- Set start service at startup:
 ```shell
 systemctl disable iptables.service
 ```
-- 查看filter表的几条链规则(INPUT链可以看出开放了哪些端口)：
+- Check the chain rules of the filter table (the INPUT chain can see which ports are open):
 ```shell
 iptables -L -n
 ```
 ![](../images/refer_screen_36.png)
-- 查看NAT表的链规则：
+- View the chain rules of the NAT table:
 ```shell
 iptables -t nat -L -n
 ```
 ![](../images/refer_screen_37.png)
-- 清除防火墙所有规则：
+- Clear all firewall rules:
 ```shell
 iptables -F
 ```
@@ -106,22 +106,22 @@ iptables -X
 ```shell
 iptables -Z
 ```
-- 给INPUT链添加规则（开放8080端口）：
+- Add rules to the INPUT chain (open port 8080):
 ```shell
 iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
 ```
 ![](../images/refer_screen_38.png)
-- 查找规则所在行号：
+- Find the line number where the rule is located:
 ```shell
 iptables -L INPUT --line-numbers -n
 ```
 ![](../images/refer_screen_39.png)
-- 根据行号删除过滤规则（关闭8080端口）：
+- Delete the filter rule based on the line number (close port 8080):
 ```shell
 iptables -D INPUT 1
 ```
 ![](../images/refer_screen_40.png)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

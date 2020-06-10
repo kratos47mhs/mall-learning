@@ -1,84 +1,84 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) will be obtained immediately.
 
-# 使用Jenkins一键打包部署前端应用，就是这么6！
+# One-click packaging and deployment of front-end applications using Jenkins, that's it 6!
 
-> 上一次我们讲到了使用Jenkins一键打包部署SpringBoot应用，这一次我们来讲下如何一键打包部署前端应用，以Vue前端应用为例，这里我们使用`mall-admin-web`中的代码来进行演示。
+> Last time we talked about using Jenkins one-click packaging to deploy Spring Boot applications. This time we will talk about how to deploy front-end applications with one-click packaging. Taking Vue front-end applications as an example, here we use the code in `mall-admin-web` to Make a presentation.
 
 ## 学前准备
 
-> 学习本文需要一些Jenkins和Nginx的知识，对这些不熟悉的小伙伴可以参考以下文章。
+> Learning this article requires some knowledge of Jenkins and Nginx. For those unfamiliar partners, you can refer to the following article.
 
-- [使用Jenkins一键打包部署SpringBoot应用，就是这么6！](https://mp.weixin.qq.com/s/tQqvgSc9cHBtnqRQSbI4aw)
-- [Nginx的这些妙用，你肯定有不知道的！](https://mp.weixin.qq.com/s/9VZi2suAlomu1IRGy-qdCA)
+- [One-click packaging and deployment of Spring Boot applications using Jenkins, that's it 6!](https://mp.weixin.qq.com/s/tQqvgSc9cHBtnqRQSbI4aw)
+- [You must have no idea about these wonderful uses of Nginx!](https://mp.weixin.qq.com/s/9VZi2suAlomu1IRGy-qdCA)
 
-## Jenkins中的自动化部署
+## Automated deployment in Jenkins
 
-> Vue前端应用的打包需要依赖NodeJS插件，所以我们先安装并配置该插件，然后创建任务来打包部署。
+> The packaging of Vue front-end applications depends on the Node JS plug-in, so we first install and configure the plug-in, and then create tasks to package and deploy.
 
-### 安装NodeJS插件
+### Install Node JS plugin
 
-- 在系统设置->插件管理中选择安装插件；
+- Choose to install the plug-in in system settings -> plug-in management;
 
 ![](../images/jenkins_vue_01.png)
 
-- 搜索`NodeJS`插件并进行安装；
+- Search and install the `NodeJS` plugin;
 
 ![](../images/jenkins_vue_02.png)
 
-### 配置NodeJS插件
+### Configure Node JS plugin
 
-- 在系统设置->全局工具配置中进行插件配置；
+- Plug-in configuration in system settings -> global tool configuration;
 
 ![](../images/jenkins_vue_03.png)
 
-- 选择`新增NodeJS`，配置好版本号以后，点击保存即可完成设置；
+- Select `Add NodeJS`, after configuring the version number, click Save to complete the setting;
 
 ![](../images/jenkins_vue_04.png)
 
-### 创建任务
+### Create task
 
-> 我们需要创建一个任务来打包部署我们的前端应用，这里以我的`mall-admin-web`项目为例。
+> We need to create a task to package and deploy our front-end application, here is my `mall-admin-web` project as an example.
 
-- 任务执行流程如下：
+- The task execution process is as follows:
 
 ![](../images/jenkins_vue_11.png)
 
-- 构建一个自由风格的软件项目：
+- Build a free style software project:
 
 ![](../images/jenkins_vue_05.png)
 
-- 在源码管理中添加Git代码仓库相关配置，这里我使用的Gitee上面的代码，地址为：https://gitee.com/kratos47mhs/mall-admin-web
+- Add the relevant configuration of Git code warehouse in the source code management, here I use the code above Gitee, the address is：https://gitee.com/kratos47mhs/mall-admin-web
 
 ![](../images/jenkins_vue_06.png)
 
-- 在构建环境中把我们的`node`环境添加进去：
+- Add our `node` environment to the build environment:
 
 ![](../images/jenkins_vue_07.png)
 
-- 添加一个`执行shell`的构建，用于将我们的前端代码进行编译打包：
+- Add a `execute shell` build to compile and package our front-end code:
 
 ![](../images/jenkins_vue_08.png)
 
-- 构建脚本如下：
+- The build script is as follows:
 
 ```bash
-# 查看版本信息
+# View version information
 npm -v
-# 解决存放在Github上的sass无法下载的问题
+# Solve the problem that sass stored on Github cannot be downloaded
 SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/ npm install node-sass
-# 将镜像源替换为淘宝的加速访问
+# Replace mirror source with accelerated access from Taobao
 npm config set registry https://registry.npm.taobao.org
-# 安装项目依赖
+# Install project dependencies
 npm install
-# 项目打包
+# Project packaging
 npm run build
 ```
 
-- 添加一个`使用ssh执行远程脚本`的构建，用于将我们打包后的代码发布到Nginx中去：
+- Add-one`Use ssh to execute a remote script`The build is used to publish our packaged code to Nginx:
 
 ![](../images/jenkins_vue_09.png)
 
-- 远程执行脚本如下：
+- The remote execution script is as follows:
 
 ```bash
 docker stop nginx
@@ -91,15 +91,15 @@ docker start nginx
 echo '----start nginx----'
 ```
 
-- 点击保存后，直接在任务列表中点击运行即可完成自动化部署：
+- After clicking Save, click Run directly in the task list to complete the automated deployment:
 
 ![](../images/jenkins_vue_10.png)
 
 ## 遇到的坑
 
-### node-sass无法下载导致构建失败
+### Node-sass fails to download and causes the build to fail
 
-由于node-sass的源使用的是Github上面的，经常无法访问，我们构建的时候需要单独设置node-sass的下载地址。
+Since the source of node-sass uses Github, it is often inaccessible. When we build, we need to set the download address of node-sass separately.
 
 ```bash
 # linux
@@ -108,22 +108,22 @@ SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/ npm install node-sass
 set SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass&& npm install node-sass
 ```
 
-### 有些依赖无法下载导致构建失败
+### Some dependencies cannot be downloaded, causing the build to fail
 
-由于npm源访问慢的问题，有些源可能会无法下载，改用淘宝的npm源即可解决。
+Due to the problem of slow access to npm sources, some sources may not be able to be downloaded. Instead, use Taobao's npm source to solve it.
 
 ```bash
-# 设置为淘宝的镜像源
+# Set as Taobao's registry source
 npm config set registry https://registry.npm.taobao.org
-# 设置为官方镜像源
+# Set as official registry source
 npm config set registry https://registry.npmjs.org
 ```
 
-## 项目地址
+## project address
 
 [https://github.com/kratos47mhs/mall-admin-web](https://github.com/kratos47mhs/mall-admin-web)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
 

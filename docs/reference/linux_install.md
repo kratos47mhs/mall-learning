@@ -1,174 +1,174 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) will be obtained immediately.
 
-# 虚拟机安装及使用Linux，看这一篇就够了！
+# Virtual machine installation and use of Linux, it is enough to read this article!
 
-> 本文将从虚拟机安装、Linux系统安装、SSH客户端工具使用三方面来详细介绍Linux系统的安装及使用。
+> This article will introduce the installation and use of Linux system in detail from three aspects: virtual machine installation, Linux system installation, and SSH client tool use.
 
-## 虚拟机安装
+## Virtual machine installation
 
-> VirtualBox 是一款开源虚拟机软件，由Sun公司出品，现在则由Oracle进行开发。VirtualBox号称是最强的免费虚拟机软件，它性能优异且简单易用。可虚拟的系统包括Windows、Linux、MacOS、Android等操作系统！本文将使用VirtualBox作为虚拟机来安装Linux系统。
+> VirtualBox is an open source virtual machine software, produced by Sun, and now developed by Oracle. VirtualBox is known as the strongest free virtual machine software, it has excellent performance and is simple to use. Virtual systems include Windows, Linux, MacOS, Android and other operating systems! This article will use VirtualBox as a virtual machine to install the Linux system.
 
-### VirtualBox的安装
+### Virtual Box installation
 
-- 我们先下载VirtualBox安装包，下载地址：https://www.virtualbox.org/wiki/Downloads
-- 下载完成后双击运行安装包一路点击下一步即可：
+- We first download the Virtual Box installation package, download address: https://www.virtualbox.org/wiki/Downloads
+- After the download is complete, double-click to run the installation package all the way and click Next:
 
 ![](../images/linux_install_01.png)
 
-- 中途需要自定义一下安装路径：
+- You need to customize the installation path halfway:
 
 ![](../images/linux_install_02.png)
 
-- 最后点击完成，完成安装。
+- Finally, click Finish to complete the installation.
 
 ![](../images/linux_install_03.png)
 
-### 创建虚拟机
+### Create a virtual machine
 
-- 创建一个Linux虚拟机：
+- Create a Linux virtual machine:
 
 ![](../images/linux_install_04.png)
 
-- 分配虚拟机内存大小，可以根据自己电脑配置来决定：
+- The size of the allocated virtual machine memory can be determined according to your computer configuration:
 
 ![](../images/linux_install_05.png)
 
-- 创建虚拟硬盘：
+- Create a virtual hard disk:
 
 ![](../images/linux_install_06.png)
 
-- 设置虚拟硬盘文件类型，这里选择DVI格式：
+- Set the virtual hard disk file type, choose VDI format here:
 
 ![](../images/linux_install_07.png)
 
-- 选择动态分配空间大小，如果你的硬盘空间比较大的话，可以选择固定大小：
+- Choose the size of the dynamic allocation space, if your hard disk space is relatively large, you can choose a fixed size:
 
 ![](../images/linux_install_08.png)
 
-- 设置虚拟硬盘的位置和大小：
+- Set the location and size of the virtual hard disk:
 
 ![](../images/linux_install_09.png)
 
-## Linux安装
+## Linux installation
 
-> CentOS（Community Enterprise Operating System）是Linux发行版之一，中文意思为社区企业操作系统。它是来自于商业版 Red Hat Enterprise Linux依照开放源代码规定释出的源代码所编译而成，因此具有高度稳定性且完全开源。本文将以CentOS 7.6为例来介绍Linux系统的安装。
+> CentOS (Community Enterprise Operating System) is one of the Linux distributions, meaning Chinese as a community enterprise operating system. It comes from the commercial version of Red Hat Enterprise Linux compiled according to the source code released by the open source regulations, so it is highly stable and completely open source. This article will take CentOS 7.6 as an example to introduce the installation of Linux system.
 
-### 下载
+### Download
 
-- 下载地址：http://vault.centos.org/7.6.1810/isos/x86_64/
-- 下载文件：CentOS-7-x86_64-DVD-1810.iso
+- download link：http://vault.centos.org/7.6.1810/isos/x86_64/
+- download file：CentOS-7-x86_64-DVD-1810.iso
 
-### 安装
+### Installation
 
-- 为虚拟机添加虚拟光盘，虚拟光盘指定为我们下载的ISO镜像文件：
+- Add a virtual disc for the virtual machine, and the virtual disc is designated as the ISO image file we downloaded:
 
 ![](../images/linux_install_10.png)
 
-- 点击启动运行虚拟机：
+- Click Start to run the virtual machine:
 
 ![](../images/linux_install_11.png)
 
-- 运行成功后，选择`Install CentOS 7`进行安装：
+- After running successfully, select `Install CentOS 7` to install：
 
 ![](../images/linux_install_12.png)
 
-- 选择系统安装过程中的语言，建议选择`English`选项：
+- Select the language during system installation, it is recommended to choose the `English` option:
 
 ![](../images/linux_install_13.png)
 
-- 需要进行设置的部分示意图：
+- Some schematic diagrams that need to be set:
 
 ![](../images/linux_install_14.png)
 
-- 时区设置，地区选择`Asia`，城市选择`Shanghai`：
+- Time zone setting, region selection `Asia`, city selection `Shanghai`:
 
 ![](../images/linux_install_15.png)
 
-- 语言支持选择安装英文、简体中文两种语言安装包：
+- Language support Choose to install English or Simplified Chinese installation packages:
 
 ![](../images/linux_install_16.png)
 
-- 软件安装设置选择`Server with GUI`，同时选择如图三种附加环境：
+- Software installation settings select `Server with GUI`, and choose three additional environments as shown in the figure:
 
 ![](../images/linux_install_17.png)
 
-- 磁盘分区设置，由于我的虚拟机设置的内存较小，需要创建一个较大的`swap`分区，内存设置较大的直接选择自动分区即可，这里我们使用手动分区：
+- Disk partition setting, because the memory set by my virtual machine is small, a larger `swap` partition needs to be created. If the memory setting is large, you can directly select automatic partitioning. Here we use manual partitioning:
 
 ![](../images/linux_install_18.png)
 
-- 按如图所示进行手动分区操作；
+- Perform manual partition operation as shown in the figure;
 
 ![](../images/linux_install_19.png)
 
-- 关于分区的几个目录的说明：
-    - /：根分区；
-    - swap：交换分区，可以当虚拟内存使用；
-    - /boot：存储系统的引导信息和内核信息；
-    - /usr：存储系统应用软件安装信息；
-    - /var：存储系统日志信息。
+- Explanation of several directories on the partition:
+    - /：Root partition
+    - swap：Swap partition can be used as virtual memory;
+    - /boot：Boot data and kernel data of the storage system;
+    - /usr：Storage system application software installation information;
+    - /var：Storage system log information.
 
-- 网络设置，设置主机名称和进行网络激活操作：
+- Network settings, set the host name and perform network activation operations:
 
 ![](../images/linux_install_20.png)
 
-- 单击`Begin Installation`进行安装：
+- Click `Begin Installation` to install:
 
 ![](../images/linux_install_21.png)
 
-- 安装过程中可以设置`root`用户的密码；
+- The password of the `root` user can be set during the installation process;
 
 ![](../images/linux_install_22.png)
 
-- 完成安装后重新启动即可进入系统，第一次启动需要同意协议并完成配置：
+- Restart after completing the installation to enter the system, the first time you need to agree to the agreement and complete the configuration:
 
 ![](../images/linux_install_23.png)
 
-- 此时宿主机还无法直接访问虚拟机，需要将虚拟机的网络模式改为桥接模式才可以。
+- At this time, the host machine cannot directly access the virtual machine, and the network mode of the virtual machine needs to be changed to the bridge mode.
 
 ![](../images/linux_install_24.png)
 
 
-## Xshell使用
+## Xshell use
 
-> Xshell是一款SSH连接客户端工具，可以用于远程操作Linux系统。Xshell对于家庭和学校可以免费使用，提供一个有效邮箱，下载链接就会发送到你的的邮箱。
+> Xshell is an SSH connection client tool that can be used to remotely operate Linux systems. Xshell is free for home and school use, provides a valid email, and the download link will be sent to your email.
 
-- 免费版本申请地址：https://www.netsarang.com/zh/free-for-home-school/
+- Free version application address：https://www.netsarang.com/zh/free-for-home-school/
 
-- 下载并安装完成Xshell以后，在Linux系统中打开命令行：
+- After downloading and installing Xshell, open the command line in the Linux system:
 
 ![](../images/linux_install_25.png)
 
-- 输入`ifconfig`命令获取IP地址；
+- Enter the `ifconfig` command to obtain the IP address;
 
 ![](../images/linux_install_26.png)
 
-- 获取完成后通过Xshell进行连接，并输入账号和密码：
+- After the acquisition is complete, connect through Xshell and enter the account number and password:
 
 ![](../images/linux_install_27.png)
 
-- 连接完成后即可远程使用Linux系统了。
+- After the connection is completed, you can use the Linux system remotely.
 
 ![](../images/linux_install_28.png)
 
-## 其他相关
+## Other related
 
-### 修改默认启动模式
+### Modify the default startup mode
 
-如果不想默认启动图形化界面的话，可以修改默认的启动模式，因为图形化界面还是比较占用内存的，使用命令如下。
+If you do not want to start the graphical interface by default, you can modify the default startup mode, because the graphical interface is still relatively memory-intensive, use the following command.
 
 ```bash
-# 将默认级别修改为多用户文本模式
+# Change the default level to multi-user text mode
 systemctl set-default multi-user.target
-# 将默认级别修改为图形用户界面模式
+# Change the default level to graphical user interface mode
 systemctl set-default graphical.target
-# 重启
+# Reboot
 reboot
 ```
 
-### Linux常用命令
+### Common Linux commands
 
-可以参考下这个：[开发者必备Linux命令](/reference/linux)
+You can refer to this：[Linux commands for developers](/reference/linux)
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)

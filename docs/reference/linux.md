@@ -1,67 +1,67 @@
-mall项目全套学习教程连载中，[关注公众号](#公众号)第一时间获取。
+In the serialization of the full set of learning tutorials for the mall project, [Follow the Official Account](#Public number) will be obtained immediately.
 
-# 开发者必备Linux命令
+# Linux commands for developers
 
-> 开发者必备Linux常用命令，掌握这些命令绝对够了，基于CenterOS7.6。
+> Developers must have Linux commonly used commands. It is absolutely enough to master these commands, based on Center OS 7.6.
 
-## 系统服务管理
+## System Service Management
 
 ### systemctl
-- 输出系统中各个服务的状态：
+- Output the status of various services in the system:
 ```shell
 systemctl list-units --type=service
 ```
 ![](../images/refer_screen_01.png)
-- 查看服务的运行状态：
+- View the running status of the service:
 ```shell
 systemctl status firewalld
 ```
 ![](../images/refer_screen_02.png)
-- 关闭服务：
+- Close the service:
 ```shell
 systemctl stop firewalld
 ```
 ![](../images/refer_screen_03.png)
-- 启动服务：
+- Start the service:
 ```shell
 systemctl start firewalld
 ```
 ![](../images/refer_screen_04.png)
-- 重新启动服务（不管当前服务是启动还是关闭）：
+- Restart the service (regardless of whether the current service is started or closed):
 ```shell
 systemctl restart firewalld
 ```
-- 重新载入配置信息而不中断服务：
+- Reload configuration information without interrupting service:
 ```shell
 systemctl reload firewalld
 ```
-- 禁止服务开机自启动：
+- Forbid the service to start automatically after booting:
 ```shell
 systemctl disable firewalld
 ```
 ![](../images/refer_screen_05.png)
-- 设置服务开机自启动：
+- Set the service to start automatically after booting:
 ```shell
 systemctl enable firewalld
 ```
 ![](../images/refer_screen_06.png)
 
-## 文件管理
+## Document management
 
 ### ls
-列出当前目录(/)下的所有文件：
+List all files in the current directory (/):
 ```shell
 ls -l /
 ```
 ![](../images/refer_screen_07.png)
 
 ### pwd
-获取目前所在工作目录的绝对路径
+Get the absolute path of the current working directory
 
 ![](../images/refer_screen_08.png)
 
 ### cd
-改变当前工作目录：
+Change the current working directory:
 ```shell
 cd /usr/local
 ```
@@ -69,14 +69,14 @@ cd /usr/local
 ![](../images/refer_screen_09.png)
 
 ### date
-显示或修改系统时间与日期；
+Display or modify the system time and date;
 ```shell
 date '+%Y-%m-%d %H:%M:%S'
 ```
 ![](../images/refer_screen_10.png)
 
 ### passwd
-用于设置用户密码：
+Used to set user password:
 ```shell
 passwd root
 ```
@@ -84,68 +84,68 @@ passwd root
 ![](../images/refer_screen_11.png)
 
 ### su
-改变用户身份（切换到超级用户）：
+Change user identity (switch to superuser):
 ```shell
 su -
 ```
 ### clear
-用于清除屏幕信息
+Used to clear screen information
 
 ### man
-显示指定命令的帮助信息：
+Display help information for the specified command:
 ```shell
 man ls
 ```
 ### who
-- 查询系统处于什么运行级别：
+- Query what operating level the system is in:
 ```shell
 who -r
 ```
 ![](../images/refer_screen_12.png)
-- 显示目前登录到系统的用户：
+- Display the users currently logged in to the system:
 ```shell
 who -buT
 ```
 ![](../images/refer_screen_13.png)
 
 ### free
-显示系统内存状态（单位MB）：
+Display system memory status (in MB):
 ```shell
 free -m
 ```
 ![](../images/refer_screen_14.png)
 
 ### ps
-显示系统进程运行动态：
+Display system process running dynamics:
 ```shell
 ps -ef
 ```
-查看sshd进程的运行动态：
+View the running dynamics of the sshd process:
 ```shell
 ps -ef | grep sshd
 ```
 ![](../images/refer_screen_15.png)
 
 ### top
-查看即时活跃的进程，类似Windows的任务管理器
+View instant active processes, similar to the Windows task manager
 
 ![](../images/refer_screen_16.png)
 
 ### mkdir
-创建目录
+Create a directory
 
 ![](../images/refer_screen_17.png)
 
 ### more
-用于文件过长时分页查看文件内容
-每页10行查看boot.log文件
+Used to view the contents of the file when the file is too long
+10 lines per page to view the boot.log file
 ```shell
 more -c -10 /var/log/boot.log
 ```
 ![](../images/refer_screen_18.png)
 
 ### cat
-查看Linux启动日志文件文件，并标明行号：
+View the Linux boot log file and indicate the line number:
 ```shell
 cat -Ab /var/log/boot.log
 ```
@@ -153,7 +153,7 @@ cat -Ab /var/log/boot.log
 ![](../images/refer_screen_19.png)
 
 ### touch
-创建text.txt文件：
+Create text.txt file:
 ```shell
 touch text.txt
 ```
@@ -161,11 +161,11 @@ touch text.txt
 ![](../images/refer_screen_20.png)
 
 ### rm
-- 删除文件：
+- Delete Files:
 ```shell
 rm text.txt
 ```
-- 强制删除某个目录及其子目录：
+- Forcibly delete a directory and its subdirectories:
 ```shell
 rm -rf testdir/
 ```
@@ -173,138 +173,138 @@ rm -rf testdir/
 ![](../images/refer_screen_21.png)
 
 ### cp
-将test1目录复制到test2目录
+Copy test 1 directory to test 2 directory
 ```shell
 cp -r /mydata/tes1 /mydata/test2
 ```
 ### mv
-移动或覆盖文件：
+Move or Replace files:
 ```shell
 mv text.txt text2.txt
 ```
 
-## 压缩与解压
+## Compression and decompression
 
 ### tar
-- 将/etc文件夹中的文件归档到文件etc.tar（并不会进行压缩）：
+- Archive the files in the /etc folder to the file etc.tar (and will not be compressed):
 ```shell
 tar -cvf /mydata/etc.tar /etc
 ```
-- 用gzip压缩文件夹/etc中的文件到文件etc.tar.gz：
+- Use gzip to compress the files in the folder /etc to the file etc.tar.gz:
 ```shell
 tar -zcvf /mydata/etc.tar.gz /etc
 ```
-- 用bzip2压缩文件夹/etc到文件/etc.tar.bz2：
+- Compress the folder /etc to the file /etc.tar.bz2 with bzip2:
 ```shell
 tar -jcvf /mydata/etc.tar.bz2 /etc
 ```
 ![](../images/refer_screen_22.png)
-- 分页查看压缩包中内容（gzip）：
+- View the contents of the compressed package by page (gzip):
 ```shell
 tar -ztvf /mydata/etc.tar.gz |more -c -10
 ```
 ![](../images/refer_screen_24.png)
-- 解压文件到当前目录（gzip）：
+- Unzip the file to the current directory (gzip):
 ```shell
 tar -zxvf /mydata/etc.tar.gz
 ```
-- 解压文件到指定目录（gzip）：
+- Unzip the file to the specified directory (gzip):
 ```shell
 tar -zxvf /mydata/etc.tar.gz -C /mydata/etc
 ```
 
-## 磁盘和网络管理
+## Disk and network management
 
 ### df
-查看磁盘空间占用情况：
+View disk space usage:
 ```shell
 df -hT
 ```
 ![](../images/refer_screen_25.png)
 
 ### dh
-查看当前目录下的文件及文件夹所占大小：
+View the size of files and folders in the current directory:
 ```shell
 du -h --max-depth=1 ./*
 ```
 ![](../images/refer_screen_26.png)
 
 ### ifconfig
-显示当前网络接口状态
+Display current network interface status
 
 ![](../images/refer_screen_27.png)
 
 ### netstat
 
-- 查看当前路由信息：
+- View the current routing information:
 ```shell
 netstat -rn
 ```
 ![](../images/refer_screen_28.png)
 
-- 查看所有有效TCP连接：
+- View all valid TCP connections:
 ```shell
 netstat -an
 ```
-- 查看系统中启动的监听服务：
+- View the monitoring service started in the system:
 ```shell
 netstat -tulnp
 ```
 ![](../images/refer_screen_29.png)
 
-- 查看处于连接状态的系统资源信息：
+- View the system resource information in the connected state:
 ```shell
 netstat -atunp
 ```
 
 ### wget
-从网络上下载文件
+Download files from the web
 
 ![](../images/refer_screen_30.png)
 
-## 文件上传下载
+## File upload and download
 
-### 安装上传下载工具
+### Install upload and download tools
 
 ```bash
 yum install -y lrzsz
 ```
 
-### 上传文件
+### upload files
 
 ```bash
 rz
 ```
 
-### 下载文件
+### download file
 
 ```bash
 sz fileName
 ```
 
-## 软件的安装与管理
+## Software installation and management
 
 ### rpm
 
-- 安装软件包：rpm -ivh nginx-1.12.2-2.el7.x86_64.rpm
-- 模糊搜索软件包：rpm -qa | grep nginx
-- 精确查找软件包：rpm -qa nginx
-- 查询软件包的安装路径：rpm -ql nginx-1.12.2-2.el7.x86_64
-- 查看软件包的概要信息：rpm -qi nginx-1.12.2-2.el7.x86_64
-- 验证软件包内容和安装文件是否一致：rpm -V nginx-1.12.2-2.el7.x86_64
-- 更新软件包：rpm -Uvh nginx-1.12.2-2.el7.x86_64
-- 删除软件包：rpm -e nginx-1.12.2-2.el7.x86_64
+- Install packages：rpm -ivh nginx-1.12.2-2.el7.x86_64.rpm
+- Find and remove old nginx server version modules：rpm -qa | grep nginx
+- Find packages precisely：rpm -qa nginx
+- Query the installation path of the software package：rpm -ql nginx-1.12.2-2.el7.x86_64
+- View summary information about the software package：rpm -qi nginx-1.12.2-2.el7.x86_64
+- Verify the package contents and installation files are consistent：rpm -V nginx-1.12.2-2.el7.x86_64
+- Update packages：rpm -Uvh nginx-1.12.2-2.el7.x86_64
+- Remove packages：rpm -e nginx-1.12.2-2.el7.x86_64
 
 ### yum
 
-- 安装软件包： yum install nginx
-- 检查可以更新的软件包：yum check-update
-- 更新指定的软件包：yum update nginx
-- 在资源库中查找软件包信息：yum info nginx*
-- 列出已经安装的所有软件包：yum info installed
-- 列出软件包名称：yum list nginx*
-- 模糊搜索软件包：yum search nginx
+- Install packages： yum install nginx
+- Check packages that can be updated：yum check-update
+- Update the specified package：yum update nginx
+- Find package information in the repository：yum info nginx*
+- List all installed packages：yum info installed
+- List package names：yum list nginx*
+- Find nginx package：yum search nginx
 
-## 公众号
+## No public
 
-![公众号图片](https://kratos47mhs.github.io/images/logo.png)
+![Public account picture](https://kratos47mhs.github.io/images/logo.png)
